@@ -1,0 +1,75 @@
+---
+import { twinPath, type Locale } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const pathname = Astro.url.pathname;
+const enHref = twinPath(pathname, 'en');
+const ruHref = twinPath(pathname, 'ru');
+---
+
+<div class="lang-switch" role="group" aria-label="Language">
+  <a
+    href={enHref}
+    class:list={['lang-opt', { active: locale === 'en' }]}
+    hreflang="en"
+    lang="en"
+    data-set-lang="en"
+  >
+    EN
+  </a>
+  <span class="lang-sep" aria-hidden="true">/</span>
+  <a
+    href={ruHref}
+    class:list={['lang-opt', { active: locale === 'ru' }]}
+    hreflang="ru"
+    lang="ru"
+    data-set-lang="ru"
+  >
+    RU
+  </a>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-set-lang]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const lang = el.dataset.setLang;
+      if (lang) {
+        document.cookie = `lang=${lang};path=/;max-age=31536000;samesite=lax`;
+      }
+    });
+  });
+</script>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+
+  .lang-opt {
+    color: var(--color-text-muted);
+    font-weight: 500;
+    transition: color 0.15s ease;
+  }
+
+  .lang-opt:hover,
+  .lang-opt.active {
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .lang-sep {
+    color: var(--color-text-muted);
+    opacity: 0.55;
+    font-weight: 500;
+  }
+</style>

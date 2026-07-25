@@ -1,0 +1,14 @@
+---
+import ServicePage from '../../../components/ServicePage.astro';
+
+const locale = 'ru';
+---
+
+<ServicePage
+  locale={locale}
+  titleKey="svcFastTitle"
+  subKey="svcFastSub"
+  forWhom={['svcFastFor1', 'svcFastFor2', 'svcFastFor3', 'svcFastFor4']}
+  includes={['svcFastInc1', 'svcFastInc2', 'svcFastInc3', 'svcFastInc4']}
+  ctaKey="svcFastCTA"
+/>

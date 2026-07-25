@@ -1,0 +1,2160 @@
+---
+import type { Locale } from '../i18n/ui';
+import { t } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const servicesBase = locale === 'ru' ? '/ru/services/' : '/services/';
+
+const contactMethods =
+  locale === 'ru'
+    ? [
+        { value: 'telegram', label: 'Telegram' },
+        { value: 'whatsapp', label: 'WhatsApp' },
+        { value: 'email', label: 'Email' },
+        { value: 'linkedin', label: 'LinkedIn' },
+        { value: 'phone', label: 'Звонок' },
+      ]
+    : [
+        { value: 'telegram', label: 'Telegram' },
+        { value: 'whatsapp', label: 'WhatsApp' },
+        { value: 'email', label: 'Email' },
+        { value: 'linkedin', label: 'LinkedIn' },
+        { value: 'phone', label: 'Call' },
+      ];
+
+const deepSteps = [
+  'svcDeepStep1',
+  'svcDeepStep2',
+  'svcDeepStep3',
+  'svcDeepStep4',
+  'svcDeepStep5',
+  'svcDeepStep6',
+  'svcDeepStep7',
+  'svcDeepStep8',
+  'svcDeepStep9',
+] as const;
+
+interface SvcTab {
+  slug: string;
+  labelKey: string;
+  descKey: string;
+  bullets: { key: string; icon: BulletIcon }[];
+  viz: string; // CSS class for right-side visual
+}
+
+type BulletIcon =
+  | 'target'
+  | 'doc'
+  | 'code'
+  | 'rocket'
+  | 'search'
+  | 'users'
+  | 'route'
+  | 'layers'
+  | 'chart'
+  | 'funnel'
+  | 'wrench'
+  | 'trend'
+  | 'grid'
+  | 'cart'
+  | 'phone'
+  | 'panel';
+
+const tabs: SvcTab[] = [
+  {
+    slug: 'fast-landing',
+    labelKey: 'serviceFastTitle',
+    descKey: 'serviceFastDesc',
+    bullets: [
+      { key: 'svcFastBullet1', icon: 'target' },
+      { key: 'svcFastBullet2', icon: 'doc' },
+      { key: 'svcFastBullet3', icon: 'code' },
+      { key: 'svcFastBullet4', icon: 'rocket' },
+    ],
+    viz: 'viz-browser',
+  },
+  {
+    slug: 'deep-site',
+    labelKey: 'serviceDeepTitle',
+    descKey: 'serviceDeepDesc',
+    bullets: [
+      { key: 'svcDeepBullet1', icon: 'search' },
+      { key: 'svcDeepBullet2', icon: 'users' },
+      { key: 'svcDeepBullet3', icon: 'route' },
+      { key: 'svcDeepBullet4', icon: 'layers' },
+    ],
+    viz: 'viz-analytics',
+  },
+  {
+    slug: 'conversion',
+    labelKey: 'serviceConvTitle',
+    descKey: 'serviceConvDesc',
+    bullets: [
+      { key: 'svcConvBullet1', icon: 'chart' },
+      { key: 'svcConvBullet2', icon: 'funnel' },
+      { key: 'svcConvBullet3', icon: 'wrench' },
+      { key: 'svcConvBullet4', icon: 'trend' },
+    ],
+    viz: 'viz-dashboard',
+  },
+  {
+    slug: 'ecommerce',
+    labelKey: 'serviceShopTitle',
+    descKey: 'serviceShopDesc',
+    bullets: [
+      { key: 'svcShopBullet1', icon: 'grid' },
+      { key: 'svcShopBullet2', icon: 'cart' },
+      { key: 'svcShopBullet3', icon: 'phone' },
+      { key: 'svcShopBullet4', icon: 'panel' },
+    ],
+    viz: 'viz-store',
+  },
+];
+
+const iconPaths: Record<BulletIcon, string[]> = {
+  target: [
+    'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z',
+    'M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z',
+    'M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z',
+  ],
+  doc: [
+    'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z',
+    'M14 2v6h6',
+    'M8 13h8',
+    'M8 17h6',
+  ],
+  code: ['M16 18l6-6-6-6', 'M8 6l-6 6 6 6'],
+  rocket: [
+    'M5 19c1.5-1.5 3-3 6.5-4.5C16 12 19 9 20 5c-4 1-7 4-9.5 8.5C9 17 7.5 18.5 5 19Z',
+    'M12 10l2 2',
+    'M9.5 15.5 8 18',
+  ],
+  search: ['M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z', 'M21 21l-4.35-4.35'],
+  users: [
+    'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2',
+    'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z',
+    'M22 21v-2a4 4 0 0 0-3-3.87',
+    'M16 3.13a4 4 0 0 1 0 7.75',
+  ],
+  route: [
+    'M5 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z',
+    'M19 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z',
+    'M7 16l2.5-1.5c2-1.2 5-1.2 7 0L19 16',
+  ],
+  layers: ['M12 2 2 7l10 5 10-5-10-5Z', 'M2 17l10 5 10-5', 'M2 12l10 5 10-5'],
+  chart: ['M3 3v18h18', 'M7 16v-5', 'M12 16V8', 'M17 16v-9'],
+  funnel: ['M3 4h18l-7 8v6l-4 2v-8L3 4z'],
+  wrench: [
+    'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.1 2.1-2.2-2.2 2.1-2.1Z',
+  ],
+  trend: ['M3 17 9 11l4 4 8-8', 'M14 7h6v6'],
+  grid: [
+    'M3 3h8v8H3V3Z',
+    'M13 3h8v8h-8V3Z',
+    'M3 13h8v8H3v-8Z',
+    'M13 13h8v8h-8v-8Z',
+  ],
+  cart: [
+    'M1 1h4l2.7 12.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6',
+    'M9 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z',
+    'M19 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z',
+  ],
+  phone: [
+    'M7 2h10a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z',
+    'M11 18h2',
+  ],
+  panel: [
+    'M3 3h8v10H3V3Z',
+    'M13 3h8v6h-8V3Z',
+    'M3 15h8v6H3v-6Z',
+    'M13 11h8v10h-8V11Z',
+  ],
+};
+---
+
+<div class="st-section">
+  {/* Scroll rails */}
+  <div class="st-rails">
+    {tabs.map((_, i) => (
+      <div class="st-rail" data-st-rail data-index={i}></div>
+    ))}
+  </div>
+
+  <div class="st-stage" data-st-stage>
+    {/* Tab bar — full width, evenly spaced */}
+    <div class="st-tabs" role="tablist" aria-label={locale === 'ru' ? 'Услуги' : 'Services'}>
+      {tabs.map((tab, i) => (
+        <button
+          type="button"
+          class:list={['st-tab', `st-tab--${i}`, i === 0 && 'active']}
+          data-st-tab
+          data-index={i}
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+        >
+          {t(locale, tab.labelKey as any)}
+        </button>
+      ))}
+    </div>
+
+    <div class="st-body">
+      {/* Left: content */}
+      <div class="st-left">
+        {tabs.map((tab, i) => (
+          <div
+            class:list={['st-card', i === 0 && 'active']}
+            data-st-card
+            data-index={i}
+          >
+            <h3 class="st-headline">{t(locale, tab.descKey as any)}</h3>
+            <div class="st-actions">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-st-open-form
+                data-service={t(locale, tab.descKey as any)}
+              >
+                {t(locale, 'svcTabCta')}
+              </button>
+              <a href={`${servicesBase}${tab.slug}/`} class="btn btn-secondary">
+                {t(locale, 'svcTabReadMore')}
+              </a>
+            </div>
+            <ul class="st-bullets">
+              {tab.bullets.map((b) => (
+                <li class="st-bullet">
+                  <svg
+                    class="st-bullet-icon"
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    {iconPaths[b.icon].map((d) => (
+                      <path d={d} />
+                    ))}
+                  </svg>
+                  <span>{t(locale, b.key as any)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      {/* Right: visual */}
+      <div class="st-right">
+        {tabs.map((tab, i) => (
+          <div class:list={[`st-viz st-${tab.viz}`, i === 0 && 'active']} data-st-viz data-viz={tab.viz}>
+            {tab.viz === 'viz-browser' && (
+              <div class="st-illu st-illu--landing" data-landing-assemble aria-hidden="true">
+                {/* Floating parts — fly into browser */}
+                <div class="st-fly st-fly--hero" data-fly="hero"></div>
+                <div class="st-fly st-fly--lines" data-fly="lines">
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="st-fly st-fly--cta" data-fly="cta"></div>
+                <div class="st-fly st-fly--mid" data-fly="mid">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="st-fly st-fly--foot" data-fly="foot">
+                  <span class="st-fly-foot-title"></span>
+                  <span class="st-fly-foot-line"></span>
+                  <span class="st-fly-foot-btn"></span>
+                </div>
+                <div class="st-fly st-fly--banner" data-fly="banner"></div>
+
+                <div class="st-browser st-browser--sq">
+                  <div class="st-browser-chrome">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <div class="st-browser-url">your-offer.com</div>
+                  </div>
+                  <div class="st-browser-body st-browser-body--sq">
+                    <div class="st-slot st-slot--hero" data-slot="hero"></div>
+                    <div class="st-slot st-slot--lines" data-slot="lines">
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <div class="st-slot st-slot--cta" data-slot="cta"></div>
+                    <div class="st-slot st-slot--mid" data-slot="mid">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <div class="st-slot st-slot--foot" data-slot="foot">
+                      <span class="st-foot-title"></span>
+                      <span class="st-foot-line"></span>
+                      <span class="st-foot-line st-foot-line--short"></span>
+                      <span class="st-foot-btn"></span>
+                    </div>
+                    <div class="st-slot st-slot--banner" data-slot="banner"></div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {tab.viz === 'viz-analytics' && (
+              <div class="st-illu st-illu--deep" data-deep-assemble aria-hidden="true">
+                <ol class="st-deep-steps">
+                  {deepSteps.map((key, i) => (
+                    <li class="st-deep-step" data-deep-step={i}>
+                      <span class="st-deep-num">{String(i + 1).padStart(2, '0')}</span>
+                      <span class="st-deep-label">{t(locale, key)}</span>
+                    </li>
+                  ))}
+                </ol>
+                <div class="st-deep-bars">
+                  {[0, 1, 2, 3, 4, 5].map((i) => (
+                    <div class="st-deep-bar" data-deep-bar={i}></div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {tab.viz === 'viz-dashboard' && (
+              <div class="st-illu st-illu--conv" data-conv-assemble aria-hidden="true">
+                <div class="st-conv-browser">
+                  <div class="st-browser-chrome">
+                    <span></span><span></span><span></span>
+                    <div class="st-browser-url">your-site.com</div>
+                  </div>
+                  <div class="st-conv-body">
+                    <div class="st-conv-slot st-conv-slot--hero" data-conv-slot="0"></div>
+                    <div class="st-conv-slot st-conv-slot--lines" data-conv-slot="1">
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <div class="st-conv-slot st-conv-slot--mid" data-conv-slot="2">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <div class="st-conv-slot st-conv-slot--cta" data-conv-slot="3"></div>
+                    <div class="st-conv-slot st-conv-slot--foot" data-conv-slot="4">
+                      <span class="st-conv-foot-title"></span>
+                      <span class="st-conv-foot-line"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="st-dash">
+                  <div class="st-dash-metric" data-conv-metric="0" data-from="64" data-target="23" data-fmt="pct">
+                    <span class="st-dash-val">
+                      <span class="st-dash-arrow">↓</span><span class="st-dash-num" data-conv-num>64%</span>
+                    </span>
+                    <span class="st-dash-label">{t(locale, 'svcConvMetricBounce')}</span>
+                  </div>
+                  <div class="st-dash-metric" data-conv-metric="1" data-from="2" data-target="58" data-fmt="pct">
+                    <span class="st-dash-val">
+                      <span class="st-dash-arrow">↑</span><span class="st-dash-num" data-conv-num>2%</span>
+                    </span>
+                    <span class="st-dash-label">{t(locale, 'svcConvMetricRate')}</span>
+                  </div>
+                  <div class="st-dash-metric" data-conv-metric="2" data-target="4.6" data-fmt="x">
+                    <span class="st-dash-val">
+                      <span class="st-dash-arrow">↑</span><span class="st-dash-num" data-conv-num>×0.0</span>
+                    </span>
+                    <span class="st-dash-label">{t(locale, 'svcConvMetricRoi')}</span>
+                  </div>
+                  <div class="st-dash-metric" data-conv-metric="3" data-target="3.4" data-fmt="x">
+                    <span class="st-dash-val">
+                      <span class="st-dash-arrow">↑</span><span class="st-dash-num" data-conv-num>×0.0</span>
+                    </span>
+                    <span class="st-dash-label">{t(locale, 'svcConvMetricLeads')}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {tab.viz === 'viz-store' && (
+              <div class="st-illu st-illu--shop" data-shop-assemble aria-hidden="true">
+                {/* Floating parts — fly into shop */}
+                <div class="st-shop-fly st-shop-fly--hero" data-shop-fly="hero"></div>
+                <div class="st-shop-fly st-shop-fly--lines" data-shop-fly="lines">
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="st-shop-fly st-shop-fly--mid" data-shop-fly="mid">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="st-shop-fly st-shop-fly--cta" data-shop-fly="cta"></div>
+
+                <div class="st-browser st-browser--sq">
+                  <div class="st-browser-chrome">
+                    <span></span><span></span><span></span>
+                    <div class="st-browser-url">your-shop.com</div>
+                  </div>
+                  <div class="st-browser-body--sq">
+                    <div class="st-shop-slot st-shop-slot--hero" data-shop-slot="hero"></div>
+                    <div class="st-shop-slot st-shop-slot--lines" data-shop-slot="lines">
+                      <span></span>
+                      <span></span>
+                    </div>
+                    <div class="st-shop-slot st-shop-slot--cta" data-shop-slot="cta"></div>
+                    <div class="st-shop-slot st-shop-slot--mid" data-shop-slot="mid">
+                      <div class="st-shop-product">
+                        <span class="st-shop-product-img"></span>
+                        <span class="st-shop-product-name"></span>
+                        <span class="st-shop-product-price">$49</span>
+                      </div>
+                      <div class="st-shop-product">
+                        <span class="st-shop-product-img"></span>
+                        <span class="st-shop-product-name"></span>
+                        <span class="st-shop-product-price">$89</span>
+                      </div>
+                      <div class="st-shop-product">
+                        <span class="st-shop-product-img"></span>
+                        <span class="st-shop-product-name"></span>
+                        <span class="st-shop-product-price">$129</span>
+                      </div>
+                      <div class="st-shop-product">
+                        <span class="st-shop-product-img"></span>
+                        <span class="st-shop-product-name"></span>
+                        <span class="st-shop-product-price">$59</span>
+                      </div>
+                      <div class="st-shop-product">
+                        <span class="st-shop-product-img"></span>
+                        <span class="st-shop-product-name"></span>
+                        <span class="st-shop-product-price">$99</span>
+                      </div>
+                      <div class="st-shop-product">
+                        <span class="st-shop-product-img"></span>
+                        <span class="st-shop-product-name"></span>
+                        <span class="st-shop-product-price">$149</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="st-shop-cart" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+                    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                  </svg>
+                  <span class="st-shop-cart-badge" data-shop-badge>0</span>
+                </div>
+
+                <div class="st-shop-toasts" aria-hidden="true">
+                  <div class="st-shop-toast" data-shop-toast="0">
+                    <span class="st-shop-toast-icon">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                      </svg>
+                    </span>
+                    <span class="st-shop-toast-text">{t(locale, 'svcShopNotify1')}</span>
+                    <span class="st-shop-toast-amount">{t(locale, 'svcShopNotify1Amount')}</span>
+                  </div>
+                  <div class="st-shop-toast" data-shop-toast="1">
+                    <span class="st-shop-toast-icon">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                      </svg>
+                    </span>
+                    <span class="st-shop-toast-text">{t(locale, 'svcShopNotify2')}</span>
+                    <span class="st-shop-toast-amount">{t(locale, 'svcShopNotify2Amount')}</span>
+                  </div>
+                  <div class="st-shop-toast" data-shop-toast="2">
+                    <span class="st-shop-toast-icon">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                      </svg>
+                    </span>
+                    <span class="st-shop-toast-text">{t(locale, 'svcShopNotify3')}</span>
+                    <span class="st-shop-toast-amount">{t(locale, 'svcShopNotify3Amount')}</span>
+                  </div>
+                  <div class="st-shop-toast" data-shop-toast="3">
+                    <span class="st-shop-toast-icon">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                      </svg>
+                    </span>
+                    <span class="st-shop-toast-text">{t(locale, 'svcShopNotify4')}</span>
+                    <span class="st-shop-toast-amount">{t(locale, 'svcShopNotify4Amount')}</span>
+                  </div>
+                  <div class="st-shop-toast" data-shop-toast="4">
+                    <span class="st-shop-toast-icon">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                      </svg>
+                    </span>
+                    <span class="st-shop-toast-text">{t(locale, 'svcShopNotify5')}</span>
+                    <span class="st-shop-toast-amount">{t(locale, 'svcShopNotify5Amount')}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<dialog
+  class="st-modal"
+  data-st-modal
+  data-lang={locale}
+  data-msg-sending={t(locale, 'svcModalSending')}
+  data-msg-thanks={t(locale, 'svcModalThanks')}
+  data-msg-error={t(locale, 'svcModalError')}
+>
+  <div class="st-modal-panel">
+    <button type="button" class="st-modal-close" data-st-modal-close aria-label={locale === 'ru' ? 'Закрыть' : 'Close'}>
+      ×
+    </button>
+    <h3 class="st-modal-title" data-st-modal-title>{t(locale, 'svcModalTitle')}</h3>
+    <form class="st-form" data-st-form>
+      <div class="st-form-row">
+        <input
+          type="text"
+          class="st-input"
+          name="contact"
+          placeholder="@telegram, +7999..., email"
+          required
+        />
+        <button type="submit" class="btn btn-primary">
+          {t(locale, 'svcTabCta')}
+        </button>
+      </div>
+      <div class="st-methods">
+        {contactMethods.map((m) => (
+          <label class="st-method">
+            <input type="radio" name="method" value={m.value} />
+            <span class="st-chip">{m.label}</span>
+          </label>
+        ))}
+      </div>
+      <div class="st-status" data-st-status></div>
+    </form>
+  </div>
+</dialog>
+
+<style>
+  .st-section {
+    position: relative;
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .st-section { height: calc(4 * 100vh); }
+  }
+
+  .st-rails {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .st-rails { display: flex; flex-direction: column; }
+  }
+
+  .st-rail { flex: 1; }
+
+  .st-stage {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 0;
+  }
+
+  @media (min-width: 768px) {
+    .st-stage {
+      position: sticky;
+      top: var(--header-height);
+      height: calc(100vh - var(--header-height));
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      overflow: hidden;
+    }
+  }
+
+  /* Tabs — separate rounded pills with breathing room.
+     --st-tint-N  = tab-pill bg. Only colored surface in this block: light, moderately bright.
+     --st-accent-N = illustration accent. Muted derivative of the tint hue —
+     used in soft mixes/borders and small details, never as a big solid/raw-bright fill. */
+  .st-stage {
+    --st-tint-0: #c4daee;
+    --st-tint-1: #c8c4ee;
+    --st-tint-2: var(--color-lime);
+    --st-tint-3: var(--color-yellow);
+    --st-accent-0: var(--color-blue);
+    --st-accent-1: #4335b6;
+    --st-accent-2: #499735;
+    --st-accent-3: #a4a838;
+  }
+
+  .st-tabs {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .st-tabs {
+      display: flex;
+      justify-content: stretch;
+      align-items: stretch;
+      gap: 0.75rem;
+      width: 100%;
+      max-inline-size: none;
+      margin-inline: 0;
+      padding: 1.25rem var(--content-inline) 1.275rem;
+      flex-shrink: 0;
+      border-bottom: none;
+      position: relative;
+      z-index: 2;
+      background: transparent;
+      box-sizing: border-box;
+    }
+  }
+
+  .st-tab {
+    flex: 1;
+    appearance: none;
+    background: color-mix(in srgb, var(--color-text-primary) 3.5%, var(--color-surface));
+    border: 1px solid transparent;
+    border-radius: var(--radius-card);
+    margin-bottom: 0;
+    font-family: inherit;
+    font-size: clamp(0.82rem, 0.75rem + 0.35vw, 1rem);
+    font-weight: 400;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 1rem 1rem 1.05rem;
+    text-align: center;
+    line-height: 1.3;
+    transition:
+      color 0.25s ease,
+      background-color 0.25s ease,
+      border-color 0.25s ease,
+      filter 0.25s ease;
+  }
+
+  .st-tab--0 {
+    --st-tint: var(--st-tint-0);
+    --st-accent: var(--st-accent-0);
+  }
+  .st-tab--1 {
+    --st-tint: var(--st-tint-1);
+    --st-accent: var(--st-accent-1);
+  }
+  .st-tab--2 {
+    --st-tint: var(--st-tint-2);
+    --st-accent: var(--st-accent-2);
+  }
+  .st-tab--3 {
+    --st-tint: var(--st-tint-3);
+    --st-accent: var(--st-accent-3);
+  }
+
+  .st-tab:hover {
+    color: var(--color-text-primary);
+    background: color-mix(in srgb, var(--st-tint) 55%, var(--color-surface));
+  }
+
+  .st-tab.active {
+    background: var(--st-tint);
+    color: var(--color-text-primary);
+    font-weight: 400;
+  }
+
+  /* Body grid — shared pads so left copy + right viz bottom align */
+  .st-body {
+    --st-pad-block-start: clamp(2rem, 4vw, 2.75rem);
+    --st-pad-block-end: clamp(4rem, 8vw, 5.5rem);
+    --st-pad-inline: var(--content-inline);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  @media (min-width: 768px) {
+    .st-body {
+      flex-direction: row;
+      padding-block-start: 0;
+      /* allow tab1 square to bleed left without clipping */
+      overflow: visible;
+    }
+
+    .st-left {
+      flex: 0 0 50%;
+      box-sizing: border-box;
+      position: relative;
+      z-index: 2;
+    }
+  }
+
+  .st-left {
+    padding: 2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    min-height: 0;
+  }
+
+  @media (min-width: 768px) {
+    .st-left {
+      width: 50%;
+      flex: 0 0 50%;
+      box-sizing: border-box;
+      padding-block-start: var(--st-pad-block-start);
+      padding-block-end: var(--st-pad-block-end);
+      padding-inline: var(--st-pad-inline);
+      justify-content: flex-start;
+      align-items: stretch;
+      overflow: hidden;
+    }
+  }
+
+  .st-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-surface);
+    min-height: 300px;
+  }
+
+  @media (min-width: 768px) {
+    .st-right {
+      width: 50%;
+      min-height: 0;
+      flex: 0 0 50%;
+      justify-content: center;
+      padding-inline: var(--st-pad-inline, var(--content-inline));
+      box-sizing: border-box;
+      overflow: visible;
+      z-index: 1;
+    }
+  }
+
+  /* Cards */
+  .st-card {
+    --st-card-max: clamp(26rem, 32vw, 36rem);
+    width: 100%;
+    max-width: var(--st-card-max);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    pointer-events: none;
+  }
+
+  .st-card.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .st-card[data-index="0"] {
+    --st-accent: var(--st-accent-0);
+    --st-tint: var(--st-tint-0);
+  }
+  .st-card[data-index="1"] {
+    --st-accent: var(--st-accent-1);
+    --st-tint: var(--st-tint-1);
+  }
+  .st-card[data-index="2"] {
+    --st-accent: var(--st-accent-2);
+    --st-tint: var(--st-tint-2);
+  }
+  .st-card[data-index="3"] {
+    --st-accent: var(--st-accent-3);
+    --st-tint: var(--st-tint-3);
+  }
+
+  /* Card CTA stays neutral black regardless of tab — color lives on the tab pill only */
+  .st-card .st-actions .btn-primary {
+    background: var(--color-text-primary);
+    border-color: var(--color-text-primary);
+    color: #fff;
+  }
+
+  .st-card .st-actions .btn-primary:hover {
+    background: color-mix(in srgb, var(--color-text-primary) 85%, #fff);
+    border-color: color-mix(in srgb, var(--color-text-primary) 85%, #fff);
+    color: #fff;
+  }
+
+  @media (min-width: 768px) {
+    .st-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: min(100%, var(--st-card-max));
+      height: 100%;
+      max-height: 100%;
+      overflow: hidden;
+      inset: unset;
+      transform: none;
+      margin-inline: 0;
+    }
+
+    .st-card:not(.active) {
+      position: absolute;
+      inset-block-start: var(--st-pad-block-start);
+      inset-block-end: var(--st-pad-block-end);
+      left: var(--st-pad-inline);
+      right: auto;
+      width: min(100%, var(--st-card-max));
+      height: auto;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .st-card {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      margin-bottom: 3rem;
+      max-width: none;
+    }
+    .st-card + .st-card { margin-top: 2rem; }
+  }
+
+  .st-headline {
+    font-size: var(--fs-h2);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-block-end: 1.5rem;
+    /* Override global h3 text-wrap:balance — fill the measure naturally */
+    text-wrap: wrap;
+  }
+
+  .st-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-block-end: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .st-bullets {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-block-start: auto;
+    margin-block-end: 0;
+    padding-block-start: 1.25rem;
+  }
+
+  .st-bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    font-size: 1.05rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+
+  .st-bullet-icon {
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    /* Optical align with first line cap-height, stay top when text wraps */
+    margin-block-start: 0.2em;
+  }
+
+  /* Form (modal) */
+  .st-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .st-form-row {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .st-input {
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: var(--control-pad-block) var(--control-pad-inline);
+    font-size: var(--control-font-size);
+    line-height: var(--control-line-height);
+    font-family: inherit;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+    background: transparent;
+    color: var(--color-text-primary);
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .st-input:focus { border-color: var(--color-blue); }
+
+  .st-input::placeholder {
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+  }
+
+  .st-form-row .btn {
+    flex-shrink: 0;
+  }
+
+  .st-methods {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .st-method {
+    cursor: pointer;
+  }
+
+  .st-method input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .st-chip {
+    display: block;
+    padding: 0.25rem 0.55rem;
+    font-size: 0.74rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .st-method input:checked + .st-chip {
+    color: var(--color-blue);
+    border-color: var(--color-blue);
+  }
+
+  .st-method:hover .st-chip { border-color: var(--color-text-muted); }
+
+  .st-status {
+    font-size: 0.8rem;
+    min-height: 1.2em;
+    color: var(--color-text-muted);
+  }
+  .st-status.success { color: #499735; }
+  .st-status.error { color: #d32f2f; }
+
+  .st-modal {
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-media);
+    background: transparent;
+    max-width: min(32rem, calc(100vw - 2rem));
+    width: 100%;
+  }
+
+  .st-modal::backdrop {
+    background: color-mix(in srgb, var(--color-text-primary) 45%, transparent);
+    backdrop-filter: blur(4px);
+  }
+
+  .st-modal-panel {
+    position: relative;
+    background: var(--color-surface);
+    border-radius: var(--radius-media);
+    padding: 1.75rem 1.5rem 1.5rem;
+    box-shadow: 0 16px 48px color-mix(in srgb, var(--color-text-primary) 18%, transparent);
+  }
+
+  .st-modal-close {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.75rem;
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--color-text-muted);
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-button);
+    cursor: pointer;
+  }
+
+  .st-modal-close:hover {
+    color: var(--color-text-primary);
+  }
+
+  .st-modal-title {
+    font-size: var(--fs-h3);
+    font-weight: 500;
+    margin-block-end: 1.1rem;
+    padding-inline-end: 1.5rem;
+    line-height: 1.25;
+  }
+
+  /* Visuals */
+  .st-viz {
+    position: absolute;
+    /* Match .st-left block pads — same bottom air as copy */
+    inset-block-start: var(--st-pad-block-start, clamp(2rem, 4vw, 2.75rem));
+    inset-block-end: var(--st-pad-block-end, clamp(4rem, 8vw, 5.5rem));
+    inset-inline: clamp(1.5rem, 3vw, 2.5rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+
+  .st-viz.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .st-viz.st-viz-browser {
+    /* Stay in right 50% — no left-bleed wide frame */
+    inset: clamp(0.5rem, 1.5vw, 1.1rem);
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  @media (max-width: 767px) {
+    .st-viz { display: none; }
+  }
+
+  /* Illustrations — How I work vibe */
+  .st-illu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: clamp(20rem, 36vw, 30rem);
+    padding: 0.5rem;
+  }
+
+  /* Tab1 + tab4 share this "big square scene" sizing — see .st-illu--landing, .st-illu--shop below */
+
+  .st-browser--sq {
+    width: 78%;
+    height: 88%;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    transition: width 0.5s ease, margin-right 0.5s ease;
+  }
+
+  /* Once the shop finishes assembling, shrink + nudge it left (margin-right
+     grows, pulling the centered box leftward) to free a column on the right
+     for the live-sale notification stack. */
+  .st-illu--shop.is-assembled .st-browser--sq {
+    width: 56%;
+    margin-right: 30%;
+  }
+
+  .st-browser-body--sq {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.65rem 0.6rem 0.75rem;
+    background: #f7f8fa;
+  }
+
+  .st-slot {
+    opacity: 0;
+    transform-origin: center center;
+  }
+
+  .st-slot--hero {
+    flex: 0 0 auto;
+    height: 20%;
+    min-height: 2.4rem;
+    border-radius: 8px;
+    background:
+      linear-gradient(155deg, var(--color-blue-tint) 0%, #fff 48%, color-mix(in srgb, var(--color-blue-soft) 55%, #fff) 100%);
+    border: 1px solid color-mix(in srgb, var(--color-blue) 22%, #e2e2e2);
+  }
+
+  .st-slot--lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .st-slot--lines span {
+    display: block;
+    height: 0.34rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--color-text-primary) 18%, #fff);
+  }
+
+  .st-slot--lines span:first-child {
+    width: 72%;
+  }
+
+  .st-slot--lines span:last-child {
+    width: 48%;
+  }
+
+  .st-slot--cta {
+    width: 36%;
+    height: 0.72rem;
+    border-radius: 4px;
+    background: var(--color-blue);
+    margin-block: 0.05rem 0.1rem;
+    flex-shrink: 0;
+  }
+
+  /* Mid band — square tiles */
+  .st-slot--mid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.3rem;
+    flex: 0 0 auto;
+    min-height: 0;
+    align-content: start;
+  }
+
+  .st-slot--mid span {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 1;
+    border-radius: 6px;
+    border: 1px solid color-mix(in srgb, var(--color-blue) 18%, #e2e2e2);
+    background:
+      linear-gradient(160deg, var(--color-blue-tint) 0%, color-mix(in srgb, var(--color-blue-soft) 35%, #fff) 100%);
+  }
+
+  .st-slot--mid span:nth-child(2) {
+    background:
+      linear-gradient(160deg, color-mix(in srgb, var(--color-blue-soft) 40%, #fff) 0%, var(--color-blue-tint) 100%);
+  }
+
+  /* Foot — centered title / text / button */
+  .st-slot--foot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.38rem;
+    flex: 0 0 auto;
+    min-height: 0;
+    margin-block-start: 0.45rem;
+    padding: 0.35rem 0.4rem 0.2rem;
+  }
+
+  .st-foot-title {
+    display: block;
+    width: 58%;
+    height: 0.52rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--color-text-primary) 28%, #fff);
+  }
+
+  .st-foot-line {
+    display: block;
+    width: 72%;
+    height: 0.32rem;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--color-text-primary) 14%, #fff);
+  }
+
+  .st-foot-line--short {
+    width: 46%;
+  }
+
+  .st-foot-btn {
+    display: block;
+    width: 34%;
+    height: 0.82rem;
+    margin-block-start: 0.32rem;
+    border-radius: 4px;
+    background: var(--color-blue);
+  }
+
+  /* Bottom banner — full-width blue band (mirrors hero) */
+  .st-slot--banner {
+    flex: 1 1 auto;
+    min-height: 2.75rem;
+    height: auto;
+    border-radius: 8px;
+    background:
+      linear-gradient(155deg, var(--color-blue-tint) 0%, #fff 48%, color-mix(in srgb, var(--color-blue-soft) 55%, #fff) 100%);
+    border: 1px solid color-mix(in srgb, var(--color-blue) 22%, #e2e2e2);
+  }
+
+  /* Floating parts outside browser (within square) */
+  .st-fly {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+
+  .st-fly--hero {
+    width: 4.75rem;
+    height: 3.1rem;
+    border-radius: 8px;
+    top: 4%;
+    right: 2%;
+    background:
+      linear-gradient(155deg, var(--color-blue-tint) 0%, #fff 48%, color-mix(in srgb, var(--color-blue-soft) 55%, #fff) 100%);
+    border: 1px solid color-mix(in srgb, var(--color-blue) 28%, #e2e2e2);
+    box-shadow: 0 12px 28px -18px rgba(2, 116, 222, 0.55);
+  }
+
+  .st-fly--lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    top: 26%;
+    left: 2%;
+    width: 4rem;
+  }
+
+  .st-fly--lines span {
+    display: block;
+    height: 0.32rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--color-text-primary) 22%, #fff);
+    box-shadow: 0 8px 18px -14px rgba(13, 13, 13, 0.35);
+  }
+
+  .st-fly--lines span:first-child { width: 100%; }
+  .st-fly--lines span:last-child { width: 70%; }
+
+  .st-fly--cta {
+    width: 2.9rem;
+    height: 0.7rem;
+    border-radius: 4px;
+    background: var(--color-blue);
+    top: 38%;
+    right: 2%;
+    box-shadow: 0 10px 22px -12px rgba(2, 116, 222, 0.65);
+  }
+
+  .st-fly--mid {
+    display: flex;
+    gap: 0.22rem;
+    top: 48%;
+    left: 0;
+  }
+
+  .st-fly--mid span {
+    display: block;
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 5px;
+    border: 1px solid color-mix(in srgb, var(--color-blue) 22%, #e2e2e2);
+    background:
+      linear-gradient(160deg, var(--color-blue-tint) 0%, color-mix(in srgb, var(--color-blue-soft) 40%, #fff) 100%);
+    box-shadow: 0 10px 22px -16px rgba(2, 116, 222, 0.4);
+  }
+
+  .st-fly--foot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.22rem;
+    bottom: 5%;
+    left: calc(50% - 2.1rem);
+    width: 4.2rem;
+  }
+
+  .st-fly-foot-title {
+    display: block;
+    width: 70%;
+    height: 0.28rem;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--color-text-primary) 28%, #fff);
+    box-shadow: 0 8px 16px -12px rgba(13, 13, 13, 0.35);
+  }
+
+  .st-fly-foot-line {
+    display: block;
+    width: 90%;
+    height: 0.2rem;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--color-text-primary) 16%, #fff);
+  }
+
+  .st-fly-foot-btn {
+    display: block;
+    width: 55%;
+    height: 0.45rem;
+    margin-block-start: 0.12rem;
+    border-radius: 3px;
+    background: var(--color-blue);
+    box-shadow: 0 10px 22px -12px rgba(2, 116, 222, 0.55);
+  }
+
+  .st-fly--banner {
+    width: 5rem;
+    height: 2.4rem;
+    border-radius: 8px;
+    bottom: 3%;
+    right: 1%;
+    background:
+      linear-gradient(155deg, var(--color-blue-tint) 0%, #fff 48%, color-mix(in srgb, var(--color-blue-soft) 55%, #fff) 100%);
+    border: 1px solid color-mix(in srgb, var(--color-blue) 28%, #e2e2e2);
+    box-shadow: 0 12px 28px -18px rgba(2, 116, 222, 0.55);
+  }
+
+  .st-illu--landing.is-assembled .st-slot {
+    opacity: 1;
+  }
+
+  .st-illu--landing.is-assembled .st-fly {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .st-illu--deep {
+    position: relative;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0.35rem;
+    width: 100%;
+    max-width: min(22rem, 100%);
+    height: 100%;
+    max-height: 100%;
+    padding: 0.25rem 0;
+  }
+
+  .st-deep-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 0 0 auto;
+    min-height: 0;
+    justify-content: flex-start;
+  }
+
+  .st-deep-step {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    padding: 0.28rem 0.55rem;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    color: var(--color-text-muted);
+    opacity: 0.45;
+    transition:
+      opacity 0.25s ease,
+      color 0.25s ease,
+      background-color 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .st-deep-step.is-active,
+  .st-deep-step.is-done {
+    opacity: 1;
+  }
+
+  .st-deep-step.is-active {
+    color: var(--st-accent-1);
+    background: color-mix(in srgb, var(--st-accent-1) 10%, var(--color-surface));
+    border-color: color-mix(in srgb, var(--st-accent-1) 28%, transparent);
+    font-weight: 500;
+  }
+
+  .st-deep-step.is-done {
+    color: var(--color-text-secondary);
+    background: color-mix(in srgb, var(--st-accent-1) 5%, var(--color-surface));
+  }
+
+  .st-deep-num {
+    flex-shrink: 0;
+    font-size: 0.68rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    opacity: 0.75;
+  }
+
+  .st-deep-label {
+    font-size: clamp(0.72rem, 0.68rem + 0.2vw, 0.84rem);
+    line-height: 1.25;
+  }
+
+  .st-deep-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.4rem;
+    flex: 1 1 auto;
+    min-height: 12rem;
+    padding: 0 0.2rem;
+    box-sizing: border-box;
+    border-bottom: 1px solid color-mix(in srgb, var(--st-accent-1) 22%, var(--color-border));
+  }
+
+  .st-deep-bar {
+    flex: 1;
+    height: 12%;
+    min-height: 4px;
+    border-radius: 4px 4px 2px 2px;
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--st-accent-1) 72%, #fff),
+      color-mix(in srgb, var(--st-accent-1) 32%, #fff)
+    );
+    transform-origin: bottom center;
+    will-change: height;
+  }
+
+  .st-illu--conv {
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: min(26rem, 100%);
+    padding: 0;
+  }
+
+  .st-conv-browser {
+    width: 100%;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-border);
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 18px 40px -24px rgba(13, 13, 13, 0.28);
+  }
+
+  .st-conv-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.7rem 0.65rem 0.8rem;
+    background: #f7f8fa;
+  }
+
+  /* Redesign slots — dull "before" by default, teal "after" once touched */
+  .st-conv-slot {
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--color-text-primary) 6%, #fff);
+    border: 1px solid color-mix(in srgb, var(--color-text-primary) 10%, #e2e2e2);
+    transition:
+      background-color 0.4s ease,
+      border-color 0.4s ease,
+      box-shadow 0.4s ease,
+      transform 0.3s ease;
+  }
+
+  .st-conv-slot.is-active {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--st-accent-2) 22%, transparent);
+    transform: scale(1.015);
+  }
+
+  .st-conv-slot.is-after {
+    background: linear-gradient(155deg, color-mix(in srgb, var(--st-accent-2) 12%, #fff) 0%, #fff 48%, color-mix(in srgb, var(--st-accent-2) 32%, #fff) 100%);
+    border-color: color-mix(in srgb, var(--st-accent-2) 30%, #e2e2e2);
+  }
+
+  .st-conv-slot--hero {
+    height: 20%;
+    min-height: 2.2rem;
+    flex-shrink: 0;
+  }
+
+  .st-conv-slot--lines {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.32rem;
+    padding: 0.4rem 0.5rem;
+    background: transparent;
+    border: none;
+  }
+
+  .st-conv-slot--lines span {
+    display: block;
+    height: 0.34rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--color-text-primary) 16%, #fff);
+    transition: background-color 0.4s ease, width 0.4s ease;
+  }
+
+  .st-conv-slot--lines span:first-child { width: 72%; }
+  .st-conv-slot--lines span:last-child { width: 48%; }
+
+  .st-conv-slot--lines.is-after span {
+    background: color-mix(in srgb, var(--st-accent-2) 55%, var(--color-text-primary));
+  }
+
+  .st-conv-slot--mid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.3rem;
+    background: transparent;
+    border: none;
+  }
+
+  .st-conv-slot--mid span {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 5px;
+    border: 1px solid color-mix(in srgb, var(--color-text-primary) 10%, #e2e2e2);
+    background: color-mix(in srgb, var(--color-text-primary) 5%, #fff);
+    transition: background-color 0.4s ease, border-color 0.4s ease;
+  }
+
+  .st-conv-slot--mid.is-after span {
+    border-color: color-mix(in srgb, var(--st-accent-2) 26%, #e2e2e2);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--st-accent-2) 12%, #fff) 0%, color-mix(in srgb, var(--st-accent-2) 30%, #fff) 100%);
+  }
+
+  .st-conv-slot--cta {
+    width: 36%;
+    height: 0.72rem;
+    border-radius: 4px;
+    margin-block: 0.1rem;
+    flex-shrink: 0;
+  }
+
+  .st-conv-slot--cta.is-after {
+    background: var(--st-accent-2);
+    border-color: var(--st-accent-2);
+  }
+
+  .st-conv-slot--foot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    margin-block-start: 0.35rem;
+    padding: 0.35rem 0.4rem;
+    background: transparent;
+    border: none;
+  }
+
+  .st-conv-foot-title {
+    display: block;
+    width: 52%;
+    height: 0.42rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--color-text-primary) 22%, #fff);
+    transition: background-color 0.4s ease;
+  }
+
+  .st-conv-foot-line {
+    display: block;
+    width: 30%;
+    height: 0.62rem;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--color-text-primary) 14%, #fff);
+    transition: background-color 0.4s ease;
+  }
+
+  .st-conv-slot--foot.is-after .st-conv-foot-title {
+    background: color-mix(in srgb, var(--st-accent-2) 55%, var(--color-text-primary));
+  }
+
+  .st-conv-slot--foot.is-after .st-conv-foot-line {
+    background: var(--st-accent-2);
+  }
+
+  .st-illu--audit {
+    width: 100%;
+    max-width: 340px;
+  }
+
+  /* Browser mock */
+  .st-browser {
+    width: 100%;
+    max-width: 340px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-border);
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 18px 40px -24px rgba(13,13,13,0.28);
+  }
+
+  .st-browser-chrome {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.6rem;
+    background: #efefef;
+    border-bottom: 1px solid #e2e2e2;
+  }
+
+  .st-browser-chrome span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #c8c8c8;
+  }
+
+  .st-browser-url {
+    flex: 1;
+    text-align: center;
+    font-size: 0.6rem;
+    color: #8a8a8a;
+    background: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 4px;
+    padding: 1px 0;
+    margin: 0 0.5rem;
+  }
+
+  .st-browser-body {
+    padding: 1rem 0.8rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: #f6f6f6;
+  }
+
+  .st-mock-hero {
+    height: 2.8rem;
+    border-radius: 6px;
+    background: linear-gradient(160deg, #eef6fa, #fff 55%, #b9d8e8);
+    border: 1px solid #b9d8e8;
+  }
+
+  .st-mock-line {
+    height: 0.35rem;
+    width: 65%;
+    border-radius: 2px;
+    background: #cfcfcf;
+  }
+  .st-mock-line.short { width: 40%; }
+
+  .st-mock-btn {
+    width: 28%;
+    height: 0.6rem;
+    border-radius: 3px;
+    background: #bdbdbd;
+    margin-block: 0.25rem;
+  }
+
+  .st-mock-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+  }
+
+  .st-mock-card {
+    height: 1.8rem;
+    border-radius: 4px;
+    background: #fff;
+    border: 1px solid #e2e2e2;
+  }
+
+  /* (legacy analytics bars removed — see .st-deep-*) */
+
+  .st-doc-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0 1rem;
+  }
+
+  .st-doc-line {
+    height: 0.45rem;
+    border-radius: 2px;
+    background: var(--color-border);
+  }
+
+  /* Dashboard metrics */
+  .st-dash {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1rem;
+    width: 100%;
+  }
+
+  .st-dash-metric {
+    flex: 1;
+    padding: 1.1rem;
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .st-dash-metric.is-active {
+    border-color: color-mix(in srgb, var(--st-accent-2) 45%, transparent);
+    box-shadow: 0 8px 22px -16px color-mix(in srgb, var(--st-accent-2) 65%, transparent);
+  }
+
+  .st-dash-val {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: color-mix(in srgb, var(--st-accent-2) 85%, var(--color-text-primary));
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.2rem;
+  }
+
+  .st-dash-arrow {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+
+  .st-dash-label {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+  }
+
+  /* Store — tab1 chassis (hero/lines/mid/cta fly+dock), amber accent + live sales */
+  .st-illu--landing,
+  .st-illu--shop {
+    --st-sq: min(100%, calc(100vh - var(--header-height) - 5.5rem));
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--st-sq);
+    height: auto;
+    aspect-ratio: 6 / 7;
+    flex-shrink: 0;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 0;
+    gap: 0;
+  }
+
+  @media (min-width: 768px) and (max-width: 1100px) {
+    .st-illu--landing,
+    .st-illu--shop {
+      aspect-ratio: 5 / 6;
+    }
+  }
+
+  .st-shop-slot {
+    opacity: 0;
+    transform-origin: center center;
+  }
+
+  .st-illu--shop.is-assembled .st-shop-slot {
+    opacity: 1;
+  }
+
+  .st-illu--shop.is-assembled .st-shop-fly {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .st-shop-slot--hero {
+    flex: 0 0 auto;
+    height: 20%;
+    min-height: 2.4rem;
+    border-radius: 8px;
+    background: linear-gradient(155deg, color-mix(in srgb, var(--st-accent-3) 14%, #fff) 0%, #fff 48%, color-mix(in srgb, var(--st-accent-3) 45%, #fff) 100%);
+    border: 1px solid color-mix(in srgb, var(--st-accent-3) 30%, #e2e2e2);
+  }
+
+  .st-shop-slot--lines {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .st-shop-slot--lines span {
+    display: block;
+    height: 0.34rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--color-text-primary) 18%, #fff);
+  }
+
+  .st-shop-slot--lines span:first-child { width: 72%; }
+  .st-shop-slot--lines span:last-child { width: 48%; }
+
+  .st-shop-slot--cta {
+    width: 36%;
+    height: 0.72rem;
+    border-radius: 4px;
+    background: var(--st-accent-3);
+    margin-block: 0.05rem 0.1rem;
+    flex-shrink: 0;
+  }
+
+  /* Mid band — product cards, not plain tiles */
+  .st-shop-slot--mid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.3rem;
+    flex: 1 1 auto;
+    min-height: 0;
+    align-content: start;
+  }
+
+  .st-shop-product {
+    display: flex;
+    flex-direction: column;
+    gap: 0.22rem;
+  }
+
+  .st-shop-product-img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 6px;
+    border: 1px solid color-mix(in srgb, var(--st-accent-3) 24%, #e2e2e2);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--st-accent-3) 14%, #fff) 0%, color-mix(in srgb, var(--st-accent-3) 35%, #fff) 100%);
+  }
+
+  .st-shop-product-name {
+    display: block;
+    width: 70%;
+    height: 0.24rem;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--color-text-primary) 14%, #fff);
+  }
+
+  .st-shop-product-price {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  /* Floating parts outside browser (within square) — mirrors tab1 fly positions */
+  .st-shop-fly {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+
+  .st-shop-fly--hero {
+    width: 4.75rem;
+    height: 3.1rem;
+    border-radius: 8px;
+    top: 4%;
+    right: 2%;
+    background: linear-gradient(155deg, color-mix(in srgb, var(--st-accent-3) 14%, #fff) 0%, #fff 48%, color-mix(in srgb, var(--st-accent-3) 45%, #fff) 100%);
+    border: 1px solid color-mix(in srgb, var(--st-accent-3) 30%, #e2e2e2);
+    box-shadow: 0 12px 28px -18px color-mix(in srgb, var(--st-accent-3) 50%, transparent);
+  }
+
+  .st-shop-fly--lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    top: 26%;
+    left: 2%;
+    width: 4rem;
+  }
+
+  .st-shop-fly--lines span {
+    display: block;
+    height: 0.32rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--color-text-primary) 22%, #fff);
+    box-shadow: 0 8px 18px -14px rgba(13, 13, 13, 0.35);
+  }
+
+  .st-shop-fly--lines span:first-child { width: 100%; }
+  .st-shop-fly--lines span:last-child { width: 70%; }
+
+  .st-shop-fly--cta {
+    width: 2.9rem;
+    height: 0.7rem;
+    border-radius: 4px;
+    background: var(--st-accent-3);
+    top: 38%;
+    right: 2%;
+    box-shadow: 0 10px 22px -12px color-mix(in srgb, var(--st-accent-3) 60%, transparent);
+  }
+
+  .st-shop-fly--mid {
+    display: flex;
+    gap: 0.22rem;
+    top: 50%;
+    left: 0;
+  }
+
+  .st-shop-fly--mid span {
+    display: block;
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 5px;
+    border: 1px solid color-mix(in srgb, var(--st-accent-3) 24%, #e2e2e2);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--st-accent-3) 14%, #fff) 0%, color-mix(in srgb, var(--st-accent-3) 40%, #fff) 100%);
+    box-shadow: 0 10px 22px -16px color-mix(in srgb, var(--st-accent-3) 40%, transparent);
+  }
+
+  /* Live-sales cart FAB + toast stack float over the *outer scene*, not the
+     inner browser frame — the shop shrinks/shifts left on assembly (above)
+     to free this right-hand column for them. */
+  .st-shop-cart {
+    position: absolute;
+    top: 4%;
+    right: 4%;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 99px;
+    background: var(--st-accent-3);
+    color: #fff;
+    box-shadow: 0 10px 22px -12px color-mix(in srgb, var(--st-accent-3) 60%, transparent);
+  }
+
+  .st-shop-cart-badge {
+    position: absolute;
+    top: -0.3rem;
+    right: -0.3rem;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    padding: 0 0.2rem;
+    border-radius: 99px;
+    background: var(--color-text-primary);
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Notification stack — the main visual of tab4: each sale docks into the
+     column and stays put (doesn't replace the previous one). */
+  .st-shop-toasts {
+    position: absolute;
+    bottom: 6%;
+    right: 3%;
+    z-index: 3;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.4rem;
+    width: 40%;
+    min-width: 8.5rem;
+    max-width: 11.5rem;
+    pointer-events: none;
+  }
+
+  .st-shop-toast {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: 10px;
+    background: var(--color-surface);
+    border: 1px solid color-mix(in srgb, var(--st-accent-3) 35%, var(--color-border));
+    box-shadow: 0 12px 24px -16px rgba(13, 13, 13, 0.25);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+  }
+
+  .st-shop-toast-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 99px;
+    background: color-mix(in srgb, var(--st-accent-3) 16%, #fff);
+    color: var(--st-accent-3);
+  }
+
+  .st-shop-toast-text {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.64rem;
+    line-height: 1.25;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .st-shop-toast-amount {
+    flex-shrink: 0;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--st-accent-3);
+    white-space: nowrap;
+  }
+</style>
+
+<script>
+  let stReady = false;
+
+  const initST = () => {
+    if (stReady) return;
+    const rails = document.querySelectorAll<HTMLElement>('.st-rail');
+    const tabs = document.querySelectorAll<HTMLElement>('.st-tab');
+    const cards = document.querySelectorAll<HTMLElement>('.st-card');
+    const vizs = document.querySelectorAll<HTMLElement>('.st-viz');
+
+    if (!tabs.length || !cards.length) return;
+    stReady = true;
+
+    const isDesktop = () => window.innerWidth >= 768;
+    let activeIdx = -1;
+
+    const setActive = (idx: number) => {
+      if (idx < 0 || idx >= cards.length) return;
+      if (idx === activeIdx) return;
+      activeIdx = idx;
+      tabs.forEach((t, i) => {
+        const on = i === idx;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      cards.forEach((c, i) => c.classList.toggle('active', i === idx));
+      vizs.forEach((v, i) => v.classList.toggle('active', i === idx));
+    };
+
+    // Always paint first tab immediately (HTML may already have .active)
+    setActive(0);
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => {
+        setActive(i);
+        if (isDesktop() && rails[i]) {
+          rails[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+
+    if (isDesktop() && rails.length) {
+      const onScroll = () => {
+        const vMid = window.innerHeight / 2;
+        let bestIdx = 0;
+        let bestDist = Infinity;
+        rails.forEach((rail, i) => {
+          const rect = rail.getBoundingClientRect();
+          const mid = rect.top + rect.height / 2;
+          const dist = Math.abs(mid - vMid);
+          if (dist < bestDist) {
+            bestDist = dist;
+            bestIdx = i;
+          }
+        });
+        setActive(bestIdx);
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    }
+
+    document.querySelectorAll<HTMLFormElement>('.st-form').forEach((form) => {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = form.querySelector<HTMLInputElement>('.st-input');
+        const status = form.querySelector<HTMLElement>('.st-status');
+        const modal = form.closest<HTMLDialogElement>('[data-st-modal]');
+        if (!input) return;
+        const contact = input.value.trim();
+        if (!contact) return;
+
+        const methodEl = form.querySelector<HTMLInputElement>('input[name="method"]:checked');
+        const method = methodEl?.value || 'telegram';
+        const service = modal?.dataset.service || '';
+        const sending = modal?.dataset.msgSending || 'Sending...';
+        const thanks = modal?.dataset.msgThanks || "Thanks! I'll reach out shortly";
+        const errMsg = modal?.dataset.msgError || 'Error. Message me on Telegram: @UlyanaKir';
+
+        if (status) {
+          status.textContent = sending;
+          status.className = 'st-status';
+        }
+
+        try {
+          const BOT_TOKEN = (window as any).__TELEGRAM_BOT_TOKEN__;
+          const CHAT_ID = (window as any).__TELEGRAM_CHAT_ID__;
+          if (BOT_TOKEN && CHAT_ID) {
+            const msg = `New lead from ulyanaweb.ru (services)\nService: ${service}\nContact: ${contact}\nMethod: ${method}`;
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ chat_id: CHAT_ID, text: msg }),
+            });
+          }
+          if (status) {
+            status.textContent = thanks;
+            status.className = 'st-status success';
+          }
+          form.reset();
+        } catch (_err) {
+          if (status) {
+            status.textContent = errMsg;
+            status.className = 'st-status error';
+          }
+        }
+      });
+    });
+
+    const modal = document.querySelector<HTMLDialogElement>('[data-st-modal]');
+    const modalTitle = modal?.querySelector<HTMLElement>('[data-st-modal-title]');
+    const defaultTitle = modalTitle?.textContent || '';
+
+    document.querySelectorAll<HTMLButtonElement>('[data-st-open-form]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (!modal) return;
+        const service = btn.dataset.service || '';
+        modal.dataset.service = service;
+        if (modalTitle) {
+          modalTitle.textContent = service || defaultTitle;
+        }
+        const status = modal.querySelector<HTMLElement>('.st-status');
+        if (status) {
+          status.textContent = '';
+          status.className = 'st-status';
+        }
+        modal.showModal();
+      });
+    });
+
+    modal?.querySelectorAll('[data-st-modal-close]').forEach((btn) => {
+      btn.addEventListener('click', () => modal.close());
+    });
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) modal.close();
+    });
+  };
+
+  document.addEventListener('DOMContentLoaded', initST);
+  document.addEventListener('astro:after-swap', () => {
+    stReady = false;
+    initST();
+  });
+  if (document.readyState !== 'loading') initST();
+</script>

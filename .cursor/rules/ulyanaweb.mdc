@@ -1,0 +1,34 @@
+---
+description: ulyanaweb project north star — always read SPEC.md first
+alwaysApply: true
+---
+
+# ulyanaweb — agent context
+
+Before any design or code change:
+
+1. Read `SPEC.md` (caveman). Especially §G §C §V §T. Design refs: `docs/design/figma-*.png`.
+2. Obey invariants V1–V19. Prefer amend SPEC over inventing scope.
+3. Goal = cold portfolio: works + what I do + Discuss/Telegram CTA.
+4. **EN-primary bilingual**. `/` EN, `/ru/...` RU. Host **reg.ru** static; client IP geo; planned `.com` same build. Lang switch left of Discuss CTA.
+5. **Notion look**: tokens `#0274DE` `#F57564` `#62ACEF` `#2B9D99` `#E6F4FE` + shell/surface. Logo = Ulyana blue block + Kirp. Nav = Cases | Review | Contacts. Type = **Source Serif 4** (headings) + **Source Sans 3** (body), local woff2, same EN+RU.
+6. Case card/page = Project | Task | Implementation + **full-width video** on first screen of case.
+7. Motion = **GSAP + ScrollTrigger**, honor reduced-motion. No acid lime.
+8. **No trailing period** on single-sentence fragments: card lines, labels, subheads, CTAs, short leads that are not followed by another sentence. Multi-sentence prose may keep periods between sentences; the final stand-alone line / card field still omits the closing period.
+9. When direction changes → amend `SPEC.md` first, then code. **v1 DoD + Phase2 gate** ∈ SPEC §Notes / V19 — finish витрина before blog/services expand.
+
+## After any UI / CSS / Astro component change (mandatory)
+Do **not** tell the user “refresh” until verification passes:
+
+1. Confirm the edit is on disk (`rg` / read the file).
+2. `curl -s http://localhost:4321/` (or the active Local URL) and assert a **unique new string** from the change appears in HTML/CSS (class name, copy, or CSS value).
+3. If the string is missing → one Astro process is stale:
+   - `lsof -iTCP:4321-4330 -sTCP:LISTEN` to find old `node` PIDs
+   - kill those PIDs (need full permissions if sandbox blocks)
+   - `rm -rf node_modules/.vite .astro && npm run dev -- --port 4321 --force`
+   - re-curl until the unique string is present
+4. Reply with the **exact URL that serves the new markup** (never assume 4321 if Astro hopped ports).
+5. Tell the user: hard refresh **Cmd+Shift+R** on that URL.
+
+Stack: Astro 6 → `dist/` → reg.ru. Tokens `global.css`. i18n `src/i18n/ui.ts`. Motion GSAP. Videos `public/videos/*.mp4`.
+

@@ -1,0 +1,184 @@
+---
+import type { Locale } from '../i18n/ui';
+import { t } from '../i18n/ui';
+import type { CaseStudy } from '../data/cases';
+
+interface Props {
+  locale: Locale;
+  cases: CaseStudy[];
+  caseBase: string;
+}
+
+const { locale, cases, caseBase } = Astro.props;
+---
+
+{
+  cases.map((item, i) => (
+    <div class="case-pin" style={`--case-z: ${i + 1}`}>
+      <article class="case-card" data-animate="reveal">
+        <a href={`${caseBase}${item.slug}/`} class="case-top">
+          <div class="case-meta">
+            <p class="case-label">{t(locale, 'project')}</p>
+            <h3 class="case-name">{item.project}</h3>
+            <p class="case-roles">{item.role.join(' · ')}</p>
+          </div>
+          <div class="case-meta">
+            <p class="case-label">{t(locale, 'task')}</p>
+            <p class="case-text">{item.task[locale]}</p>
+          </div>
+          <div class="case-meta">
+            <p class="case-label">{t(locale, 'implementation')}</p>
+            <p class="case-text">{item.implementation[locale]}</p>
+          </div>
+        </a>
+
+        <div class="case-divider" aria-hidden="true"></div>
+
+        <div class="case-media">
+          {item.video ? (
+            <video
+              class="case-video"
+              src={item.video}
+              muted
+              playsinline
+              loop
+              autoplay
+              preload="metadata"
+            />
+          ) : (
+            <div class="case-video-placeholder">
+              <p>{t(locale, 'videoSoon')}</p>
+            </div>
+          )}
+        </div>
+      </article>
+    </div>
+  ))
+}
+
+<style>
+  .case-pin {
+    position: sticky;
+    top: calc(var(--header-height) + 0.75rem);
+    z-index: var(--case-z, 1);
+    padding-bottom: 0.25rem;
+  }
+
+  .case-card {
+    display: flex;
+    flex-direction: column;
+    min-height: min(78vh, 820px);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow:
+      0 1px 0 rgba(13, 13, 13, 0.03),
+      0 18px 40px -28px rgba(13, 13, 13, 0.28);
+  }
+
+  .case-card:hover,
+  .case-card:focus-within {
+    border-color: var(--color-border);
+  }
+
+  .case-top {
+    display: grid;
+    gap: 1.25rem;
+    padding: 1.85rem 1.6rem 1.4rem;
+  }
+
+  @media (min-width: 900px) {
+    .case-top {
+      grid-template-columns: 1.1fr 1.2fr 1.2fr;
+      gap: 2.25rem;
+      padding: 2.25rem 2.25rem 1.6rem;
+    }
+  }
+
+  .case-label {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-block-end: 0.45rem;
+  }
+
+  .case-name {
+    font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.7rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-block-end: 0.35rem;
+  }
+
+  .case-roles {
+    font-size: 0.85rem;
+    color: var(--color-blue);
+  }
+
+  .case-text {
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .case-divider {
+    height: 1px;
+    background: var(--color-border);
+    margin-inline: 1.6rem;
+  }
+
+  @media (min-width: 900px) {
+    .case-divider {
+      margin-inline: 2.25rem;
+    }
+  }
+
+  .case-media {
+    width: 100%;
+    flex: 1;
+    background: transparent;
+    padding: 1.25rem 1.6rem 1.85rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 0;
+  }
+
+  @media (min-width: 900px) {
+    .case-media {
+      padding-inline: 2.25rem;
+      padding-bottom: 2.1rem;
+    }
+  }
+
+  .case-video {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    max-height: min(52vh, 560px);
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    border-radius: 8px;
+    background: transparent;
+  }
+
+  .case-video-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: min(52vh, 560px);
+    display: grid;
+    place-items: center;
+    border: 1px dashed var(--color-border);
+    border-radius: 8px;
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .case-pin {
+      position: relative;
+      top: auto;
+    }
+  }
+</style>

@@ -1,0 +1,14 @@
+---
+import ServicePage from '../../components/ServicePage.astro';
+
+const locale = 'en';
+---
+
+<ServicePage
+  locale={locale}
+  titleKey="svcAuditTitle"
+  subKey="svcAuditSub"
+  forWhom={['svcAuditFor1', 'svcAuditFor2', 'svcAuditFor3', 'svcAuditFor4']}
+  includes={['svcAuditInc1', 'svcAuditInc2', 'svcAuditInc3', 'svcAuditInc4']}
+  ctaKey="svcAuditCTA"
+/>

@@ -1,39 +1,47 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '../assets/logo.png';
+import Wordmark from './Wordmark.astro';
+import LangSwitch from './LangSwitch.astro';
+import InteractiveHoverButton from './InteractiveHoverButton.astro';
+import { localeFromPath, t, type Locale } from '../i18n/ui';
 
+interface Props {
+  locale?: Locale;
+}
+
+const locale = Astro.props.locale ?? localeFromPath(Astro.url.pathname);
 const pathname = Astro.url.pathname;
-const isHome = pathname === '/' || pathname === '';
+const homePath = locale === 'ru' ? '/ru/' : '/';
+const isHome =
+  pathname === homePath ||
+  pathname === homePath.replace(/\/$/, '') ||
+  (locale === 'en' && (pathname === '/' || pathname === ''));
+const contactsHref = locale === 'ru' ? '/ru/contacts/' : '/contacts/';
+const discussHref = 'https://t.me/UlyanaKir';
+const casesHref = isHome ? '#cases' : `${homePath}#cases`;
+const servicesHref = isHome ? '#services' : `${homePath}#services`;
+const reviewHref = isHome ? '#reviews' : `${homePath}#reviews`;
 ---
-<header class="main-header">
-  <div class="container header-container">
-    <a href="/" class="logo-wrapper" aria-label="Ulyana Kirpichnikova" style="display:flex;align-items:center;text-decoration:none;">
-      <Image src={logo} alt="Ulyana Kirpichnikova" style="height:36px;width:auto;display:block;" format="webp" />
-    </a>
 
-    {/* Mobile menu toggle using pure CSS state checker for robustness */}
-    <input type="checkbox" id="menu-toggle" class="menu-toggle-checkbox" aria-label="Открыть меню" />
-    <label for="menu-toggle" class="menu-toggle-label">
-      <span></span>
+<header class="main-header">
+  <div class="container header-bar">
+    <Wordmark href={homePath} />
+
+    <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-label="Open menu" />
+    <label for="menu-toggle" class="burger" aria-hidden="true">
       <span></span>
       <span></span>
     </label>
 
-    <nav class="nav-menu">
-      <div class="nav-links-wrapper">
-        <a href={isHome ? "#cases" : "/#cases"} class="nav-link">Кейсы</a>
-        <a href={isHome ? "#reviews" : "/#reviews"} class="nav-link">Отзывы</a>
-        <a href="/code" class="nav-link">Сайт на коде</a>
-        <a href="/audit" class="nav-link">Аудиты</a>
-        <a href="/ai-visibility-audit" class="nav-link">ИИ-видимость</a>
-        <a href="/blog" class="nav-link">Блог</a>
-        <a href="/contacts" class="nav-link">Контакты</a>
+    <nav class="nav" aria-label="Primary">
+      <div class="nav-links">
+        <a href={casesHref} class="nav-link">{t(locale, 'navCases')}</a>
+        <a href={servicesHref} class="nav-link">{t(locale, 'navServices')}</a>
+        <a href={reviewHref} class="nav-link">{t(locale, 'navApproach')}</a>
+        <a href={contactsHref} class="nav-link">{t(locale, 'navContacts')}</a>
       </div>
-      
-      <div class="nav-ctas">
-        <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm-mobile">
-          Написать в tg
-        </a>
+      <div class="nav-end">
+        <LangSwitch locale={locale} />
+        <InteractiveHoverButton href={discussHref} target="_blank" rel="noopener noreferrer" class="header-cta" label={t(locale, 'discuss')} />
       </div>
     </nav>
   </div>
@@ -42,53 +50,66 @@ const isHome = pathname === '/' || pathname === '';
 <style>
   .main-header {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+    inset: 0 0 auto 0;
     z-index: 100;
-    background: var(--color-bg);
-    height: 80px;
+    height: var(--header-height);
+    background: color-mix(in srgb, var(--color-shell) 88%, transparent);
+    backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
   }
 
-  .header-container {
+  .header-bar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
     width: 100%;
   }
 
-  /* Logo */
-  .logo-wrapper {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    flex-shrink: 0;
-    z-index: 10;
+  .menu-toggle {
+    display: none;
   }
 
-  /* Navigation */
-  .nav-menu {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    gap: 2rem;
-    justify-content: flex-end;
-    min-width: 0;
-  }
-
-  .nav-links-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    flex: 1;
+  .burger {
+    display: none;
+    flex-direction: column;
     justify-content: center;
+    gap: 6px;
+    width: 28px;
+    height: 28px;
+    z-index: 110;
+    cursor: pointer;
+  }
+
+  .burger span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: var(--color-text-primary);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .nav-link {
-    font-size: 0.9rem;
-    font-weight: normal;
+    font-size: 0.95rem;
+    font-weight: 400;
     color: var(--color-text-secondary);
     transition: color 0.15s ease;
   }
@@ -97,99 +118,60 @@ const isHome = pathname === '/' || pathname === '';
     color: var(--color-text-primary);
   }
 
-  .nav-ctas {
+  .nav-end {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    z-index: 10;
+    gap: 1rem;
+    flex-shrink: 0;
   }
 
-  .btn-sm-mobile {
-    padding: 0.4rem 1rem;
-    font-size: 0.95rem;
-    font-weight: normal;
+  .header-cta {
+    flex-shrink: 0;
   }
 
-  /* Hamburger Checklist toggle */
-  .menu-toggle-checkbox {
-    display: none;
-  }
-
-  .menu-toggle-label {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    z-index: 102;
-  }
-
-  .menu-toggle-label span {
-    display: block;
-    width: 22px;
-    height: 2px;
-    background-color: var(--color-text-primary);
-    transition: transform 0.25s ease, opacity 0.25s ease;
-  }
-
-  @media (max-width: 991px) {
-    .menu-toggle-label {
+  @media (max-width: 900px) {
+    .burger {
       display: flex;
     }
 
-    .nav-menu {
+    .nav-links {
+      position: static;
+      transform: none;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .nav {
       position: fixed;
-      top: 0;
-      right: -100%;
-      width: 75vw;
-      max-width: 320px;
+      inset: 0 0 0 auto;
+      width: min(80vw, 320px);
       height: 100vh;
-      background: var(--color-bg);
+      background: var(--color-surface);
       border-left: 1px solid var(--color-border);
       flex-direction: column;
       justify-content: center;
-      gap: 2.5rem;
-      padding: 3rem;
-      transition: right 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-      z-index: 101;
-      flex-grow: 0;
       align-items: center;
+      gap: 2rem;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 105;
     }
 
-    .nav-links-wrapper {
-      display: flex;
+    .nav-end {
       flex-direction: column;
-      align-items: center;
-      gap: 2.5rem;
-      position: static;
-      transform: none;
-      width: 100%;
+      gap: 1.25rem;
     }
 
-    .nav-ctas {
-      flex-direction: column;
-      width: 100%;
-      gap: 1rem;
+    body:has(.menu-toggle:checked) .nav {
+      transform: translateX(0);
     }
 
-    .nav-ctas a {
-      width: 100%;
+    body:has(.menu-toggle:checked) .burger span:first-child {
+      transform: translateY(4px) rotate(45deg);
     }
 
-    /* CSS states via checked status */
-    body:has(.menu-toggle-checkbox:checked) .nav-menu {
-      right: 0;
-    }
-
-    body:has(.menu-toggle-checkbox:checked) .menu-toggle-label span:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
-    }
-
-    body:has(.menu-toggle-checkbox:checked) .menu-toggle-label span:nth-child(2) {
-      opacity: 0;
-    }
-
-    body:has(.menu-toggle-checkbox:checked) .menu-toggle-label span:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
+    body:has(.menu-toggle:checked) .burger span:last-child {
+      transform: translateY(-4px) rotate(-45deg);
     }
   }
 </style>

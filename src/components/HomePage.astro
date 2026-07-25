@@ -1,0 +1,419 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PageShell from '../components/PageShell.astro';
+import CaseCardList from '../components/CaseCardList.astro';
+import InteractiveHoverButton from '../components/InteractiveHoverButton.astro';
+import KineticText from '../components/KineticText.astro';
+import Interlude from '../components/Interlude.astro';
+import ServiceTabsSection from '../components/ServiceTabsSection.astro';
+import WorkFlow from '../components/WorkFlow.astro';
+import { cases } from '../data/cases';
+import { t, type Locale } from '../i18n/ui';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'en';
+const featured = cases.filter((c) => c.featured);
+const caseBase = locale === 'ru' ? '/ru/cases/' : '/cases/';
+const contactsHref = locale === 'ru' ? '/ru/contacts/' : '/contacts/';
+
+const title =
+  locale === 'ru'
+    ? 'Ulyana Kirp — Сайты для бизнеса'
+    : 'Ulyana Kirp — Websites for business goals';
+const description = t(locale, 'heroSupport');
+
+const botToken = import.meta.env.PUBLIC_TELEGRAM_BOT_TOKEN || '';
+const chatId = import.meta.env.PUBLIC_TELEGRAM_CHAT_ID || '';
+
+const methods = [
+  { value: 'telegram', label: 'Telegram' },
+  { value: 'whatsapp', label: 'WhatsApp' },
+  { value: 'email', label: 'Email' },
+  { value: 'linkedin', label: 'LinkedIn' },
+  { value: 'phone', label: locale === 'ru' ? 'Звонок' : 'Call' },
+];
+---
+
+<Layout title={title} description={description} lang={locale}>
+  <Header locale={locale} />
+
+  <PageShell>
+  <main>
+    <section id="hero" class="hero">
+      <div class="hero-inner">
+        <h1 class="hero-title" data-animate="hero">
+          <KineticText as="span" class="hero-line" text={t(locale, 'heroTitleLine1')} />
+          <KineticText as="span" class="hero-line" text={t(locale, 'heroTitleLine2')} />
+        </h1>
+        <p class="hero-support" data-animate="hero">
+          {t(locale, 'heroSupport')}
+        </p>
+
+        <form class="hero-form" id="hero-contact-form" data-animate="hero" data-lang={locale}>
+          <div class="hero-form-row">
+            <input
+              type="text"
+              class="hero-input"
+              id="hero-contact"
+              name="contact"
+              placeholder={locale === 'ru' ? '@telegram, +7999..., email \u0438\u043B\u0438 linkedin' : '@telegram, +7999..., email or linkedin'}
+              autocomplete="off"
+              required
+            />
+            <button type="submit" class="btn btn-primary">
+              {t(locale, 'discuss')}
+            </button>
+          </div>
+          <div class="hero-methods" id="hero-methods">
+            {methods.map((m) => (
+              <label class="hero-method">
+                <input type="radio" name="method" value={m.value} />
+                <span class="method-chip">{m.label}</span>
+              </label>
+            ))}
+          </div>
+          <div class="hero-form-note" id="hero-form-status"></div>
+        </form>
+      </div>
+    </section>
+
+    <Interlude locale={locale} />
+
+    <section id="services" class="services">
+      <div class="services-header">
+        <div class="container">
+          <h2 class="section-heading">{t(locale, 'whatIDo')}</h2>
+        </div>
+      </div>
+      <ServiceTabsSection locale={locale} />
+    </section>
+
+    <section id="cases" class="cases">
+      <div class="container cases-container">
+        <div class="case-list">
+          <CaseCardList locale={locale} cases={featured} caseBase={caseBase} />
+        </div>
+      </div>
+    </section>
+
+    <section id="reviews" class="section-padding reviews">
+      <div class="container reviews-inner">
+        <h2 class="section-heading" data-animate="reveal">{t(locale, 'howIWork')}</h2>
+        <p class="reviews-lead" data-animate="reveal">{t(locale, 'howIWorkLead')}</p>
+        <WorkFlow locale={locale} />
+      </div>
+    </section>
+
+    <section id="discuss" class="section-padding cta-band">
+      <div class="container cta-inner" data-animate="reveal">
+        <h2 class="cta-heading">{t(locale, 'ctaTitle')}</h2>
+        <p>{t(locale, 'ctaLead')}</p>
+        <div class="cta-actions">
+          <InteractiveHoverButton href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" label={t(locale, 'discuss')} />
+          <a href={contactsHref} class="btn btn-secondary">{t(locale, 'allContacts')}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  </PageShell>
+
+  <script is:inline set:html={`window.__TELEGRAM_BOT_TOKEN__ = ${JSON.stringify(botToken || null)};window.__TELEGRAM_CHAT_ID__ = ${JSON.stringify(chatId || null)};`}></script>
+  <script>
+    import { initBrandMotion } from '../scripts/motion';
+    import { initInterlude } from '../scripts/interlude';
+    import { initMagicSurfaces } from '../scripts/magic-surface';
+    import { initWorkFlowBeams } from '../scripts/animated-beam';
+    import { initHeroForm } from '../scripts/hero-form';
+    import { initLandingAssemble } from '../scripts/landing-assemble';
+    import { initDeepAssemble } from '../scripts/deep-assemble';
+    import { initConvAssemble } from '../scripts/conv-assemble';
+    import { initStoreAssemble } from '../scripts/store-assemble';
+    initBrandMotion();
+    initInterlude();
+    initMagicSurfaces();
+    initWorkFlowBeams();
+    initHeroForm();
+    initLandingAssemble();
+    initDeepAssemble();
+    initConvAssemble();
+    initStoreAssemble();
+  </script>
+</Layout>
+
+<style>
+  .hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) 0;
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+    /* Wide enough for the longest hero line + kinetic hover room */
+    max-inline-size: min(100%, 56rem);
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  .hero-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    font-size: clamp(2.8rem, 2rem + 4vw, 5rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    width: max-content;
+    max-width: 100%;
+  }
+
+  .hero-title .hero-line {
+    font-weight: 500;
+    margin-inline: -0.02em;
+    line-height: 1.15;
+    flex-wrap: nowrap !important;
+    white-space: nowrap;
+  }
+
+  .hero-title .kinetic,
+  .hero-title .kinetic-letter {
+    line-height: 1;
+  }
+
+  .hero-title .kinetic-letter {
+    margin-inline: -0.015em;
+  }
+
+  /*
+   * Padding on kinetic hover grows layout width and reflows the line.
+   * Hero: scale + weight only — transform does not affect flex sizing.
+   */
+  .hero-title .kinetic-letter:hover,
+  .hero-title .kinetic-letter:has(+ .kinetic-letter:hover),
+  .hero-title .kinetic-letter:hover + .kinetic-letter {
+    padding-inline: 0;
+  }
+
+  .hero-support {
+    max-inline-size: 540px;
+    font-size: clamp(1rem, 0.9rem + 0.3vw, 1.15rem);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Contact form */
+  .hero-form {
+    width: 100%;
+    max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-block-start: 0.75rem;
+  }
+
+  .hero-form-row {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .hero-input {
+    flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: var(--control-pad-block) var(--control-pad-inline);
+    font-size: var(--control-font-size);
+    line-height: var(--control-line-height);
+    font-family: inherit;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+    background: transparent;
+    color: var(--color-text-primary);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .hero-input:focus {
+    border-color: var(--color-blue);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-blue) 15%, transparent);
+  }
+
+  .hero-input::placeholder {
+    color: var(--color-text-muted);
+    font-size: 0.88rem;
+  }
+
+  .hero-form-row .btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .hero-form-row .btn:active {
+    transform: scale(0.97);
+  }
+
+  .hero-methods {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    width: 100%;
+  }
+
+  .hero-method {
+    cursor: pointer;
+  }
+
+  .hero-method input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .method-chip {
+    display: block;
+    padding: 0.28rem 0.6rem;
+    font-size: 0.76rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .hero-method input:checked + .method-chip {
+    color: var(--color-blue);
+    border-color: var(--color-blue);
+  }
+
+  .hero-method:hover .method-chip {
+    border-color: var(--color-text-muted);
+  }
+
+  .hero-form-note {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    min-height: 1.2em;
+    transition: color 0.3s ease;
+  }
+
+  .hero-form-note.success {
+    color: #2b7a0b;
+  }
+
+  .hero-form-note.error {
+    color: #d32f2f;
+  }
+
+  /* Services section */
+  .services {
+    background: transparent;
+    padding-block: 5rem 0;
+  }
+
+  .services-header {
+    margin-block-end: 2.5rem;
+  }
+
+  .services-header .container {
+    max-inline-size: 1180px;
+  }
+
+  /* === reused from previous === */
+
+  :global(html[lang='ru']) .hero-title {
+    line-height: 0.99;
+    gap: 0.02em;
+  }
+
+  :global(html[lang='ru']) .hero-title .kinetic,
+  :global(html[lang='ru']) .hero-title .kinetic-letter {
+    line-height: 0.99;
+  }
+
+  :global(html[lang='ru']) .hero-support,
+  :global(html[lang='ru']) .reviews-lead,
+  :global(html[lang='ru']) .cta-inner p {
+    line-height: 1.44;
+  }
+
+  :global(html[lang='ru']) .reviews-inner .kinetic,
+  :global(html[lang='ru']) .cta-inner .kinetic {
+    line-height: 1.08;
+  }
+
+  .cases {
+    background: transparent;
+    padding-block: 1rem 5rem;
+  }
+
+  .cases-container {
+    max-inline-size: 1180px;
+  }
+
+  .case-list {
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+  }
+
+  .reviews-inner .section-heading,
+  .cta-inner .cta-heading {
+    font-size: var(--fs-h2);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .reviews {
+    background: transparent;
+  }
+
+  .reviews-inner {
+    max-inline-size: 1180px;
+  }
+
+  .reviews-lead {
+    margin-block: 1rem 1.5rem;
+    font-size: 1.15rem;
+    max-inline-size: 640px;
+  }
+
+  .cta-band {
+    background: var(--color-blue-tint);
+  }
+
+  .cta-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-block-start: 1rem;
+  }
+</style>

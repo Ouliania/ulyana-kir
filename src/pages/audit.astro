@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageShell from '../components/PageShell.astro';
 
 const auditSchema = {
   "@context": "https://schema.org",
@@ -26,6 +27,7 @@ const auditSchema = {
 >
   <Header />
 
+  <PageShell>
   <main class="audit-page">
     {/* Section 1: Hero */}
     <section class="hero-section section-padding">
@@ -45,7 +47,6 @@ const auditSchema = {
 
         <div class="hero-actions">
           <a href="#pricing" class="btn btn-primary">Получить аудит лендинга — 15 000 ₽</a>
-          <a href="/ai-visibility-audit" class="btn btn-secondary">Аудит видимости ИИ →</a>
         </div>
         
         <p class="hero-footnote text-center">
@@ -430,25 +431,7 @@ const auditSchema = {
       </div>
     </section>
 
-    {/* Section 9: Cross-Promo */}
-    <section class="cross-promo-section section-padding">
-      <div class="container">
-        <div class="glass-card promo-horizontal-card">
-          <div class="promo-info">
-            <span class="tag-promo-badge">Также от UlyanaWeb</span>
-            <h3>Хотите узнать, готов ли ваш сайт к поиску через ИИ?</h3>
-            <p>
-              Аудит конверсии оптимизирует сайт для реальных посетителей. Если вы также хотите убедиться, что ваш сайт правильно сканируется и рекомендуется ИИ-ботами (ChatGPT, Perplexity, Gemini), пройдите аудит ИИ-видимости.
-            </p>
-          </div>
-          <div class="promo-action-btn">
-            <a href="/ai-visibility-audit" class="btn btn-secondary">Посмотреть аудит видимости AI →</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {/* Section 10: FAQ */}
+    {/* Section 9: FAQ */}
     <section class="faq-section section-padding">
       <div class="container">
         <div class="section-header text-center">
@@ -501,13 +484,15 @@ const auditSchema = {
   </main>
 
   <Footer />
+  </PageShell>
 </Layout>
 
 <style>
   .audit-page {
-    background-color: var(--color-bg);
+    background-color: transparent;
     color: var(--color-text-primary);
     font-family: var(--font-body);
+    padding-block-start: clamp(1.5rem, 3vw, 2.5rem);
   }
 
   .text-accent {

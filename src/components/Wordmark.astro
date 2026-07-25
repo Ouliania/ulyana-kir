@@ -1,0 +1,41 @@
+---
+interface Props {
+  href?: string;
+  class?: string;
+}
+
+const { href = '/', class: className = '' } = Astro.props;
+---
+
+<a href={href} class:list={['wordmark', className]} aria-label="Ulyana Kirp">
+  <span class="wordmark-first">Ulyana</span>
+  <span class="wordmark-last">Kirp</span>
+</a>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .wordmark-first {
+    background: var(--color-blue);
+    color: #ffffff;
+    font-weight: 500;
+    padding: 0.35rem 0.5rem;
+    border-radius: var(--radius-default);
+  }
+
+  .wordmark-last {
+    color: var(--color-text-primary);
+    font-weight: 300;
+    padding-block: 0.35rem;
+    padding-inline: 0;
+  }
+</style>

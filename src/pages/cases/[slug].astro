@@ -1,0 +1,13 @@
+---
+import CasePage from '../../components/CasePage.astro';
+import { cases, getCase } from '../../data/cases';
+
+export function getStaticPaths() {
+  return cases.map((c) => ({ params: { slug: c.slug } }));
+}
+
+const item = getCase(Astro.params.slug!);
+if (!item) return Astro.redirect('/#cases');
+---
+
+<CasePage locale="en" item={item} />

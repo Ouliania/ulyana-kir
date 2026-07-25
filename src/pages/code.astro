@@ -2,7 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageShell from '../components/PageShell.astro';
+import { t } from '../i18n/ui';
 
+const locale = 'ru';
 // Structured data for SEO on this page
 const schema = {
   "@context": "https://schema.org",
@@ -24,6 +27,7 @@ const schema = {
 >
   <Header />
 
+  <PageShell>
   <main class="code-page">
     {/* Hero Section */}
     <section class="hero-section section-padding">
@@ -105,13 +109,13 @@ const schema = {
 
             <div class="code-file-content" id="file-css">
               <pre class="code-editor"><code><span class="code-keyword">:root</span> &#123;
-  <span class="code-attr">--color-bg</span>: <span class="code-string">#ffffff</span>;
+  <span class="code-attr">--color-surface</span>: <span class="code-string">#ffffff</span>;
   <span class="code-attr">--color-text</span>: <span class="code-string">#000000</span>;
   <span class="code-attr">--color-accent</span>: <span class="code-string">#0473D4</span>;
 &#125;
 
 <span class="code-tag">body</span> &#123;
-  <span class="code-attr">background-color</span>: <span class="code-keyword">var</span>(<span class="code-attr">--color-bg</span>);
+  <span class="code-attr">background-color</span>: <span class="code-keyword">var</span>(<span class="code-attr">--color-surface</span>);
   <span class="code-attr">font-family</span>: <span class="code-string">'Inter'</span>, sans-serif;
   <span class="code-attr">margin</span>: <span class="code-string">0</span>;
 &#125;
@@ -121,6 +125,32 @@ const schema = {
   <span class="code-attr">text-transform</span>: <span class="code-string">uppercase</span>;
 &#125;</code></pre>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Site Types Block */}
+    <section class="site-types-section section-padding">
+      <div class="container">
+        <div class="section-header">
+          <span class="pre-title">{t(locale, 'codeTypesTitle')}</span>
+          <h2 class="section-title">{t(locale, 'codeTypesTitle')}</h2>
+        </div>
+
+        <div class="grid-2 site-types-grid">
+          <div class="glass-card site-type-card">
+            <span class="type-timeline">{t(locale, 'codeLandingTypeTimeline')}</span>
+            <h3 class="type-title">{t(locale, 'codeLandingTypeLabel')}</h3>
+            <p class="type-includes">{t(locale, 'codeLandingTypeIncludes')}</p>
+            <p class="type-for">{t(locale, 'codeLandingTypeFor')}</p>
+          </div>
+
+          <div class="glass-card site-type-card">
+            <span class="type-timeline">{t(locale, 'codeMultiTypeTimeline')}</span>
+            <h3 class="type-title">{t(locale, 'codeMultiTypeLabel')}</h3>
+            <p class="type-includes">{t(locale, 'codeMultiTypeIncludes')}</p>
+            <p class="type-for">{t(locale, 'codeMultiTypeFor')}</p>
           </div>
         </div>
       </div>
@@ -473,11 +503,12 @@ const schema = {
   </main>
 
   <Footer />
+  </PageShell>
 </Layout>
 
 <style>
   .code-page {
-    padding-block-start: 80px; /* Offset for fixed header */
+    padding-block-start: clamp(1.5rem, 3vw, 2.5rem);
   }
 
   /* Hero Section styling */
@@ -961,7 +992,7 @@ const schema = {
     font-size: 0.85rem;
     letter-spacing: 1px;
     background: var(--color-text-primary);
-    color: var(--color-bg);
+    color: var(--color-surface);
     padding: 0.35rem 0.75rem;
   }
 
@@ -986,6 +1017,48 @@ const schema = {
   @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.4; }
+  }
+
+  .site-types-section {
+    background: var(--color-surface);
+  }
+
+  .site-types-grid {
+    margin-block-start: 2.5rem;
+    gap: 2rem;
+  }
+
+  .site-type-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 2rem;
+  }
+
+  .type-timeline {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-blue);
+    letter-spacing: 0.02em;
+  }
+
+  .type-title {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .type-includes {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+  }
+
+  .type-for {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    padding-block-start: 0.5rem;
+    border-top: 1px solid var(--color-border);
   }
 </style>
 

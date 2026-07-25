@@ -1,0 +1,164 @@
+---
+import { t, type Locale } from '../i18n/ui';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'en';
+
+const lines = [
+  t(locale, 'interludeLine1'),
+  t(locale, 'interludeLine2'),
+  t(locale, 'interludeLine3'),
+];
+
+function wordsOf(line: string) {
+  return line.split(/\s+/).filter(Boolean);
+}
+---
+
+<section id="interlude" class="interlude" data-interlude-root aria-label={locale === 'ru' ? 'Интерлюдия' : 'Interlude'}>
+  <div class="interlude-stage">
+    <div class="interlude-frame">
+      <div class="interlude-bg" aria-hidden="true">
+        <div class="interlude-bg-layer" data-interlude="bg">
+          <img
+            class="interlude-img"
+            src="/images/simulator_backdrop.webp"
+            alt=""
+            width="1920"
+            height="1080"
+            decoding="async"
+            fetchpriority="low"
+          />
+        </div>
+      </div>
+
+      <div class="interlude-copy">
+        {lines.map((line) => (
+          <p class="interlude-line">
+            {wordsOf(line).map((word) => (
+              <span class="interlude-word" data-interlude="word">{word}</span>
+            ))}
+          </p>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .interlude {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    background: var(--color-surface);
+    color: #ffffff;
+  }
+
+  /*
+   * Pin stage = visible area under fixed header (same idea as services sticky).
+   * Equal --section-gap top + bottom around the image — top must NOT sit under header.
+   */
+  .interlude-stage {
+    --interlude-view: calc(100svh - var(--header-height));
+    box-sizing: border-box;
+    min-height: var(--interlude-view);
+    display: grid;
+    place-items: center;
+    padding: var(--section-gap) var(--content-inline);
+  }
+
+  .interlude-frame {
+    position: relative;
+    width: 100%;
+    height: calc(var(--interlude-view) - (2 * var(--section-gap)));
+    max-height: calc(var(--interlude-view) - (2 * var(--section-gap)));
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: var(--radius-media);
+    background: #0a1630;
+  }
+
+  .interlude-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: inherit;
+  }
+
+  .interlude-bg-layer {
+    position: absolute;
+    inset: 0;
+    will-change: transform;
+    transform-origin: center center;
+  }
+
+  .interlude-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    filter: none;
+  }
+
+  .interlude-copy {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 48rem);
+    padding: clamp(1.25rem, 3vw, 2rem);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35em;
+    color: #ffffff;
+  }
+
+  .interlude-line {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: clamp(1.55rem, 3.6vw, 2.75rem);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: #ffffff;
+    text-shadow: 0 1px 18px rgba(0, 0, 0, 0.35);
+  }
+
+  .interlude-word {
+    display: inline-block;
+    margin-inline: 0.18em;
+    color: #ffffff;
+  }
+
+  .interlude-word:first-child {
+    margin-inline-start: 0;
+  }
+
+  .interlude-word:last-child {
+    margin-inline-end: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .interlude-stage {
+      min-height: 0;
+    }
+
+    .interlude-frame {
+      height: auto;
+      max-height: none;
+      aspect-ratio: 16 / 9;
+    }
+
+    .interlude-bg-layer,
+    .interlude-word {
+      transform: none !important;
+      opacity: 1 !important;
+    }
+  }
+</style>

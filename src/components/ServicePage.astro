@@ -1,0 +1,196 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PageShell from '../components/PageShell.astro';
+import InteractiveHoverButton from '../components/InteractiveHoverButton.astro';
+import { t, type Locale } from '../i18n/ui';
+
+interface ForWhomItem { title: string; }
+interface IncludeItem { title: string; }
+
+interface Props {
+  locale: Locale;
+  titleKey: string;
+  subKey: string;
+  forWhom: string[];
+  includes: string[];
+  ctaKey: string;
+}
+
+const { locale, titleKey, subKey, forWhom, includes, ctaKey } = Astro.props;
+const title = t(locale, titleKey as any);
+const description = t(locale, subKey as any);
+---
+
+<Layout title={title} description={description} lang={locale}>
+  <Header locale={locale} />
+
+  <PageShell>
+  <main class="svc-page">
+    <section class="section-padding svc-hero">
+      <div class="container svc-hero-inner">
+        <h1 class="svc-title">{t(locale, titleKey as any)}</h1>
+        <p class="svc-sub">{t(locale, subKey as any)}</p>
+      </div>
+    </section>
+
+    <section class="section-padding svc-for">
+      <div class="container svc-for-inner" data-animate="reveal">
+        <h2 class="svc-section-title">{t(locale, 'svcForWhom')}</h2>
+        <ul class="svc-list">
+          {forWhom.map((key) => (
+            <li class="svc-list-item">{t(locale, key as any)}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section-padding svc-includes">
+      <div class="container svc-includes-inner" data-animate="reveal">
+        <h2 class="svc-section-title">{t(locale, 'svcIncludes')}</h2>
+        <ul class="svc-list svc-list--numbered">
+          {includes.map((key, i) => (
+            <li class="svc-list-item">
+              <span class="svc-step">{String(i + 1).padStart(2, '0')}</span>
+              <span>{t(locale, key as any)}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section-padding cta-band">
+      <div class="container cta-inner" data-animate="reveal">
+        <h2 class="cta-title">{t(locale, ctaKey as any)}</h2>
+        <div class="cta-actions">
+          <InteractiveHoverButton href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" label={t(locale, 'svcDiscuss')} />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  </PageShell>
+
+  <script>
+    import { initBrandMotion } from '../scripts/motion';
+    initBrandMotion();
+  </script>
+</Layout>
+
+<style>
+  .svc-page {
+    padding-block-start: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .svc-hero-inner {
+    max-width: 720px;
+  }
+
+  .svc-title {
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-block-end: 1rem;
+  }
+
+  .svc-sub {
+    font-size: 1.15rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    max-width: 600px;
+  }
+
+  .svc-section-title {
+    font-size: var(--fs-h2);
+    font-weight: 500;
+    line-height: 1.2;
+    margin-block-end: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .svc-for {
+    background: var(--color-surface);
+  }
+
+  .svc-for-inner,
+  .svc-includes-inner {
+    max-width: 720px;
+  }
+
+  .svc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .svc-list-item {
+    font-size: 1.05rem;
+    color: var(--color-text-primary);
+    line-height: 1.55;
+    padding-inline-start: 1.5rem;
+    position: relative;
+  }
+
+  .svc-list-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-blue);
+  }
+
+  .svc-list--numbered .svc-list-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding-inline-start: 0;
+  }
+
+  .svc-list--numbered .svc-list-item::before {
+    display: none;
+  }
+
+  .svc-step {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-blue);
+    flex-shrink: 0;
+    min-width: 1.8em;
+    padding-block-start: 0.15em;
+  }
+
+  .cta-band {
+    background: var(--color-blue-tint);
+  }
+
+  .cta-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .cta-title {
+    font-size: var(--fs-h2);
+    font-weight: 500;
+    line-height: 1.2;
+    max-width: 600px;
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  :global(html[lang='ru']) .svc-sub,
+  :global(html[lang='ru']) .svc-list-item {
+    line-height: 1.45;
+  }
+</style>

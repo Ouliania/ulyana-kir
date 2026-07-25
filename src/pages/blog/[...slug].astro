@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import PageShell from '../../components/PageShell.astro';
 import BlogCTA from '../../components/BlogCTA.astro';
 
 export async function getStaticPaths() {
@@ -49,6 +50,7 @@ const blogSchema = {
 >
   <Header />
 
+  <PageShell>
   <main class="post-main section-padding">
     <article class="container post-container">
       <a href="/blog" class="back-link">← Назад в блог</a>
@@ -92,11 +94,12 @@ const blogSchema = {
   </main>
 
   <Footer />
+  </PageShell>
 </Layout>
 
 <style>
   .post-main {
-    padding-block-start: 120px;
+    padding-block-start: clamp(2rem, 4vw, 3rem);
     min-block-size: 80vh;
   }
 

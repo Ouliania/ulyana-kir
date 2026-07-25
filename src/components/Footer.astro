@@ -1,159 +1,106 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '../assets/logo.png';
+import Wordmark from './Wordmark.astro';
+import { localeFromPath, t, type Locale } from '../i18n/ui';
 
-const pathname = Astro.url.pathname;
-const isHome = pathname === '/' || pathname === '';
-const currentYear = new Date().getFullYear();
+interface Props {
+  locale?: Locale;
+}
+
+const locale = Astro.props.locale ?? localeFromPath(Astro.url.pathname);
+const year = new Date().getFullYear();
+const homePath = locale === 'ru' ? '/ru/' : '/';
+const isHome =
+  Astro.url.pathname === homePath ||
+  Astro.url.pathname === homePath.replace(/\/$/, '') ||
+  (locale === 'en' && (Astro.url.pathname === '/' || Astro.url.pathname === ''));
+const contactsHref = locale === 'ru' ? '/ru/contacts/' : '/contacts/';
+const codeHref = locale === 'ru' ? '/ru/code/' : '/code/';
+const privacyHref = locale === 'ru' ? '/ru/privacy-policy/' : '/privacy-policy/';
 ---
 
-<footer class="main-footer">
-  <div class="container footer-grid">
+<footer class="site-footer">
+  <div class="container footer-inner">
     <div class="footer-brand">
-      <a href="/" class="logo-wrapper">
-        <Image src={logo} alt="Ульяна Кирпичникова" class="logo-img" format="webp" />
-      </a>
-      <p class="brand-tagline">
-        Делаю сайты для бизнеса как инструмент продаж. Смысловая структура, дизайн, верстка и запуск под ключ.
-      </p>
+      <Wordmark href={homePath} />
+      <p>{t(locale, 'footerTagline')}</p>
     </div>
-
-    <div class="footer-nav-group">
-      <h4 class="footer-title">Разделы</h4>
-      <nav class="footer-nav" aria-label="Служебное меню">
-        <a href={isHome ? "#hero" : "/#hero"}>Главная</a>
-        <a href={isHome ? "#cases" : "/#cases"}>Кейсы</a>
-        <a href={isHome ? "#reviews" : "/#reviews"}>Отзывы</a>
-        <a href="/audit">Аудит конверсии</a>
-        <a href="/ai-visibility-audit">Видимость AI</a>
-        <a href="/blog">Блог</a>
-        <a href="/contacts">Контакты</a>
-      </nav>
-    </div>
-
-    <div class="footer-nav-group">
-      <h4 class="footer-title">Контакты и Соцсети</h4>
-      <nav class="footer-nav" aria-label="Контакты">
-        <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer">Telegram: @UlyanaKir</a>
-        <a href="mailto:hello@ulyanaweb.ru">hello@ulyanaweb.ru</a>
-        <a href="https://github.com/ulyanaweb" target="_blank" rel="noopener noreferrer">GitHub</a>
-      </nav>
-    </div>
+    <nav class="footer-nav" aria-label="Footer">
+      <a href={isHome ? '#cases' : `${homePath}#cases`}>{t(locale, 'navCases')}</a>
+      <a href={isHome ? '#reviews' : `${homePath}#reviews`}>{t(locale, 'navReview')}</a>
+      <a href={contactsHref}>{t(locale, 'navContacts')}</a>
+      <a href={codeHref}>{t(locale, 'codeSites')}</a>
+      <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer">Telegram</a>
+    </nav>
   </div>
-
   <div class="container footer-bottom">
-    <p>&copy; {currentYear} Ульяна Кирпичникова. Все права защищены.</p>
-    <p class="legal-links">
-      <a href="/privacy-policy" class="legal-link">Политика конфиденциальности</a>
-      <span class="tech-stack-info">Сайт собран на Astro + CSS (100/100 Core Web Vitals)</span>
-    </p>
+    <p>© {year} Ulyana Kirpichnikova</p>
+    <a href={privacyHref}>{t(locale, 'privacy')}</a>
   </div>
 </footer>
 
 <style>
-  .main-footer {
-    background: var(--color-bg-subtle);
+  .site-footer {
     border-top: 1px solid var(--color-border);
-    padding-block-start: 5rem;
-    padding-block-end: 2rem;
-    font-size: 0.95rem;
+    background: transparent;
+    padding-block: 3.5rem 2rem;
+    margin-block-start: 0;
   }
 
-  .footer-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    margin-block-end: 4rem;
-
-    @media (min-width: 768px) {
-      grid-template-columns: 2fr 1fr 1fr;
-    }
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-block-end: 2.5rem;
   }
 
   .footer-brand {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
+    max-inline-size: 360px;
   }
 
-  /* Logo styling matching the screenshot */
-  .logo-wrapper {
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-  }
-
-  .logo-img {
-    height: 32px;
-    width: auto;
-    display: block;
-    object-fit: contain;
-  }
-
-  .brand-tagline {
-    max-inline-size: 380px;
-    line-height: 1.6;
-    color: var(--color-text-secondary);
-  }
-
-  .footer-title {
-    font-family: var(--font-heading);
-    font-size: 1.05rem;
-    font-weight: normal;
-    margin-block-end: 1.5rem;
-    color: var(--color-text-primary);
+  .footer-brand p {
+    font-size: var(--fs-small);
+    color: var(--color-text-muted);
   }
 
   .footer-nav {
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    align-content: flex-start;
   }
 
   .footer-nav a {
     color: var(--color-text-secondary);
+    font-size: var(--fs-small);
     transition: color 0.15s ease;
   }
 
   .footer-nav a:hover {
-    color: var(--color-text-primary);
+    color: var(--color-blue);
   }
 
   .footer-bottom {
-    border-top: 1px solid var(--color-border);
-    padding-block-start: 2rem;
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
-    color: var(--color-text-muted);
+    gap: 0.75rem;
+    padding-block-start: 1.5rem;
+    border-top: 1px solid var(--color-border);
     font-size: 0.85rem;
-
-    @media (min-width: 768px) {
-      flex-direction: row;
-    }
+    color: var(--color-text-muted);
   }
 
-  .legal-links {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-  }
-
-  .legal-link {
-    color: var(--color-text-secondary);
+  .footer-bottom a {
+    color: var(--color-text-muted);
     text-decoration: underline;
     text-underline-offset: 3px;
-    transition: color 0.15s ease;
   }
 
-  .legal-link:hover {
+  .footer-bottom a:hover {
     color: var(--color-text-primary);
-  }
-
-  .tech-stack-info {
-    color: var(--color-text-secondary);
-    font-weight: 600;
   }
 </style>

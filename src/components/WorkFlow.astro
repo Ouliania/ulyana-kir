@@ -1,0 +1,600 @@
+---
+import type { Locale } from '../i18n/ui';
+import { t } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const cards = [
+  { step: '01', titleKey: 'flowCard1Title' as const, bodyKey: 'flowCard1Body' as const },
+  { step: '02', titleKey: 'flowCard2Title' as const, bodyKey: 'flowCard2Body' as const },
+  { step: '03', titleKey: 'flowCard3Title' as const, bodyKey: 'flowCard3Body' as const },
+  { step: '04', titleKey: 'flowCard4Title' as const, bodyKey: 'flowCard4Body' as const },
+  { step: '05', titleKey: 'flowCard5Title' as const, bodyKey: 'flowCard5Body' as const },
+];
+---
+
+<div class="workflow">
+  <div class="flow" data-flow aria-hidden="true">
+    <svg class="flow-svg"></svg>
+
+    <div class="flow-grid">
+      <!-- Inputs -->
+      <div class="flow-col flow-inputs">
+        <div class="flow-node flow-node--in flow-node--goals" data-flow-from>
+          <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
+            <circle cx="16" cy="16" r="11" stroke="currentColor" stroke-width="1.6" opacity="0.35" />
+            <circle cx="16" cy="16" r="7" stroke="currentColor" stroke-width="1.6" />
+            <circle cx="16" cy="16" r="2.5" fill="var(--color-blue)" />
+          </svg>
+        </div>
+        <div class="flow-node flow-node--in flow-node--audience" data-flow-from>
+          <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
+            <circle cx="12" cy="11" r="3.2" fill="var(--color-blue)" opacity="0.9" />
+            <path d="M6.5 22.5c.4-3.2 2.8-5 5.5-5s5.1 1.8 5.5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            <circle cx="21.5" cy="12" r="2.6" fill="var(--color-blue-soft)" />
+            <path d="M18.2 22.5c.3-2.2 1.8-3.5 3.5-3.5 1.6 0 2.9 1 3.3 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
+          </svg>
+        </div>
+        <div class="flow-node flow-node--in flow-node--competitors" data-flow-from>
+          <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
+            <rect x="5" y="16" width="5" height="9" rx="1.2" fill="var(--color-blue)" opacity="0.35" />
+            <rect x="13.5" y="10" width="5" height="15" rx="1.2" fill="var(--color-blue)" opacity="0.65" />
+            <rect x="22" y="6" width="5" height="19" rx="1.2" fill="var(--color-blue)" />
+          </svg>
+        </div>
+        <div class="flow-node flow-node--in flow-node--analytics" data-flow-from>
+          <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
+            <path d="M5 23h22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.35" />
+            <path d="M7 19l5.5-7 4.5 4.5L25 8" stroke="var(--color-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="25" cy="8" r="2" fill="var(--color-blue)" />
+          </svg>
+        </div>
+        <div class="flow-node flow-node--in flow-node--brief" data-flow-from>
+          <svg viewBox="0 0 32 32" width="18" height="18" fill="none">
+            <path d="M9 5h10l5 5v16.5a1.5 1.5 0 0 1-1.5 1.5H9A1.5 1.5 0 0 1 7.5 26.5V6.5A1.5 1.5 0 0 1 9 5Z" fill="var(--color-blue-tint)" stroke="currentColor" stroke-width="1.4" />
+            <path d="M19 5v5h5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" />
+            <path d="M11.5 15h9M11.5 19h9M11.5 23h6" stroke="var(--color-blue)" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Hub -->
+      <div class="flow-col flow-center">
+        <div class="flow-node flow-node--hub" data-flow-hub>
+          <video
+            class="flow-avatar"
+            src="/avatar.mp4"
+            muted
+            playsinline
+            loop
+            autoplay
+            preload="metadata"
+            width="72"
+            height="72"
+            aria-hidden="true"
+          ></video>
+        </div>
+      </div>
+
+      <!-- Mac browser — cycles through different client-looking sites -->
+      <div class="flow-col flow-out">
+        <div class="flow-browser" data-flow-to>
+          <div class="browser-chrome">
+            <div class="browser-dots" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="browser-url-stack" aria-hidden="true">
+              <span class="browser-url">your-business.com</span>
+              <span class="browser-url">studio.site</span>
+              <span class="browser-url">clinic.online</span>
+              <span class="browser-url">brand.store</span>
+            </div>
+          </div>
+          <div class="browser-viewport">
+            <div class="site-slide site-slide--gray">
+              <div class="site-scroll">
+                <div class="s-bar"></div>
+                <div class="s-hero"></div>
+                <div class="s-line"></div>
+                <div class="s-line s-line--short"></div>
+                <div class="s-btn"></div>
+                <div class="s-row"><i></i><i></i></div>
+                <div class="s-band"></div>
+                <div class="s-row"><i></i><i></i><i></i></div>
+                <div class="s-hero s-hero--soft"></div>
+                <div class="s-line"></div>
+                <div class="s-row"><i></i><i></i></div>
+              </div>
+            </div>
+            <div class="site-slide site-slide--rose">
+              <div class="site-scroll">
+                <div class="s-bar"></div>
+                <div class="s-hero"></div>
+                <div class="s-line"></div>
+                <div class="s-line s-line--short"></div>
+                <div class="s-btn"></div>
+                <div class="s-row"><i></i><i></i></div>
+                <div class="s-band"></div>
+                <div class="s-row"><i></i><i></i><i></i></div>
+                <div class="s-hero s-hero--soft"></div>
+                <div class="s-line"></div>
+                <div class="s-row"><i></i><i></i></div>
+              </div>
+            </div>
+            <div class="site-slide site-slide--sky">
+              <div class="site-scroll">
+                <div class="s-bar"></div>
+                <div class="s-hero"></div>
+                <div class="s-line"></div>
+                <div class="s-line s-line--short"></div>
+                <div class="s-btn"></div>
+                <div class="s-row"><i></i><i></i></div>
+                <div class="s-band"></div>
+                <div class="s-row"><i></i><i></i><i></i></div>
+                <div class="s-hero s-hero--soft"></div>
+                <div class="s-line"></div>
+                <div class="s-row"><i></i><i></i></div>
+              </div>
+            </div>
+            <div class="site-slide site-slide--blue">
+              <div class="site-scroll">
+                <div class="s-bar"></div>
+                <div class="s-hero"></div>
+                <div class="s-line"></div>
+                <div class="s-line s-line--short"></div>
+                <div class="s-btn"></div>
+                <div class="s-row"><i></i><i></i></div>
+                <div class="s-band"></div>
+                <div class="s-row"><i></i><i></i><i></i></div>
+                <div class="s-hero s-hero--soft"></div>
+                <div class="s-line"></div>
+                <div class="s-row"><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-cards">
+    {
+      cards.map((card) => (
+        <article class="flow-card" data-magic>
+          <span class="flow-card-step">{card.step}</span>
+          <h3 class="flow-card-title">{t(locale, card.titleKey)}</h3>
+          <p class="flow-card-body">{t(locale, card.bodyKey)}</p>
+        </article>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .workflow {
+    display: flex;
+    flex-direction: column;
+    gap: 2.75rem;
+    width: 100%;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .flow {
+    position: relative;
+    width: 100%;
+    max-inline-size: min(100%, 880px);
+    margin-inline: auto;
+    padding: 0.5rem 0;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .flow-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+  }
+
+  .flow-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+    justify-items: center;
+  }
+
+  .flow-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .flow-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.65rem;
+  }
+
+  .flow-node {
+    width: 3.15rem;
+    height: 3.15rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px -16px rgba(2, 116, 222, 0.55);
+  }
+
+  .flow-node--hub {
+    width: 5rem;
+    height: 5rem;
+    border: 2px solid color-mix(in srgb, #fff 70%, var(--color-blue-soft));
+    padding: 0;
+    overflow: hidden;
+    background: #6e6e6e;
+    box-shadow:
+      0 0 0 3px color-mix(in srgb, var(--color-blue) 35%, transparent),
+      0 14px 32px -12px rgba(2, 116, 222, 0.55);
+  }
+
+  .flow-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* —— Mac browser —— */
+  .flow-browser {
+    --site-ink: #cfcfcf;
+    --site-soft: #f0f0f0;
+    --site-accent: #bdbdbd;
+    --site-page: #f7f7f7;
+    width: 100%;
+    max-width: 360px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 18px 40px -24px rgba(13, 13, 13, 0.28);
+  }
+
+  .browser-chrome {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.65rem;
+    background: #efefef;
+    border-bottom: 1px solid #e2e2e2;
+  }
+
+  .browser-dots {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .browser-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #c8c8c8;
+  }
+
+  .browser-url-stack {
+    position: relative;
+    flex: 1;
+    height: 1.35rem;
+  }
+
+  .browser-url {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.62rem;
+    color: #8a8a8a;
+    background: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 5px;
+    letter-spacing: 0.01em;
+    opacity: 0;
+    animation: url-cycle 16s steps(1, end) infinite;
+  }
+
+  .browser-url:nth-child(1) { animation-delay: 0s; }
+  .browser-url:nth-child(2) { animation-delay: -4s; }
+  .browser-url:nth-child(3) { animation-delay: -8s; }
+  .browser-url:nth-child(4) { animation-delay: -12s; }
+
+  @keyframes url-cycle {
+    0%, 24.9% { opacity: 1; }
+    25%, 100% { opacity: 0; }
+  }
+
+  .browser-viewport {
+    height: 210px;
+    overflow: hidden;
+    position: relative;
+    background: var(--site-page);
+  }
+
+  .site-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    animation: site-cycle 16s steps(1, end) infinite;
+  }
+
+  .site-slide:nth-child(1) { animation-delay: 0s; }
+  .site-slide:nth-child(2) { animation-delay: -4s; }
+  .site-slide:nth-child(3) { animation-delay: -8s; }
+  .site-slide:nth-child(4) { animation-delay: -12s; }
+
+  @keyframes site-cycle {
+    0%, 24.9% { opacity: 1; z-index: 1; }
+    25%, 100% { opacity: 0; z-index: 0; }
+  }
+
+  .site-slide--gray {
+    --site-ink: #cfcfcf;
+    --site-soft: #f0f0f0;
+    --site-accent: #b5b5b5;
+    --site-page: #f6f6f6;
+  }
+
+  .site-slide--rose {
+    --site-ink: #e8c4c8;
+    --site-soft: #faf0f1;
+    --site-accent: #d998a0;
+    --site-page: #fff8f8;
+  }
+
+  .site-slide--sky {
+    --site-ink: #b9d8e8;
+    --site-soft: #eef6fa;
+    --site-accent: #7eb6d0;
+    --site-page: #f5fafc;
+  }
+
+  .site-slide--blue {
+    --site-ink: #b7cce8;
+    --site-soft: #eaf1fa;
+    --site-accent: #6f97d2;
+    --site-page: #f4f8fd;
+  }
+
+  .site-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: 0.75rem 0.7rem 2rem;
+    min-height: 150%;
+    animation: site-scroll 4s ease-in-out infinite;
+  }
+
+  @keyframes site-scroll {
+    0%, 18% { transform: translateY(0); }
+    50%, 68% { transform: translateY(-38%); }
+    100% { transform: translateY(0); }
+  }
+
+  .s-bar {
+    height: 0.55rem;
+    width: 28%;
+    border-radius: 2px;
+    background: var(--site-accent);
+  }
+
+  .s-hero {
+    height: 3.4rem;
+    border-radius: 6px;
+    background: linear-gradient(160deg, var(--site-soft), #fff 55%, var(--site-ink));
+    border: 1px solid color-mix(in srgb, var(--site-ink) 55%, white);
+  }
+
+  .s-hero--soft {
+    height: 2.4rem;
+    opacity: 0.85;
+  }
+
+  .s-line {
+    height: 0.4rem;
+    width: 72%;
+    border-radius: 2px;
+    background: var(--site-ink);
+  }
+
+  .s-line--short {
+    width: 44%;
+    opacity: 0.7;
+  }
+
+  .s-btn {
+    width: 32%;
+    height: 0.7rem;
+    border-radius: 3px;
+    background: var(--site-accent);
+  }
+
+  .s-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem;
+  }
+
+  .s-row:has(i:nth-child(3)) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .s-row i {
+    display: block;
+    height: 2rem;
+    border-radius: 5px;
+    background: #fff;
+    border: 1px solid color-mix(in srgb, var(--site-ink) 65%, white);
+  }
+
+  .s-band {
+    height: 1.25rem;
+    border-radius: 5px;
+    background: var(--site-soft);
+    border: 1px solid color-mix(in srgb, var(--site-ink) 50%, white);
+  }
+
+  .flow-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .flow-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding: 1.25rem 1.2rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    transition: border-color 0.2s ease;
+  }
+
+  .flow-card:hover {
+    border-color: color-mix(in srgb, var(--color-blue) 35%, var(--color-border));
+  }
+
+  .flow-card-step {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--color-blue);
+  }
+
+  .flow-card-title {
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    line-height: 1.25;
+  }
+
+  .flow-card-body {
+    font-size: 0.92rem;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+  }
+
+  @media (min-width: 700px) {
+    .flow-cards {
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .flow-card:last-child:nth-child(5) {
+      grid-column: 1 / -1;
+      justify-self: center;
+      max-width: calc(50% - 0.5rem);
+      width: 100%;
+    }
+  }
+
+  /*
+   * Desktop: capped + centered composition.
+   * Equal side tracks keep the hub on the true midpoint (beam intersection).
+   * Icons pin to the left edge of the diagram; browser to the right (~1/3).
+   */
+  @media (min-width: 840px) {
+    .flow {
+      min-height: 280px;
+      padding: 1.25rem 0;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      column-gap: 1.75rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .flow-inputs {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      justify-content: center;
+      justify-self: start;
+      gap: 0.7rem;
+      width: auto;
+      padding: 0;
+    }
+
+    .flow-center {
+      justify-self: center;
+      justify-content: center;
+      width: auto;
+    }
+
+    .flow-out {
+      justify-self: stretch;
+      justify-content: flex-end;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .flow-browser {
+      width: min(100%, 360px);
+      max-width: 100%;
+    }
+
+    .browser-viewport {
+      height: 230px;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .flow {
+      max-inline-size: 920px;
+    }
+
+    .flow-browser {
+      width: min(100%, 384px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-scroll,
+    .site-slide,
+    .browser-url {
+      animation: none;
+    }
+
+    .site-slide:first-child,
+    .browser-url:first-child {
+      opacity: 1;
+    }
+
+    .flow-card {
+      transition: none;
+    }
+  }
+</style>

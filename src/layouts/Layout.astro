@@ -6,99 +6,103 @@ interface Props {
   description?: string;
   image?: string;
   canonicalURL?: string;
-  schema?: Record<string, any>;
-  isBlog?: boolean;
+  schema?: Record<string, unknown>;
+  lang?: 'en' | 'ru';
 }
 
 const {
   title,
-  description = "Ульяна Кирпичникова — создание и пересборка сайтов для бизнеса как инструмента продаж. Смысловой аудит, тексты, дизайн и запуск под ключ.",
-  image = "/og-image.png",
+  description = 'Ulyana Kirpichnikova — websites as sales tools. Structure, copy, design, and launch.',
+  image = '/og-image.png',
   canonicalURL = Astro.url.href,
   schema,
-  isBlog = false
+  lang = 'en',
 } = Astro.props;
 
-// Default JSON-LD Schema (Organization / Professional)
 const defaultSchema = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "Ульяна Кирпичникова",
-  "image": Astro.site ? new URL(image, Astro.site).toString() : canonicalURL,
-  "description": description,
-  "url": canonicalURL,
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "RU"
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Ulyana Kirpichnikova',
+  image: Astro.site ? new URL(image, Astro.site).toString() : canonicalURL,
+  description,
+  url: canonicalURL,
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'RU',
   },
-  "knowsAbout": [
-    "Web Design",
-    "UX/UI Design",
-    "Conversion Rate Optimization",
-    "Copywriting",
-    "Astro Development",
-    "Web Analytics",
-    "Website Auditing"
-  ]
+  knowsAbout: [
+    'Web Design',
+    'UX/UI Design',
+    'Conversion Rate Optimization',
+    'Copywriting',
+    'Astro Development',
+  ],
 };
 
 const finalSchema = schema || defaultSchema;
 ---
 
 <!DOCTYPE html>
-<html lang="ru">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/favicon.ico" />
+    <link
+      rel="preload"
+      href="/fonts/source-serif-4-latin-500-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/source-sans-3-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    {
+      lang === 'ru' && (
+        <>
+          <link
+            rel="preload"
+            href="/fonts/source-serif-4-cyrillic-500-normal.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin
+          />
+          <link
+            rel="preload"
+            href="/fonts/source-sans-3-cyrillic-400-normal.woff2"
+            as="font"
+            type="font/woff2"
+            crossorigin
+          />
+        </>
+      )
+    }
     <meta name="generator" content={Astro.generator} />
-
-    {/* Primary Meta Tags */}
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-
-    {/* Open Graph / Facebook */}
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
-
-    {/* Twitter */}
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={image} />
-
-    {/* Preconnect to Google Fonts */}
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-    {/* JSON-LD Schema Markup */}
     <script type="application/ld+json" is:inline set:html={JSON.stringify(finalSchema)} />
-
-    {/* Theme initialization script */}
-    <script is:inline>
-      const getTheme = () => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      };
-      
-      const theme = getTheme();
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    </script>
   </head>
-  <body class={isBlog ? "blog-layout" : ""}>
+  <body>
     <slot />
+    <script>
+      import { initMagicSurfaces } from '../scripts/magic-surface';
+      initMagicSurfaces();
+    </script>
   </body>
 </html>

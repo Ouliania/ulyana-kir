@@ -1,0 +1,253 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import PageShell from './PageShell.astro';
+import InteractiveHoverButton from './InteractiveHoverButton.astro';
+import KineticText from './KineticText.astro';
+import { t, type Locale } from '../i18n/ui';
+import type { CaseStudy } from '../data/cases';
+
+interface Props {
+  locale: Locale;
+  item: CaseStudy;
+}
+
+const { locale, item } = Astro.props;
+const homeCases = locale === 'ru' ? '/ru/#cases' : '/#cases';
+---
+
+<Layout
+  title={`${item.project} — Case | Ulyana Kirp`}
+  description={item.task[locale]}
+  lang={locale}
+>
+  <Header locale={locale} />
+
+  <PageShell>
+  <main class="case-page">
+    <section class="case-first">
+      <div class="container case-stack">
+        <div class="case-grid" data-animate="hero">
+          <div class="col">
+            <p class="label">{t(locale, 'project')}</p>
+            <KineticText as="h1" class="project-name" text={item.project} />
+            {
+              item.url ? (
+                <a
+                  class="project-link"
+                  href={item.url}
+                  target={item.url.startsWith('http') ? '_blank' : undefined}
+                  rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                >
+                  {item.url.startsWith('http') ? t(locale, 'openLive') : t(locale, 'openDemo')} →
+                </a>
+              ) : (
+                <span class="project-link muted">{t(locale, 'linkSoon')}</span>
+              )
+            }
+            <p class="roles">{item.role.join(' · ')}</p>
+          </div>
+          <div class="col">
+            <p class="label">{t(locale, 'task')}</p>
+            <p class="body-text">{item.task[locale]}</p>
+          </div>
+          <div class="col">
+            <p class="label">{t(locale, 'implementation')}</p>
+            <p class="body-text">{item.implementation[locale]}</p>
+          </div>
+        </div>
+
+        <div class="media-stage" data-animate="hero">
+          {
+            item.video ? (
+              <video
+                class="media-video"
+                src={item.video}
+                poster={item.poster}
+                muted
+                playsinline
+                loop
+                autoplay
+                controls
+                preload="metadata"
+              />
+            ) : (
+              <div class="media-placeholder">
+                <p>{t(locale, 'videoSoon')}</p>
+                {
+                  item.url?.startsWith('http') && (
+                    <a class="btn btn-primary" href={item.url} target="_blank" rel="noopener noreferrer">
+                      {t(locale, 'openLive')}
+                    </a>
+                  )
+                }
+                {
+                  item.url?.startsWith('/') && (
+                    <a class="btn btn-primary" href={item.url}>
+                      {t(locale, 'openDemo')}
+                    </a>
+                  )
+                }
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="case-next">
+      <div class="container next-inner" data-animate="reveal">
+        <a href={homeCases} class="back-link">← {t(locale, 'backCases')}</a>
+        <InteractiveHoverButton href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" label={t(locale, 'discuss')} />
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  </PageShell>
+
+  <script>
+    import { initBrandMotion } from '../scripts/motion';
+    import { initMagicSurfaces } from '../scripts/magic-surface';
+    initBrandMotion();
+    initMagicSurfaces();
+  </script>
+</Layout>
+
+<style>
+  .case-page {
+    padding-block-start: 0;
+  }
+
+  .case-first {
+    min-height: calc(100svh - var(--header-height) - 2rem);
+    display: flex;
+    align-items: stretch;
+    padding-block: 2rem 1.5rem;
+  }
+
+  .case-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  .case-grid {
+    display: grid;
+    gap: 1.5rem;
+    padding: 2rem clamp(1.25rem, 3vw, 2rem) 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .case-grid {
+      grid-template-columns: 1fr 1.15fr 1.15fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+  }
+
+  .label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-block-end: 0.6rem;
+  }
+
+  .project-name {
+    font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.4rem);
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.15;
+    margin-block-end: 0.75rem;
+    justify-content: flex-start;
+  }
+
+  .project-link {
+    display: inline-block;
+    color: var(--color-blue);
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-block-end: 0.75rem;
+  }
+
+  .project-link.muted {
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
+
+  .roles {
+    font-size: 0.85rem;
+    color: var(--color-teal);
+  }
+
+  .body-text {
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--color-text-primary);
+  }
+
+  .media-stage {
+    border-top: 1px solid var(--color-border);
+    background: transparent;
+    min-height: 0;
+    padding: 1.5rem clamp(1.25rem, 3vw, 2rem) 1.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .media-video {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    max-height: min(48vh, 480px);
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    border-radius: 8px;
+    background: transparent;
+  }
+
+  .media-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: min(48vh, 480px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+    text-align: center;
+    color: var(--color-text-muted);
+    border: 1px dashed var(--color-border);
+    border-radius: 8px;
+  }
+
+  .case-next {
+    padding-block: 1.5rem 3rem;
+  }
+
+  .next-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .back-link {
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+
+  .back-link:hover {
+    color: var(--color-blue);
+  }
+</style>

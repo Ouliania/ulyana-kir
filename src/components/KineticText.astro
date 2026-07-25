@@ -1,0 +1,105 @@
+---
+interface Props {
+  text: string;
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
+  class?: string;
+}
+
+const { text, as: Tag = 'h1', class: className = '' } = Astro.props;
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+// Join with no whitespace — spaces between <span>s were blowing letter gaps apart
+const lettersHtml = [...text]
+  .map((letter) => {
+    const ch = letter === ' ' ? '&nbsp;' : escapeHtml(letter);
+    return `<span class="kinetic-letter" aria-hidden="true">${ch}</span>`;
+  })
+  .join('');
+---
+
+<Tag class:list={['kinetic', className]} aria-label={text} set:html={lettersHtml} />
+
+<style is:global>
+  .kinetic {
+    --kinetic-pad: 0.03em;
+    --kinetic-scale: 1.08;
+    --kinetic-stroke: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0;
+    letter-spacing: 0;
+    font-weight: 500;
+    line-height: 1.15;
+  }
+
+  .kinetic-letter {
+    display: block;
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: 0;
+    color: inherit;
+    transform: scale(1);
+    transform-origin: center bottom;
+    -webkit-text-stroke: 0 transparent;
+    transition:
+      font-weight 0.35s ease,
+      padding 0.35s ease,
+      color 0.35s ease,
+      transform 0.35s ease,
+      -webkit-text-stroke 0.35s ease;
+  }
+
+  .kinetic-letter:hover {
+    padding-inline: var(--kinetic-pad);
+    font-weight: 700;
+    color: inherit;
+    transform: scale(var(--kinetic-scale));
+    -webkit-text-stroke: var(--kinetic-stroke) currentColor;
+    z-index: 1;
+  }
+
+  .kinetic-letter:has(+ .kinetic-letter:hover),
+  .kinetic-letter:hover + .kinetic-letter {
+    padding-inline: var(--kinetic-pad);
+    font-weight: 700;
+    color: inherit;
+    transform: scale(var(--kinetic-scale));
+    -webkit-text-stroke: var(--kinetic-stroke) currentColor;
+    z-index: 1;
+  }
+
+  .kinetic-letter:has(+ .kinetic-letter + .kinetic-letter:hover),
+  .kinetic-letter:hover + .kinetic-letter + .kinetic-letter {
+    font-weight: 500;
+    color: inherit;
+    transform: scale(1);
+    -webkit-text-stroke: 0 transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kinetic-letter {
+      transition: none;
+    }
+
+    .kinetic-letter:hover,
+    .kinetic-letter:has(+ .kinetic-letter:hover),
+    .kinetic-letter:hover + .kinetic-letter {
+      padding-inline: 0;
+      font-weight: 500;
+      color: inherit;
+      transform: scale(1);
+      -webkit-text-stroke: 0 transparent;
+    }
+  }
+</style>

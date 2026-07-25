@@ -1,0 +1,31 @@
+---
+interface Props {
+  href?: string;
+  target?: string;
+  rel?: string;
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  label: string;
+}
+
+const {
+  href,
+  target,
+  rel,
+  type = 'button',
+  class: className = '',
+  label,
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag
+  class:list={['btn', 'btn-primary', className]}
+  href={href}
+  target={target}
+  rel={rel}
+  type={href ? undefined : type}
+>
+  {label}
+</Tag>

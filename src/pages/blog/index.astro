@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import PageShell from '../../components/PageShell.astro';
 
 // Fetch and sort blog posts
 const posts = (await getCollection('blog'))
@@ -16,6 +17,7 @@ const description = "Личный блог про веб-разработку, �
 <Layout title={title} description={description} isBlog={true}>
   <Header />
 
+  <PageShell>
   <main class="blog-main section-padding">
     <div class="container">
       <div class="blog-header">
@@ -63,11 +65,12 @@ const description = "Личный блог про веб-разработку, �
   </main>
 
   <Footer />
+  </PageShell>
 </Layout>
 
 <style>
   .blog-main {
-    padding-block-start: 120px;
+    padding-block-start: clamp(2rem, 4vw, 3rem);
     min-block-size: 80vh;
   }
 

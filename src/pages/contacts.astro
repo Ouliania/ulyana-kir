@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageShell from '../components/PageShell.astro';
 
 const contactSchema = {
   "@context": "https://schema.org",
@@ -28,6 +29,7 @@ const contactSchema = {
 >
   <Header />
 
+  <PageShell>
   <main class="contacts-main section-padding">
     <div class="container">
       <div class="contacts-header">
@@ -125,11 +127,12 @@ const contactSchema = {
   </main>
 
   <Footer />
+  </PageShell>
 </Layout>
 
 <style>
   .contacts-main {
-    padding-block-start: 120px;
+    padding-block-start: clamp(2rem, 4vw, 3rem);
     min-block-size: 80vh;
   }
 

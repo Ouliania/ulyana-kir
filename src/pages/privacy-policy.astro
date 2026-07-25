@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PageShell from '../components/PageShell.astro';
 
 const privacySchema = {
   "@context": "https://schema.org",
@@ -19,6 +20,7 @@ const privacySchema = {
 >
   <Header />
 
+  <PageShell>
   <main class="privacy-main section-padding">
     <div class="container privacy-container">
       <h1 class="privacy-title">Политика в отношении обработки персональных данных</h1>
@@ -153,11 +155,12 @@ const privacySchema = {
   </main>
 
   <Footer />
+  </PageShell>
 </Layout>
 
 <style>
   .privacy-main {
-    padding-block-start: 120px;
+    padding-block-start: clamp(2rem, 4vw, 3rem);
     min-block-size: 80vh;
   }
 
