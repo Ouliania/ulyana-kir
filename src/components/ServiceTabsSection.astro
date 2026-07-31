@@ -180,7 +180,11 @@ const iconPaths: Record<BulletIcon, string[]> = {
   {/* Scroll rails */}
   <div class="st-rails">
     {tabs.map((_, i) => (
-      <div class="st-rail" data-st-rail data-index={i}></div>
+      <div
+        class:list={['st-rail', i === tabs.length - 1 && 'st-rail--last']}
+        data-st-rail
+        data-index={i}
+      ></div>
     ))}
   </div>
 
@@ -347,6 +351,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
                     <div class="st-conv-slot st-conv-slot--foot" data-conv-slot="4">
                       <span class="st-conv-foot-title"></span>
                       <span class="st-conv-foot-line"></span>
+                      <span class="st-conv-foot-line st-conv-foot-line--short"></span>
                     </div>
                   </div>
                 </div>
@@ -394,59 +399,61 @@ const iconPaths: Record<BulletIcon, string[]> = {
                 </div>
                 <div class="st-shop-fly st-shop-fly--cta" data-shop-fly="cta"></div>
 
-                <div class="st-browser st-browser--sq">
-                  <div class="st-browser-chrome">
-                    <span></span><span></span><span></span>
-                    <div class="st-browser-url">your-shop.com</div>
-                  </div>
-                  <div class="st-browser-body--sq">
-                    <div class="st-shop-slot st-shop-slot--hero" data-shop-slot="hero"></div>
-                    <div class="st-shop-slot st-shop-slot--lines" data-shop-slot="lines">
-                      <span></span>
-                      <span></span>
+                <div class="st-shop-frame">
+                  <div class="st-browser st-browser--sq">
+                    <div class="st-browser-chrome">
+                      <span></span><span></span><span></span>
+                      <div class="st-browser-url">your-shop.com</div>
                     </div>
-                    <div class="st-shop-slot st-shop-slot--cta" data-shop-slot="cta"></div>
-                    <div class="st-shop-slot st-shop-slot--mid" data-shop-slot="mid">
-                      <div class="st-shop-product">
-                        <span class="st-shop-product-img"></span>
-                        <span class="st-shop-product-name"></span>
-                        <span class="st-shop-product-price">$49</span>
+                    <div class="st-browser-body--sq">
+                      <div class="st-shop-slot st-shop-slot--hero" data-shop-slot="hero"></div>
+                      <div class="st-shop-slot st-shop-slot--lines" data-shop-slot="lines">
+                        <span></span>
+                        <span></span>
                       </div>
-                      <div class="st-shop-product">
-                        <span class="st-shop-product-img"></span>
-                        <span class="st-shop-product-name"></span>
-                        <span class="st-shop-product-price">$89</span>
-                      </div>
-                      <div class="st-shop-product">
-                        <span class="st-shop-product-img"></span>
-                        <span class="st-shop-product-name"></span>
-                        <span class="st-shop-product-price">$129</span>
-                      </div>
-                      <div class="st-shop-product">
-                        <span class="st-shop-product-img"></span>
-                        <span class="st-shop-product-name"></span>
-                        <span class="st-shop-product-price">$59</span>
-                      </div>
-                      <div class="st-shop-product">
-                        <span class="st-shop-product-img"></span>
-                        <span class="st-shop-product-name"></span>
-                        <span class="st-shop-product-price">$99</span>
-                      </div>
-                      <div class="st-shop-product">
-                        <span class="st-shop-product-img"></span>
-                        <span class="st-shop-product-name"></span>
-                        <span class="st-shop-product-price">$149</span>
+                      <div class="st-shop-slot st-shop-slot--cta" data-shop-slot="cta"></div>
+                      <div class="st-shop-slot st-shop-slot--mid" data-shop-slot="mid">
+                        <div class="st-shop-product">
+                          <span class="st-shop-product-img"></span>
+                          <span class="st-shop-product-name"></span>
+                          <span class="st-shop-product-price">$49</span>
+                        </div>
+                        <div class="st-shop-product">
+                          <span class="st-shop-product-img"></span>
+                          <span class="st-shop-product-name"></span>
+                          <span class="st-shop-product-price">$89</span>
+                        </div>
+                        <div class="st-shop-product">
+                          <span class="st-shop-product-img"></span>
+                          <span class="st-shop-product-name"></span>
+                          <span class="st-shop-product-price">$129</span>
+                        </div>
+                        <div class="st-shop-product">
+                          <span class="st-shop-product-img"></span>
+                          <span class="st-shop-product-name"></span>
+                          <span class="st-shop-product-price">$59</span>
+                        </div>
+                        <div class="st-shop-product">
+                          <span class="st-shop-product-img"></span>
+                          <span class="st-shop-product-name"></span>
+                          <span class="st-shop-product-price">$99</span>
+                        </div>
+                        <div class="st-shop-product">
+                          <span class="st-shop-product-img"></span>
+                          <span class="st-shop-product-name"></span>
+                          <span class="st-shop-product-price">$149</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="st-shop-cart" aria-hidden="true">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
-                    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
-                  </svg>
-                  <span class="st-shop-cart-badge" data-shop-badge>0</span>
+                  <div class="st-shop-cart" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+                      <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+                    </svg>
+                    <span class="st-shop-cart-badge" data-shop-badge>0</span>
+                  </div>
                 </div>
 
                 <div class="st-shop-toasts" aria-hidden="true">
@@ -556,7 +563,11 @@ const iconPaths: Record<BulletIcon, string[]> = {
   }
 
   @media (min-width: 768px) {
-    .st-section { height: calc(4 * 100vh); }
+    /* 4 tabs at 1 rail-unit each + the last tab gets 1.5 units — a fast/hard
+       scroll flick that comfortably carries someone through 1 unit (tab1→2,
+       2→3) needs noticeably more distance to also clear tab4, so it can't
+       fly straight through into the next section without pausing on it. */
+    .st-section { height: calc(4.5 * 100vh); }
   }
 
   .st-rails {
@@ -572,6 +583,8 @@ const iconPaths: Record<BulletIcon, string[]> = {
   }
 
   .st-rail { flex: 1; }
+
+  .st-rail--last { flex: 1.5; }
 
   .st-stage {
     position: relative;
@@ -592,18 +605,23 @@ const iconPaths: Record<BulletIcon, string[]> = {
   }
 
   /* Tabs — separate rounded pills with breathing room.
-     --st-tint-N  = tab-pill bg. Only colored surface in this block: light, moderately bright.
-     --st-accent-N = illustration accent. Muted derivative of the tint hue —
-     used in soft mixes/borders and small details, never as a big solid/raw-bright fill. */
+     --st-tint-N   = tab-pill bg + pale illustration washes. Light, moderately bright.
+     --st-accent-N = illustration foreground — solid buttons/bars/lines, digit text,
+     border/shadow mixes. Same hue as tint-N but dark/saturated enough to read as
+     text and hold contrast on white (tint-N alone is too light for that). */
   .st-stage {
-    --st-tint-0: #c4daee;
+    --st-tint-0: var(--color-blue-tint);
     --st-tint-1: #c8c4ee;
     --st-tint-2: var(--color-lime);
     --st-tint-3: var(--color-yellow);
     --st-accent-0: var(--color-blue);
     --st-accent-1: #4335b6;
-    --st-accent-2: #499735;
-    --st-accent-3: #a4a838;
+    --st-accent-2: #0C972F;
+    /* Yellow has no good "dark but still yellow" — darkening this hue reads as
+       mustard/khaki (rejected explicitly, see SPEC). Black is the tab's real
+       2nd color here: same high-contrast-on-yellow pairing as hazard signage/
+       IKEA, and already how the tab pill itself reads (light bg, black text). */
+    --st-accent-3: var(--color-text-primary);
   }
 
   .st-tabs {
@@ -668,15 +686,10 @@ const iconPaths: Record<BulletIcon, string[]> = {
     --st-accent: var(--st-accent-3);
   }
 
-  .st-tab:hover {
+  .st-tab:hover,
+  .st-tab.active {
     color: var(--color-text-primary);
     background: color-mix(in srgb, var(--st-tint) 55%, var(--color-surface));
-  }
-
-  .st-tab.active {
-    background: var(--st-tint);
-    color: var(--color-text-primary);
-    font-weight: 400;
   }
 
   /* Body grid — shared pads so left copy + right viz bottom align */
@@ -1039,6 +1052,11 @@ const iconPaths: Record<BulletIcon, string[]> = {
     overflow: visible;
   }
 
+  /* Tab3 scene (mockup + metric cards) fills the viz box like tab1/tab4. */
+  .st-viz.st-viz-dashboard {
+    align-items: center;
+  }
+
   @media (max-width: 767px) {
     .st-viz { display: none; }
   }
@@ -1068,10 +1086,26 @@ const iconPaths: Record<BulletIcon, string[]> = {
     transition: width 0.5s ease, margin-right 0.5s ease;
   }
 
-  /* Once the shop finishes assembling, shrink + nudge it left (margin-right
-     grows, pulling the centered box leftward) to free a column on the right
-     for the live-sale notification stack. */
-  .st-illu--shop.is-assembled .st-browser--sq {
+  /* Shop scene wraps the mockup + its cart FAB together so the FAB always
+     rides on the mockup's corner. The shrink/shift-left transition (which
+     frees a right column for the live-sale toasts) lives here, on the
+     shared frame, instead of on .st-browser--sq — that way the cart moves
+     with the mockup instead of floating in place while it resizes. */
+  .st-shop-frame {
+    position: relative;
+    width: 78%;
+    height: 88%;
+    flex-shrink: 0;
+    transition: width 0.5s ease, margin-right 0.5s ease;
+  }
+
+  .st-shop-frame .st-browser--sq {
+    width: 100%;
+    height: 100%;
+    transition: none;
+  }
+
+  .st-illu--shop.is-assembled .st-shop-frame {
     width: 56%;
     margin-right: 30%;
   }
@@ -1434,16 +1468,30 @@ const iconPaths: Record<BulletIcon, string[]> = {
   }
 
   .st-illu--conv {
+    /* Same outer scene box as tab1 (.st-illu--landing); mockup width = 78%
+       like .st-browser--sq. Metrics share that width under the browser. */
+    --st-sq: min(100%, calc(100vh - var(--header-height) - 5.5rem));
+    position: relative;
     flex-direction: column;
     justify-content: center;
-    gap: 1.5rem;
-    width: 100%;
-    max-width: min(26rem, 100%);
+    align-items: center;
+    gap: 0.75rem;
+    width: var(--st-sq);
+    height: auto;
+    aspect-ratio: 6 / 7;
+    flex-shrink: 0;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
     padding: 0;
   }
 
   .st-conv-browser {
-    width: 100%;
+    width: 78%;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
     border-radius: var(--radius-card);
     border: 1px solid var(--color-border);
     background: #fff;
@@ -1452,10 +1500,12 @@ const iconPaths: Record<BulletIcon, string[]> = {
   }
 
   .st-conv-body {
+    flex: 1 1 auto;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding: 0.7rem 0.65rem 0.8rem;
+    gap: 0.55rem;
+    padding: 0.85rem 0.8rem 0.95rem;
     background: #f7f8fa;
   }
 
@@ -1476,14 +1526,19 @@ const iconPaths: Record<BulletIcon, string[]> = {
     transform: scale(1.015);
   }
 
-  .st-conv-slot.is-after {
-    background: linear-gradient(155deg, color-mix(in srgb, var(--st-accent-2) 12%, #fff) 0%, #fff 48%, color-mix(in srgb, var(--st-accent-2) 32%, #fff) 100%);
-    border-color: color-mix(in srgb, var(--st-accent-2) 30%, #e2e2e2);
+  /* Wash only applies to the hero block itself — lines/mid/cta/foot manage
+     their own containers (transparent, colored at the span/child level) so
+     this must not leak onto them. Was winning by specificity over their
+     `background: transparent` reset (.st-conv-slot.is-after > .st-conv-slot--X),
+     showing a stray 3rd wash color instead of the tab's 2 real colors. */
+  .st-conv-slot--hero.is-after {
+    background: linear-gradient(155deg, color-mix(in srgb, var(--st-tint-2) 40%, #fff) 0%, #fff 48%, color-mix(in srgb, var(--st-tint-2) 85%, #fff) 100%);
+    border-color: color-mix(in srgb, var(--st-tint-2) 70%, #e2e2e2);
   }
 
   .st-conv-slot--hero {
-    height: 20%;
-    min-height: 2.2rem;
+    height: 22%;
+    min-height: 2.8rem;
     flex-shrink: 0;
   }
 
@@ -1508,9 +1563,9 @@ const iconPaths: Record<BulletIcon, string[]> = {
   .st-conv-slot--lines span:first-child { width: 72%; }
   .st-conv-slot--lines span:last-child { width: 48%; }
 
-  .st-conv-slot--lines.is-after span {
-    background: color-mix(in srgb, var(--st-accent-2) 55%, var(--color-text-primary));
-  }
+  /* Text-line mockups stay neutral gray always, before AND after — same as
+     tab1's .st-slot--lines / .st-foot-title / .st-foot-line. Only hero, mid
+     and cta (banner / image tiles / button) carry the tab's brand color. */
 
   .st-conv-slot--mid {
     display: grid;
@@ -1524,6 +1579,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
     display: block;
     width: 100%;
     aspect-ratio: 1;
+    max-height: clamp(3rem, 9vh, 5.5rem);
     border-radius: 5px;
     border: 1px solid color-mix(in srgb, var(--color-text-primary) 10%, #e2e2e2);
     background: color-mix(in srgb, var(--color-text-primary) 5%, #fff);
@@ -1531,16 +1587,17 @@ const iconPaths: Record<BulletIcon, string[]> = {
   }
 
   .st-conv-slot--mid.is-after span {
-    border-color: color-mix(in srgb, var(--st-accent-2) 26%, #e2e2e2);
-    background: linear-gradient(160deg, color-mix(in srgb, var(--st-accent-2) 12%, #fff) 0%, color-mix(in srgb, var(--st-accent-2) 30%, #fff) 100%);
+    border-color: color-mix(in srgb, var(--st-tint-2) 55%, #e2e2e2);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--st-tint-2) 40%, #fff) 0%, color-mix(in srgb, var(--st-tint-2) 80%, #fff) 100%);
   }
 
   .st-conv-slot--cta {
     width: 36%;
-    height: 0.72rem;
+    height: 0.9rem;
     border-radius: 4px;
-    margin-block: 0.1rem;
+    margin-block: 0.15rem;
     flex-shrink: 0;
+    align-self: center;
   }
 
   .st-conv-slot--cta.is-after {
@@ -1578,13 +1635,13 @@ const iconPaths: Record<BulletIcon, string[]> = {
     transition: background-color 0.4s ease;
   }
 
-  .st-conv-slot--foot.is-after .st-conv-foot-title {
-    background: color-mix(in srgb, var(--st-accent-2) 55%, var(--color-text-primary));
+  .st-conv-foot-line--short {
+    width: 18%;
   }
 
-  .st-conv-slot--foot.is-after .st-conv-foot-line {
-    background: var(--st-accent-2);
-  }
+  /* Foot is a hold-beat, not a button — no tab1 .st-foot-btn equivalent here,
+     so both pieces stay the same neutral gray before and after (see note above
+     .st-conv-slot--mid). */
 
   .st-illu--audit {
     width: 100%;
@@ -1689,49 +1746,50 @@ const iconPaths: Record<BulletIcon, string[]> = {
     background: var(--color-border);
   }
 
-  /* Dashboard metrics */
+  /* Dashboard metrics — same width as .st-conv-browser (78% of scene). */
   .st-dash {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem 1rem;
-    width: 100%;
+    gap: 0.55rem;
+    width: 78%;
+    flex: 0 0 auto;
   }
 
   .st-dash-metric {
     flex: 1;
-    padding: 1.1rem;
+    padding: 0.65rem 0.7rem;
     background: #fff;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-card);
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.15rem;
     transition: border-color 0.35s ease, box-shadow 0.35s ease;
   }
 
   .st-dash-metric.is-active {
-    border-color: color-mix(in srgb, var(--st-accent-2) 45%, transparent);
-    box-shadow: 0 8px 22px -16px color-mix(in srgb, var(--st-accent-2) 65%, transparent);
+    border-color: color-mix(in srgb, var(--st-accent-2) 70%, #e2e2e2);
+    box-shadow: 0 8px 22px -16px rgba(13, 13, 13, 0.3);
   }
 
   .st-dash-val {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     font-weight: 600;
     letter-spacing: -0.01em;
-    color: color-mix(in srgb, var(--st-accent-2) 85%, var(--color-text-primary));
+    color: var(--st-accent-2);
     display: inline-flex;
     align-items: baseline;
     gap: 0.2rem;
   }
 
   .st-dash-arrow {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 500;
     color: var(--color-text-muted);
   }
 
   .st-dash-label {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: var(--color-text-muted);
   }
 
@@ -1755,7 +1813,8 @@ const iconPaths: Record<BulletIcon, string[]> = {
 
   @media (min-width: 768px) and (max-width: 1100px) {
     .st-illu--landing,
-    .st-illu--shop {
+    .st-illu--shop,
+    .st-illu--conv {
       aspect-ratio: 5 / 6;
     }
   }
@@ -1779,8 +1838,8 @@ const iconPaths: Record<BulletIcon, string[]> = {
     height: 20%;
     min-height: 2.4rem;
     border-radius: 8px;
-    background: linear-gradient(155deg, color-mix(in srgb, var(--st-accent-3) 14%, #fff) 0%, #fff 48%, color-mix(in srgb, var(--st-accent-3) 45%, #fff) 100%);
-    border: 1px solid color-mix(in srgb, var(--st-accent-3) 30%, #e2e2e2);
+    background: linear-gradient(155deg, color-mix(in srgb, var(--st-tint-3) 40%, #fff) 0%, #fff 48%, color-mix(in srgb, var(--st-tint-3) 85%, #fff) 100%);
+    border: 1px solid color-mix(in srgb, var(--st-tint-3) 70%, #e2e2e2);
   }
 
   .st-shop-slot--lines {
@@ -1804,9 +1863,11 @@ const iconPaths: Record<BulletIcon, string[]> = {
     width: 36%;
     height: 0.72rem;
     border-radius: 4px;
-    background: var(--st-accent-3);
+    background: var(--st-tint-3);
+    border: 1px solid rgba(13, 13, 13, 0.08);
     margin-block: 0.05rem 0.1rem;
     flex-shrink: 0;
+    align-self: center;
   }
 
   /* Mid band — product cards, not plain tiles */
@@ -1830,8 +1891,8 @@ const iconPaths: Record<BulletIcon, string[]> = {
     width: 100%;
     aspect-ratio: 1;
     border-radius: 6px;
-    border: 1px solid color-mix(in srgb, var(--st-accent-3) 24%, #e2e2e2);
-    background: linear-gradient(160deg, color-mix(in srgb, var(--st-accent-3) 14%, #fff) 0%, color-mix(in srgb, var(--st-accent-3) 35%, #fff) 100%);
+    border: 1px solid color-mix(in srgb, var(--st-tint-3) 55%, #e2e2e2);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--st-tint-3) 40%, #fff) 0%, color-mix(in srgb, var(--st-tint-3) 80%, #fff) 100%);
   }
 
   .st-shop-product-name {
@@ -1862,9 +1923,9 @@ const iconPaths: Record<BulletIcon, string[]> = {
     border-radius: 8px;
     top: 4%;
     right: 2%;
-    background: linear-gradient(155deg, color-mix(in srgb, var(--st-accent-3) 14%, #fff) 0%, #fff 48%, color-mix(in srgb, var(--st-accent-3) 45%, #fff) 100%);
-    border: 1px solid color-mix(in srgb, var(--st-accent-3) 30%, #e2e2e2);
-    box-shadow: 0 12px 28px -18px color-mix(in srgb, var(--st-accent-3) 50%, transparent);
+    background: linear-gradient(155deg, color-mix(in srgb, var(--st-tint-3) 40%, #fff) 0%, #fff 48%, color-mix(in srgb, var(--st-tint-3) 85%, #fff) 100%);
+    border: 1px solid color-mix(in srgb, var(--st-tint-3) 70%, #e2e2e2);
+    box-shadow: 0 12px 28px -18px color-mix(in srgb, var(--st-tint-3) 60%, transparent);
   }
 
   .st-shop-fly--lines {
@@ -1891,10 +1952,11 @@ const iconPaths: Record<BulletIcon, string[]> = {
     width: 2.9rem;
     height: 0.7rem;
     border-radius: 4px;
-    background: var(--st-accent-3);
+    background: var(--st-tint-3);
+    border: 1px solid rgba(13, 13, 13, 0.08);
     top: 38%;
     right: 2%;
-    box-shadow: 0 10px 22px -12px color-mix(in srgb, var(--st-accent-3) 60%, transparent);
+    box-shadow: 0 10px 22px -12px rgba(61, 61, 61, 0.35);
   }
 
   .st-shop-fly--mid {
@@ -1909,41 +1971,43 @@ const iconPaths: Record<BulletIcon, string[]> = {
     width: 1.45rem;
     height: 1.45rem;
     border-radius: 5px;
-    border: 1px solid color-mix(in srgb, var(--st-accent-3) 24%, #e2e2e2);
-    background: linear-gradient(160deg, color-mix(in srgb, var(--st-accent-3) 14%, #fff) 0%, color-mix(in srgb, var(--st-accent-3) 40%, #fff) 100%);
-    box-shadow: 0 10px 22px -16px color-mix(in srgb, var(--st-accent-3) 40%, transparent);
+    border: 1px solid color-mix(in srgb, var(--st-tint-3) 55%, #e2e2e2);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--st-tint-3) 40%, #fff) 0%, color-mix(in srgb, var(--st-tint-3) 85%, #fff) 100%);
+    box-shadow: 0 10px 22px -16px color-mix(in srgb, var(--st-tint-3) 55%, transparent);
   }
 
-  /* Live-sales cart FAB + toast stack float over the *outer scene*, not the
-     inner browser frame — the shop shrinks/shifts left on assembly (above)
-     to free this right-hand column for them. */
+  /* Cart FAB sits on the mockup's own corner — it's part of the site
+     chrome, so it hangs off .st-shop-frame (not the outer scene) and
+     travels with the mockup when it shrinks/shifts left on assembly. The
+     toast stack (below) is a separate overlay effect and stays put. */
   .st-shop-cart {
     position: absolute;
-    top: 4%;
-    right: 4%;
+    top: -0.85rem;
+    right: -0.85rem;
     z-index: 3;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border-radius: 99px;
-    background: var(--st-accent-3);
-    color: #fff;
-    box-shadow: 0 10px 22px -12px color-mix(in srgb, var(--st-accent-3) 60%, transparent);
+    background: var(--st-tint-3);
+    color: var(--color-text-primary);
+    box-shadow: 0 10px 22px -12px color-mix(in srgb, var(--st-tint-3) 60%, transparent);
   }
 
   .st-shop-cart-badge {
     position: absolute;
     top: -0.3rem;
     right: -0.3rem;
-    min-width: 1.1rem;
-    height: 1.1rem;
-    padding: 0 0.2rem;
+    min-width: 1.2rem;
+    height: 1.2rem;
+    padding: 0 0.25rem;
     border-radius: 99px;
     background: var(--color-text-primary);
+    border: 1.5px solid #fff;
     color: #fff;
-    font-size: 0.62rem;
+    font-size: 0.68rem;
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -1959,21 +2023,21 @@ const iconPaths: Record<BulletIcon, string[]> = {
     z-index: 3;
     display: flex;
     flex-direction: column-reverse;
-    gap: 0.4rem;
-    width: 40%;
-    min-width: 8.5rem;
-    max-width: 11.5rem;
+    gap: 0.55rem;
+    width: 46%;
+    min-width: 10.5rem;
+    max-width: 14rem;
     pointer-events: none;
   }
 
   .st-shop-toast {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.4rem 0.5rem;
-    border-radius: 10px;
+    gap: 0.55rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 12px;
     background: var(--color-surface);
-    border: 1px solid color-mix(in srgb, var(--st-accent-3) 35%, var(--color-border));
+    border: 1px solid color-mix(in srgb, var(--st-tint-3) 65%, var(--color-border));
     box-shadow: 0 12px 24px -16px rgba(13, 13, 13, 0.25);
     opacity: 0;
     visibility: hidden;
@@ -1985,17 +2049,22 @@ const iconPaths: Record<BulletIcon, string[]> = {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 1.35rem;
-    height: 1.35rem;
+    width: 1.7rem;
+    height: 1.7rem;
     border-radius: 99px;
-    background: color-mix(in srgb, var(--st-accent-3) 16%, #fff);
+    background: var(--st-tint-3);
     color: var(--st-accent-3);
+  }
+
+  .st-shop-toast-icon svg {
+    width: 14px;
+    height: 14px;
   }
 
   .st-shop-toast-text {
     flex: 1;
     min-width: 0;
-    font-size: 0.64rem;
+    font-size: 0.78rem;
     line-height: 1.25;
     font-weight: 500;
     color: var(--color-text-primary);
@@ -2006,9 +2075,9 @@ const iconPaths: Record<BulletIcon, string[]> = {
 
   .st-shop-toast-amount {
     flex-shrink: 0;
-    font-size: 0.68rem;
+    font-size: 0.82rem;
     font-weight: 700;
-    color: var(--st-accent-3);
+    color: var(--color-text-primary);
     white-space: nowrap;
   }
 </style>

@@ -31,7 +31,7 @@ Path: header Discuss / Telegram; free express-audit = conversation opener ⊥ pr
 - Визуальный язык: чистый Notion-like — воздух, typography-first, sharp/near-sharp corners, без card-soup. Ref: `docs/design/figma-hero.png`, `docs/design/figma-case.png`.
 - Шрифты: локальные `public/fonts` (OFL). Brand = **Source Serif 4** (headings) + **Source Sans 3** (body/UI). Один стек EN+RU (кириллица). ⊥ Inter/Roboto/system как primary. ⊥ commercial Neue Montreal на live. Demo-кейсы (hotel) могут свой stack (Bebas ?).
 - Hero (Figma): logo-block brand + centered H1 + short support (+ form). Height = content + pad, ⊥ force 100vh. Gap → next block (`--section-gap`) > hero inner gap. CTA в header («Discuss a project»).
-- Case page (Figma): 3 колонки Project | Task | Implementation + большой media stage (видео сайта: скролл + interaction). ⊥ статичный скриншот-as-only-proof когда есть video/demo.
+- Case page: Service (serif H) + project caption (link · roles) | Problem | Solution (+ Result ? real metric only) + media stage (видео сайта: скролл + interaction). Stack = case-page meta only, ∉ home cards. ⊥ статичный скриншот-as-only-proof когда есть video/demo. ⊥ fake Result / empty Result placeholder.
 - Motion: GSAP (+ ScrollTrigger) ! на brand UI. ≥2–3 intentional motions / key surface (hero entrance, scroll reveals, case media). `prefers-reduced-motion` → simplify/disable. ⊥ random noise / infinite spam.
 - Cards только если UI-interaction. ⊥ card-soup.
 - Холодный outreach: быстрый скан «кто / что / proof / write».
@@ -70,7 +70,7 @@ CSS vars ∈ `src/styles/global.css`:
 --color-blue-soft:   #62ACEF
 --color-blue-tint:   #E6F4FE
 --color-violet:      #6B5CE7  /* tab2 (deep-site) identity */
---color-lime:        #A9F795  /* tab3 (conversion) identity, replaces teal */
+--color-lime:        #61F185  /* tab3 (conversion) tint (pill bg). Accent (text/solid fill) = #0C972F, same hue, ∈ ServiceTabsSection.astro --st-accent-2, not a global token */
 --color-yellow:      #EBF151  /* tab4 (ecommerce) identity, replaces amber/mustard */
 --color-teal:        #2B9D99  /* legacy — CasePage `.roles` only, ⊥ new tab identity */
 --color-shell:       #ccd7fe  /* page frame */
@@ -79,7 +79,7 @@ CSS vars ∈ `src/styles/global.css`:
 --color-text-muted:  #6B6B6B
 --color-accent:      var(--color-blue)
 ```
-Accent roles: blue = primary action, ∀ real CTA button (header/modal/card) always blue|black, ⊥ tab-hue. Services-tabs family (blue/violet/lime/yellow, `ServiceTabsSection.astro`) = tab-pill identity only — light bg + black text, moderately bright, ⊥ разноцветно card content. Illustration fills use muted derivative (`--st-accent-N`) of tab hue, never raw tab-bright value on large solid fill/text. ⊥ coral (removed 2026-07, unused/legacy). ⊥ amber (planned #FFC85E never shipped, superseded by yellow above).
+Accent roles: blue = primary action, ∀ real CTA button (header/modal/card) always blue|black, ⊥ tab-hue. Services-tabs family (blue/violet/lime/yellow, `ServiceTabsSection.astro`) = tab-pill identity, light bg + black text on the pill itself. Each tab ! two-tier: `--st-tint-N` (light, pill bg + pale illustration washes) + `--st-accent-N` (dark/saturated enough to read as solid button/line/digit-text on white — see V2), same hue as tint-N **except yellow** — dark-yellow reads mustard/khaki (⊥), so tab4's `--st-accent-3` = `--color-text-primary` (black) instead. ⊥ coral (removed 2026-07, unused/legacy). ⊥ amber (planned #FFC85E never shipped, superseded by yellow above).
 
 ### Content grid
 - Inside `page-shell`: shared inline inset `--content-inline: clamp(1.5rem, 3.5vw, 2.75rem)` (services tabs edge = law).
@@ -97,24 +97,30 @@ Accent roles: blue = primary action, ∀ real CTA button (header/modal/card) alw
   5. Home interlude (hero→services): pin + scrub word/line reveal over backdrop (`#interlude`, `src/scripts/interlude.ts`)
   6. Services tab1 (`fast-landing`): browser-assemble (`src/scripts/landing-assemble.ts`). Start ! after stage fully on screen. Autoloop while tab1 active.
   7. Services tab2 (`deep-site`): 9 depth steps + rising bar chart (`src/scripts/deep-assemble.ts`). Steps highlight 01→09 then all-lit hold; bars grow each step. Violet tab accent. ⊥ Conversion/CR labels (tab3). Gate + reduced-motion → static all-lit + max bars.
-  8. Services tab3 (`conversion`): redesign-story browser (`src/scripts/conv-assemble.ts`). Shortened tab1 chassis ⊥ banner row (5 slots: hero/lines/mid/cta/foot). Each slot morphs dull→lime one at a time, paired 1:1 with a metric count-up (hero→Bounce↓, lines→Conversion rate↑, mid→ROI↑, cta→Leads↑); `foot` = hold beat, all landed. Lime accent only (`--st-accent-2`, muted derivative of `#A9F795`, replaces teal); direction via arrow ↑/↓, ⊥ red/green mixed colors. Gate + reduced-motion → static all-after + metrics at target.
-  9. Services tab4 (`ecommerce`): tab1 chassis reused verbatim (fly+dock, 4 parts: hero/lines/mid/cta, ⊥ foot/banner) via `src/scripts/store-assemble.ts`; mid = 3 product cards (img+price) not plain tiles. Yellow accent (`--st-accent-3`, muted derivative of `#EBF151` — raw bright value stays tab-pill only, ⊥ mustard/dirty tone). After assembly: 3 live-sale toasts pop near a corner cart FAB, badge ticks 0→3, then fade→reset→reassemble loop. Gate + reduced-motion → static assembled + badge at 3, no toasts.
+  8. Services tab3 (`conversion`): redesign-story browser (`src/scripts/conv-assemble.ts`). Shortened tab1 chassis ⊥ banner row (5 slots: hero/lines/mid/cta/foot), each slot's turn paired 1:1 with a metric count-up (hero→Bounce↓, lines→Conversion rate↑, mid→ROI↑, cta→Leads↑); `foot` = hold beat, all landed. Color follows tab1's own split, ⊥ "every slot morphs color" — hero (wash) + mid (tile wash) + cta (solid) = lime (`--st-tint-2` `#61F185` wash / `--st-accent-2` `#0C972F` solid, same hue); `lines` + `foot-title`/`foot-line`(+`--short`) = plain neutral gray always, before AND after (text-line mockups, ≡ tab1's `.st-slot--lines`/`.st-foot-title`/`.st-foot-line`/`.st-foot-line--short` — never brand-colored, no tab1 `.st-foot-btn` equivalent here so foot has nothing to color). Metric-number (`.st-dash-val`) text = `--st-accent-2`. Direction via arrow ↑/↓, ⊥ red/green mixed colors. Scene (`.st-illu--conv`) = same outer box as tab1 (`.st-illu--landing`: `--st-sq` + aspect `6/7`); browser + metrics both `width: 78%` ≡ `.st-browser--sq`. ⊥ wider full-column stretch. Gate + reduced-motion → static all-after + metrics at target.
+  9. Services tab4 (`ecommerce`): tab1 chassis reused verbatim (fly+dock, 4 parts: hero/lines/mid/cta, ⊥ foot/banner) via `src/scripts/store-assemble.ts`; mid = 6 product cards (img+name+price), 2 rows of 3. Cart FAB lives ∈ `.st-shop-frame` (wraps mockup + FAB together) so it travels with the mockup's shrink/shift-left on assembly, ⊥ float fixed against outer scene. Yellow — `--st-tint-3` (`#EBF151`) = pill/pale wash + cta bar/fly solid fill; `--st-accent-3` = `--color-text-primary` (black, ⊥ same-hue-but-darker like tab3 — dark yellow reads mustard/khaki, rejected) = cart-icon glyph + toast-icon glyph (both on solid tint-3 bg, ≡ same recipe — B6: a pale-tint bg + tint-3 glyph was tried for the toast icon and blended into itself, reverted to match the cart's already-working solid-bg/black-glyph pair). Toast card (`.st-shop-toast`) sized up for readability (icon 1.7rem, text 0.78rem, amount 0.82rem). After assembly: 5 live-sale toasts pop near the corner cart FAB, badge ticks up, then fade→reset→reassemble loop. Gate + reduced-motion → static assembled + badge at target, no toasts.
 - ⊥ animate everything. Intention > quantity.
 - `gsap.matchMedia` + `prefers-reduced-motion: reduce` → instant/opacity-only; interlude → no pin/scrub, static frame + text visible; landing-assemble → static finished site, no loop; deep-assemble → static final steps+bars.
+
+### Services scroll rails
+- Desktop pin scroll: `.st-section` height = N rail-units × `100vh` (sticky `.st-stage` pinned inside); a scroll `onScroll` picks whichever `.st-rail`'s center is nearest viewport center → sets active tab (`src/components/ServiceTabsSection.astro` inline script).
+- Last rail (tab4, `.st-rail--last`) = `flex: 1.5` (section total `4.5 × 100vh`, ⊥ `4×`) — a hard/fast scroll flick that cleanly carries someone tab1→2→3 needs noticeably more distance to also clear tab4, so it can't fly straight through the last tab into the next section (cases) without a visible pause on it (bug: tab4 was getting skipped entirely on fast scroll — B7).
 
 ### Services tabs (home right viz)
 - Tab1 `viz-browser`: scene ∈ right column (aspect ~6/7). Parts = hero / lines / CTA / mid squares / foot / blue banner. Coral ≤ 1 accent. ⊥ compress.
 - Tab2 `viz-analytics`: compact numbered list (business→audience→competitors→positioning→path→structure→copy→design→build) + clean rising bars. EN+RU labels. ⊥ Conversion label.
-- Tab3 `viz-dashboard`: redesign-story browser (shortened tab1 chassis, no banner row) + 2×2 metric cards (Bounce / Conversion rate / ROI / Leads), teal accent, count-up synced per slot. See motion §7-8 above.
-- Tab4 `viz-store`: tab1 chassis reused (hero/lines/mid/cta), mid = product cards, amber accent + live-sale toasts + cart badge. See motion §9 above. Mobile &lt;768: viz hidden (current).
+- Tab3 `viz-dashboard`: redesign-story browser (shortened tab1 chassis, no banner row) + 2×2 metric cards (Bounce / Conversion rate / ROI / Leads), lime accent, count-up synced per slot. See motion §7-8 above.
+- Tab4 `viz-store`: tab1 chassis reused (hero/lines/mid/cta), mid = product cards, yellow accent + live-sale toasts + cart badge (FAB rides mockup corner ∈ `.st-shop-frame`). See motion §9 above. Mobile &lt;768: viz hidden (current).
 
 ### Home IA
 - Order: hero → **interlude** (manifesto / about beat) → services → cases → approach → discuss CTA
 - Interlude = pin mid-viewport: stage `100svh`, frame centered with `--section-gap` top+bottom + `--content-inline` sides. Width/height screen-fluid (`calc(100svh - 2*section-gap)` × content width). `border-radius: var(--radius-media)`, cover, asset `simulator_backdrop.webp`. ⊥ fixed px media box. Cite V7.
 
 ### Case layout (ref `docs/design/figma-case.png`)
-- Top grid 3 cols: Project (name + link) | Task | Implementation — labels muted, values strong
-- Below: large rounded media stage (`--color-blue-tint` / soft gray fill) → **screen-recording / interactive video** of site (scroll + click). Poster frame while loading.
+- Top: Service (serif, main H) + caption `for`/`для` Project (link) · roles; then 3-col Problem | Solution | (Result under Solution when metric ∃)
+- Stack line (Clean code / Yandex Kit / …) = case page only, muted meta under caption. ⊥ home cards
+- Result ? only real number (Honesty > volume). ⊥ invent / empty placeholder row
+- Below: large rounded media stage → **screen-recording / interactive video** of site (scroll + click). Poster frame while loading.
 - Optional: link opens live URL | immersive demo
 
 ### Brand / tech
@@ -125,7 +131,7 @@ Accent roles: blue = primary action, ∀ real CTA button (header/modal/card) alw
 
 ## §V Invariants
 V1: Nav cold = Cases | Review | Contacts + Discuss CTA (+ lang). Blog/paid-audit ∉ nav. `/code` URL ok, ∉ primary nav.
-V2: Brand colors = Notion set + tab family (§I). Primary `#0274DE` ! ∀ real CTA. Tab identity (blue/violet/lime/yellow) ! bg-only on pills, light + moderately bright; illustration accents ! muted (`--st-accent-N`, color-mix ≤80% vs raw), ⊥ raw tab-bright on large solid fill/text. ⊥ acid neon direct (`#9DFF20`/`#6EDB00`).
+V2: Brand colors = Notion set + tab family (§I). Primary `#0274DE` ! ∀ real CTA. ∀ tab ! two-tier pair: `--st-tint-N` (light, pill bg + pale wash, ~contrast 1-2 vs white — bg only) + `--st-accent-N` (dark/saturated, ≥3:1 vs white — solid buttons/bars/lines + digit/text color), same hue as tint-N *unless that hue has no readable dark variant* (yellow → mustard/khaki; there use `--color-text-primary` black instead — B3). ⊥ accent ≡ tint (too light to read as line/digit — B1/B2 cause was a badly *chosen* 2nd shade — muddy hue or copy-of-tint — not the 2-tier idea itself). ⊥ acid neon direct (`#9DFF20`/`#6EDB00`).
 V3: Hero = Figma type-led: brand logo-block + 1 H1 + 1 support + See-cases cue. Header holds primary CTA. ⊥ pricing/stats/audit-sim/dashboard в hero.
 V4: Home/cases показывают реальные работы. Media stage prefer video of site interaction over still-only. ⊥ placeholder B2B/SaaS выдумки.
 V5: Brand type = Source Serif 4 (headings) + Source Sans 3 (body/UI), local woff2. ≠ Inter/Roboto/Arial/system как primary. EN+RU same stack.
@@ -138,7 +144,7 @@ V11: Brand UI ! EN+RU паритет. Default EN. Auto locale: cookie → client
 V12: Manual lang switch ! persist cookie + twin URL. Geo ⊥ override cookie. IP API ≤ 1× / visitor until cookie set.
 V13: `html[lang]` + hreflang корректны ∀ bilingual page.
 V14: Один static build → reg.ru; `.ru` + `.com` (когда купишь) = same site.
-V15: Case page structure = Project | Task | Implementation + media stage (video).
+V15: Case structure = Service (H) + project caption | Problem | Solution (+ Result ? metric) + media stage (video). Stack = case-page only.
 V16: GSAP motion on brand surfaces; honor `prefers-reduced-motion`. ≥2 intentional motions on home.
 V17: Single-sentence UI fragments (cards, labels, subheads, short leads) ⊥ trailing period when no following sentence.
 V18: Agent ! treat `SPEC.md` as source of truth for scope/IA/type/copy spine. Code explore only for narrow fix or SPEC drift.
@@ -156,7 +162,7 @@ V19: **Phase gate** — Phase 2 (blog nav, expand services pages, more cases) �
 | T3 | x | Nav = Figma (Cases/Review/Contacts + Discuss); hide blog/audit | V1,V6 |
 | T4 | x | Rebuild home to Figma hero (+ EN copy) | V3,V4,V6,V11,V16 |
 | T5 | x | Brand fonts: Source Serif 4 (heads) + Source Sans 3 (body), local woff2, EN=RU | V5 |
-| T6 | ~ | Case registry + case page template (3-col + video stage) | V4,V9,V15 |
+| T6 | ~ | Case registry + template: Service\|Problem\|Solution\|+Result + video; stack page-only | V4,V9,V15 |
 | T7 | . | Hotel case tree + brief wrapper | V10 |
 | T8 | . | Обновить `llms.txt` + README | §G |
 | T9 | . | later Phase2: `/audit` psych rebuild + i18n | V1,V19 |
@@ -173,7 +179,7 @@ V19: **Phase gate** — Phase 2 (blog nav, expand services pages, more cases) �
 | T20 | x | Services tab4 viz: store assemble (tab1 chassis) + sale toasts + cart badge | V2,V16,§I |
 | T20b | x | Serif heading letter-spacing (−0.01em; was grotesk −0.03em) | V5 |
 | T21 | . | Copy pass under serif: hero + section heads EN/RU (shorter lines, air) | V3,V11,V17 |
-| T22 | . | Case proof pass: role tags honest, poster frames, mobile video weight | V4,V9,V15 |
+| T22 | ~ | Case proof + copy: Service/Problem/Solution/Result (инфостиль); posters; role tags | V4,V9,V15,V17 |
 | T23 | . | Reviews section = real social proof (nav Review ! empty) | V1,§G |
 | T24 | . | Drop unused Neue Montreal from brand (keep only if hotel-demo needs) | V5 |
 | T25 | . | later: client IP geo soft-redirect (cookie wins) | V11–V12 |
@@ -183,7 +189,13 @@ V19: **Phase gate** — Phase 2 (blog nav, expand services pages, more cases) �
 ## §B Bugs
 | id | date | cause | fix |
 |----|------|-------|-----|
-| | | | |
+| B1 | 2026-07-25 | services-tabs lime/yellow accent split into 2 shades (bright tint + separately-derived muted/pale accent) → pale one invisible, dark one read dirty/mustard | 1st fix: collapsed to 1 hex/tab (accent≡tint) + forced text/bars black-or-gray. Superseded by B2 — see below |
+| B2 | 2026-07-25 | B1's "1 hex" fix made `--st-accent-2` = pale `--st-tint-2` (`#A9F795`→`#61F185`) — too light to draw as a line/digit (contrast ~1.3-1.5 vs white); downstream cta-bar/foot-line/metric-numbers got hardcoded to gray/black instead, drifting from tab1/tab2's own pattern (solid `--color-blue`/`--color-violet` accent used directly for buttons+active text) | V2: real fix was never "1 hex" — pick a proper 2nd hex, same hue as tint, dark/saturated enough for ≥3:1 vs white (`--st-accent-2` = `#27863F`, hue matches `--color-lime` `#61F185`). Applied to cta bar, foot-line, `.st-dash-val` digit text |
+| B3 | 2026-07-25 | Tab4 (yellow) had the same B2 gap: `--st-accent-3` ≡ `--st-tint-3`, cta bar/fly hardcoded gray | Yellow has no usable dark-but-still-yellow (reads mustard/khaki — stays ⊥ per §C). Set `--st-accent-3: var(--color-text-primary)` (black) as the tab's 2nd color instead of a same-hue derivative; fixed `.st-shop-toast-icon` (was bg:accent-3+color:text-primary → black-on-black) to bg:tint-3 + color:accent-3 |
+| B4 | 2026-07-25 | Over-corrected B2: colored tab3's `--lines` span + `--foot` title/line green too, "morphs dull→lime" (§I bullet 8) read as *every* slot recolors. But tab1 (the actual reference) only colors hero/mid/cta — its `.st-slot--lines`/`.st-foot-title`/`.st-foot-line` are plain gray always, only `.st-foot-btn` (a real button) gets `--color-blue` | Reverted lines/foot-title/foot-line to permanent neutral gray (no `.is-after` override) — matches tab1 exactly: text-line mockups ⊥ brand color, only hero/mid/cta (banner/tile/button) carry it. Amended §I bullet 8 |
+| B5 | 2026-07-25 | B3's fix set `--st-accent-3` = black, but tab4's hero/product-img/mid/fly/toast *washes* still read that same var at low % for their pale tint (`color-mix(accent-3 14%, #fff)` etc) — with accent-3 now black those washes turned pure grayscale, whole tab4 illustration looked gray. Separately, tab3's hero/mid washes used low-% mixes of the *dark* `--st-accent-2` (12-32%) instead of the *light* `--st-tint-2` directly, unlike tab1's pattern (uses `--color-blue-tint` directly) — read washed-out/muddy vs tab1's vivid blue. `--st-accent-2` itself (`#27863F`, S55%) also read dull/blackish next to tab1's saturated `#0274DE` | Tab4: swapped all wash-only `--st-accent-3` refs (hero/product-img/mid/fly/toast-border, ⊥ solid cta fill + toast-icon color, those stay black) → `--st-tint-3`, restoring yellow tint in washes. Tab3: hero/mid washes now mix `--st-tint-2` (was `--st-accent-2`) matching tab1's direct-tint recipe. Bumped `--st-accent-2` → `#0C972F` (S85%, brighter/more saturated, ⊥ black-mixed muddy read), still ≥3:1 vs white |
+| B6 | 2026-07-25 | Tab4 cta bar (`.st-shop-slot--cta`/`.st-shop-fly--cta`) fill flipped `--st-accent-3`(black)→`--st-tint-3`(yellow) on request, then toast-icon flipped bg `--st-tint-3`(solid)→28%-tint + glyph `--st-accent-3`(black)→`--st-tint-3` on the same "no black" ask — but glyph-on-28%-tint-bg is same hue at low contrast, bell icon blended into its own chip (unreadable), regressing the original black-on-black concern from B3 into a yellow-on-yellow one | Toast-icon reverted to bg `var(--st-tint-3)` (solid) + glyph `var(--st-accent-3)` (black) — matches `.st-shop-cart`'s already-working bg/glyph pair exactly. Cta bar fill stays yellow (that one has enough surrounding white/gray to read fine solid) |
+| B7 | 2026-07-25 | Services scroll-pin used 4 equal `100vh` rails (1 per tab) with plain nearest-rail-center `onScroll`, no minimum dwell — a hard/fast scroll flick could cross the whole tab4 rail's capture zone in one gesture and land past the section entirely, so tab4 (last tab, ecommerce) was never consciously seen. CSS `scroll-snap` was considered but rejected: this page already runs GSAP ScrollTrigger `pin:true` (interlude) and mixing native scroll-snap with ScrollTrigger pinning is a known conflict source (janky/incorrect pin recalculation) | Gave the last rail (`.st-rail--last`) `flex: 1.5` and bumped `.st-section` height `4×100vh → 4.5×100vh` — tab4 now needs ~50% more scroll distance to clear, so the same flick that comfortably crosses tabs 1→2→3 can no longer also skip tab4 unnoticed. Purely local to this section; no global scroll behavior touched |
 
 ## §Notes (context, not law)
 
@@ -192,7 +204,7 @@ v1 = done when ∀ true:
 1. **Visual** — Source Serif 4 / Source Sans 3 live EN+RU; tokens Notion; no lime; letter-spacing serif ≈ −0.01em; weight table: heads Serif 500, body/nav/btn Sans 400–500, logo Kirp Sans 300; hierarchy via family ⊥ weight spam.
 2. **Home cold path** — hero (H1 + support + cue) → interlude → services → cases (video proof) → approach → Review ! empty → Discuss CTA. Nav matches V1.
 3. **Marketing spine** — §G who/promise/proof/path readable on page (EN+RU parity); ⊥ draft gibberish / empty Review.
-4. **Cases** — ∀ featured: Project\|Task\|Implementation + working video (or honest demo link) + role tag; posters preferred; heavy mp4 compressed when feasible.
+4. **Cases** — ∀ featured: Service\|Problem\|Solution (+ Result ? metric) + working video (or honest demo link) + role tag; stack on case page only; posters preferred; heavy mp4 compressed when feasible.
 5. **i18n** — `/` EN + `/ru/...` parity for brand surfaces; lang cookie + switcher. Geo soft-redirect ? nice-to-have (T25), ⊥ block v1.
 6. **Ship** — `astro build` → `dist/` → reg.ru; no commercial Neue Montreal on brand live.
 ⊥ v1 scope: blog in nav, audit as product, `.com` canonical, Phase2 expansions.

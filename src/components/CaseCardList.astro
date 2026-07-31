@@ -18,17 +18,26 @@ const { locale, cases, caseBase } = Astro.props;
       <article class="case-card" data-animate="reveal">
         <a href={`${caseBase}${item.slug}/`} class="case-top">
           <div class="case-meta">
-            <p class="case-label">{t(locale, 'project')}</p>
-            <h3 class="case-name">{item.project}</h3>
+            <h3 class="case-service">{item.service[locale]}</h3>
+            <p class="case-project">
+              <span class="case-for">{t(locale, 'caseFor')}</span>{' '}
+              <span class="case-project-name">{item.project}</span>
+            </p>
             <p class="case-roles">{item.role.join(' · ')}</p>
           </div>
           <div class="case-meta">
-            <p class="case-label">{t(locale, 'task')}</p>
-            <p class="case-text">{item.task[locale]}</p>
+            <p class="case-label">{t(locale, 'problem')}</p>
+            <p class="case-text">{item.problem[locale]}</p>
           </div>
           <div class="case-meta">
-            <p class="case-label">{t(locale, 'implementation')}</p>
-            <p class="case-text">{item.implementation[locale]}</p>
+            <p class="case-label">{t(locale, 'solution')}</p>
+            <p class="case-text">{item.solution[locale]}</p>
+            {item.result && (
+              <div class="case-result">
+                <p class="case-label">{t(locale, 'result')}</p>
+                <p class="case-result-value">{item.result[locale]}</p>
+              </div>
+            )}
           </div>
         </a>
 
@@ -86,6 +95,8 @@ const { locale, cases, caseBase } = Astro.props;
     display: grid;
     gap: 1.25rem;
     padding: 1.85rem 1.6rem 1.4rem;
+    text-decoration: none;
+    color: inherit;
   }
 
   @media (min-width: 900px) {
@@ -96,17 +107,32 @@ const { locale, cases, caseBase } = Astro.props;
     }
   }
 
+  .case-service {
+    font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.7rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-block-end: 0.4rem;
+  }
+
+  .case-project {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-block-end: 0.35rem;
+    line-height: 1.4;
+  }
+
+  .case-for {
+    color: var(--color-text-muted);
+  }
+
+  .case-project-name {
+    color: var(--color-text-secondary);
+  }
+
   .case-label {
     font-size: 0.8rem;
     color: var(--color-text-muted);
     margin-block-end: 0.45rem;
-  }
-
-  .case-name {
-    font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.7rem);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    margin-block-end: 0.35rem;
   }
 
   .case-roles {
@@ -118,6 +144,17 @@ const { locale, cases, caseBase } = Astro.props;
     font-size: 1rem;
     color: var(--color-text-secondary);
     line-height: 1.5;
+  }
+
+  .case-result {
+    margin-block-start: 1rem;
+  }
+
+  .case-result-value {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.4;
   }
 
   .case-divider {

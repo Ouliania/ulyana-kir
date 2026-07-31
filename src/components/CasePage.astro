@@ -15,11 +15,12 @@ interface Props {
 
 const { locale, item } = Astro.props;
 const homeCases = locale === 'ru' ? '/ru/#cases' : '/#cases';
+const serviceTitle = item.service[locale];
 ---
 
 <Layout
-  title={`${item.project} — Case | Ulyana Kirp`}
-  description={item.task[locale]}
+  title={`${serviceTitle} — Case | Ulyana Kirp`}
+  description={item.problem[locale]}
   lang={locale}
 >
   <Header locale={locale} />
@@ -30,31 +31,50 @@ const homeCases = locale === 'ru' ? '/ru/#cases' : '/#cases';
       <div class="container case-stack">
         <div class="case-grid" data-animate="hero">
           <div class="col">
-            <p class="label">{t(locale, 'project')}</p>
-            <KineticText as="h1" class="project-name" text={item.project} />
+            <KineticText as="h1" class="service-name" text={serviceTitle} />
+            <p class="project-caption">
+              <span class="case-for">{t(locale, 'caseFor')}</span>{' '}
+              {
+                item.url ? (
+                  <a
+                    class="project-link"
+                    href={item.url}
+                    target={item.url.startsWith('http') ? '_blank' : undefined}
+                    rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  >
+                    {item.project}
+                  </a>
+                ) : (
+                  <span class="project-link muted">{item.project}</span>
+                )
+              }
+            </p>
+            <p class="roles">{item.role.join(' · ')}</p>
             {
-              item.url ? (
-                <a
-                  class="project-link"
-                  href={item.url}
-                  target={item.url.startsWith('http') ? '_blank' : undefined}
-                  rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                >
-                  {item.url.startsWith('http') ? t(locale, 'openLive') : t(locale, 'openDemo')} →
-                </a>
-              ) : (
-                <span class="project-link muted">{t(locale, 'linkSoon')}</span>
+              item.stack && (
+                <p class="stack-line">
+                  <span class="stack-label">{t(locale, 'stack')}</span>
+                  {': '}
+                  <span class="stack-value">{item.stack[locale]}</span>
+                </p>
               )
             }
-            <p class="roles">{item.role.join(' · ')}</p>
           </div>
           <div class="col">
-            <p class="label">{t(locale, 'task')}</p>
-            <p class="body-text">{item.task[locale]}</p>
+            <p class="label">{t(locale, 'problem')}</p>
+            <p class="body-text">{item.problem[locale]}</p>
           </div>
           <div class="col">
-            <p class="label">{t(locale, 'implementation')}</p>
-            <p class="body-text">{item.implementation[locale]}</p>
+            <p class="label">{t(locale, 'solution')}</p>
+            <p class="body-text">{item.solution[locale]}</p>
+            {
+              item.result && (
+                <div class="result-block">
+                  <p class="label">{t(locale, 'result')}</p>
+                  <p class="result-value">{item.result[locale]}</p>
+                </div>
+              )
+            }
           </div>
         </div>
 
@@ -158,21 +178,29 @@ const homeCases = locale === 'ru' ? '/ru/#cases' : '/#cases';
     margin-block-end: 0.6rem;
   }
 
-  .project-name {
+  .service-name {
     font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.4rem);
     font-weight: 500;
     letter-spacing: 0;
     line-height: 1.15;
-    margin-block-end: 0.75rem;
+    margin-block-end: 0.65rem;
     justify-content: flex-start;
   }
 
+  .project-caption {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin-block-end: 0.5rem;
+    line-height: 1.4;
+  }
+
+  .case-for {
+    color: var(--color-text-muted);
+  }
+
   .project-link {
-    display: inline-block;
     color: var(--color-blue);
     font-weight: 500;
-    font-size: 0.95rem;
-    margin-block-end: 0.75rem;
   }
 
   .project-link.muted {
@@ -183,12 +211,38 @@ const homeCases = locale === 'ru' ? '/ru/#cases' : '/#cases';
   .roles {
     font-size: 0.85rem;
     color: var(--color-teal);
+    margin-block-end: 0.5rem;
+  }
+
+  .stack-line {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-block-start: 0.35rem;
+  }
+
+  .stack-label {
+    color: var(--color-text-muted);
+  }
+
+  .stack-value {
+    color: var(--color-text-secondary);
   }
 
   .body-text {
     font-size: 1.05rem;
     line-height: 1.55;
     color: var(--color-text-primary);
+  }
+
+  .result-block {
+    margin-block-start: 1.15rem;
+  }
+
+  .result-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--color-text);
   }
 
   .media-stage {
