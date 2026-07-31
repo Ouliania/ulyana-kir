@@ -431,6 +431,10 @@ function siteHost(url: string): string {
     margin: 0;
   }
 
+  .cs-index [data-cs-index-cur] {
+    color: var(--color-blue);
+  }
+
   .cs-index-sep {
     margin-inline: 0.2rem;
     opacity: 0.6;
@@ -647,6 +651,9 @@ function siteHost(url: string): string {
   }
 
   .cs-bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
     font-family: var(--font-body);
     font-size: 1rem;
     font-weight: 400;
@@ -654,6 +661,21 @@ function siteHost(url: string): string {
     line-height: 1.55;
     margin: 0;
     padding: 0;
+  }
+
+  /* Three tiny blue dots as list marker */
+  .cs-bullet::before {
+    content: '';
+    flex-shrink: 0;
+    width: 3px;
+    height: 3px;
+    margin-block-start: 0.65em;
+    border-radius: 50%;
+    background: var(--color-blue);
+    box-shadow:
+      5px 0 0 var(--color-blue),
+      10px 0 0 var(--color-blue);
+    margin-inline-end: 10px;
   }
 
   .cs-field--done .cs-bullet {
