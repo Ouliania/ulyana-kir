@@ -86,19 +86,16 @@ const methods = [
 
     <section id="services" class="services">
       <div class="services-header">
-        <div class="container">
-          <h2 class="section-heading">{t(locale, 'whatIDo')}</h2>
-        </div>
+        <h2 class="section-heading">{t(locale, 'whatIDo')}</h2>
       </div>
       <ServiceTabsSection locale={locale} />
     </section>
 
-    <section id="cases" class="cases">
-      <div class="container cases-container">
-        <div class="case-list">
-          <CaseCardList locale={locale} cases={featured} caseBase={caseBase} />
-        </div>
+    <section id="cases" class="cases-block">
+      <div class="cases-header">
+        <h2 class="section-heading">{t(locale, 'cases')}</h2>
       </div>
+      <CaseCardList locale={locale} cases={featured} caseBase={caseBase} />
     </section>
 
     <section id="reviews" class="section-padding reviews">
@@ -135,8 +132,10 @@ const methods = [
     import { initDeepAssemble } from '../scripts/deep-assemble';
     import { initConvAssemble } from '../scripts/conv-assemble';
     import { initStoreAssemble } from '../scripts/store-assemble';
+    import { initCasesSnap } from '../scripts/cases-snap';
     initBrandMotion();
     initInterlude();
+    initCasesSnap();
     initMagicSurfaces();
     initWorkFlowBeams();
     initHeroForm();
@@ -332,12 +331,32 @@ const methods = [
     padding-block: 5rem 0;
   }
 
+  /* Same left edge as ServiceTabs / page content (! centered .container) */
+  .services-header,
+  .cases-header {
+    padding-inline: var(--content-inline);
+  }
+
   .services-header {
     margin-block-end: 2.5rem;
   }
 
-  .services-header .container {
-    max-inline-size: 1180px;
+  .cases-block {
+    background: var(--color-surface);
+  }
+
+  .cases-header {
+    padding-block: 4rem 1.25rem;
+  }
+
+  .services-header .section-heading,
+  .cases-header .section-heading {
+    font-family: var(--font-heading);
+    font-size: var(--fs-h2);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0;
   }
 
   /* === reused from previous === */
@@ -361,21 +380,6 @@ const methods = [
   :global(html[lang='ru']) .reviews-inner .kinetic,
   :global(html[lang='ru']) .cta-inner .kinetic {
     line-height: 1.08;
-  }
-
-  .cases {
-    background: transparent;
-    padding-block: 1rem 5rem;
-  }
-
-  .cases-container {
-    max-inline-size: 1180px;
-  }
-
-  .case-list {
-    display: flex;
-    flex-direction: column;
-    gap: 100px;
   }
 
   .reviews-inner .section-heading,

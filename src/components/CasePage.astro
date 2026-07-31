@@ -6,7 +6,7 @@ import PageShell from './PageShell.astro';
 import InteractiveHoverButton from './InteractiveHoverButton.astro';
 import KineticText from './KineticText.astro';
 import { t, type Locale } from '../i18n/ui';
-import type { CaseStudy } from '../data/cases';
+import { caseLocalized, type CaseStudy } from '../data/cases';
 
 interface Props {
   locale: Locale;
@@ -14,13 +14,14 @@ interface Props {
 }
 
 const { locale, item } = Astro.props;
+const copy = caseLocalized(item, locale);
 const homeCases = locale === 'ru' ? '/ru/#cases' : '/#cases';
-const serviceTitle = item.service[locale];
+const serviceTitle = copy.tag;
 ---
 
 <Layout
   title={`${serviceTitle} — Case | Ulyana Kirp`}
-  description={item.problem[locale]}
+  description={copy.problem}
   lang={locale}
 >
   <Header locale={locale} />
@@ -42,13 +43,14 @@ const serviceTitle = item.service[locale];
                     target={item.url.startsWith('http') ? '_blank' : undefined}
                     rel={item.url.startsWith('http') ? 'noopener noreferrer' : undefined}
                   >
-                    {item.project}
+                    {item.projectName}
                   </a>
                 ) : (
-                  <span class="project-link muted">{item.project}</span>
+                  <span class="project-link muted">{item.projectName}</span>
                 )
               }
             </p>
+            <p class="project-expanded">{copy.project}</p>
             <p class="roles">{item.role.join(' · ')}</p>
             {
               item.stack && (
@@ -61,17 +63,40 @@ const serviceTitle = item.service[locale];
             }
           </div>
           <div class="col">
-            <p class="label">{t(locale, 'problem')}</p>
-            <p class="body-text">{item.problem[locale]}</p>
+            <p class="label">{t(locale, 'problemWas')}</p>
+            <p class="body-text">{copy.problem}</p>
           </div>
           <div class="col">
-            <p class="label">{t(locale, 'solution')}</p>
-            <p class="body-text">{item.solution[locale]}</p>
+            <p class="label">{t(locale, 'solutionDone')}</p>
+            <ul class="solution-list">
+              {copy.solution.map((step) => (
+                <li>{step}</li>
+              ))}
+            </ul>
             {
-              item.result && (
+              copy.metrics.length > 0 && (
                 <div class="result-block">
                   <p class="label">{t(locale, 'result')}</p>
-                  <p class="result-value">{item.result[locale]}</p>
+                  <ul class="metric-list">
+                    {copy.metrics.map((m) => (
+                      <li class="metric-item">
+                        <span class="metric-value">{m.value}</span>
+                        <span class="metric-label">{m.label}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            }
+            {
+              copy.metrics.length === 0 && copy.result.length > 0 && (
+                <div class="result-block">
+                  <p class="label">{t(locale, 'result')}</p>
+                  <ul class="result-list">
+                    {copy.result.map((line) => (
+                      <li>{line}</li>
+                    ))}
+                  </ul>
                 </div>
               )
             }
@@ -118,80 +143,64 @@ const serviceTitle = item.service[locale];
 
     <section class="case-next">
       <div class="container next-inner" data-animate="reveal">
-        <a href={homeCases} class="back-link">← {t(locale, 'backCases')}</a>
-        <InteractiveHoverButton href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" label={t(locale, 'discuss')} />
+        <a href={homeCases} class="back-link">{t(locale, 'backCases')}</a>
+        {
+          item.url?.startsWith('http') && (
+            <InteractiveHoverButton
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              label={t(locale, 'openLive')}
+            />
+          )
+        }
       </div>
     </section>
   </main>
 
   <Footer locale={locale} />
   </PageShell>
-
-  <script>
-    import { initBrandMotion } from '../scripts/motion';
-    import { initMagicSurfaces } from '../scripts/magic-surface';
-    initBrandMotion();
-    initMagicSurfaces();
-  </script>
 </Layout>
 
 <style>
   .case-page {
-    padding-block-start: 0;
+    background: transparent;
   }
 
   .case-first {
-    min-height: calc(100svh - var(--header-height) - 2rem);
-    display: flex;
-    align-items: stretch;
-    padding-block: 2rem 1.5rem;
+    padding-block: calc(var(--header-height) + 1.5rem) var(--section-gap);
   }
 
   .case-stack {
     display: flex;
     flex-direction: column;
-    gap: 0;
-    width: 100%;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-card);
-    overflow: hidden;
-    background: var(--color-surface);
+    gap: 2rem;
   }
 
   .case-grid {
     display: grid;
-    gap: 1.5rem;
-    padding: 2rem clamp(1.25rem, 3vw, 2rem) 1.5rem;
+    gap: 1.75rem;
   }
 
   @media (min-width: 900px) {
     .case-grid {
-      grid-template-columns: 1fr 1.15fr 1.15fr;
-      gap: 2.5rem;
+      grid-template-columns: 1.1fr 1.15fr 1.15fr;
+      gap: 2.25rem;
       align-items: start;
     }
   }
 
-  .label {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    margin-block-end: 0.6rem;
-  }
-
   .service-name {
-    font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.4rem);
+    font-size: clamp(1.6rem, 1.3rem + 1.2vw, 2.2rem);
     font-weight: 500;
-    letter-spacing: 0;
-    line-height: 1.15;
-    margin-block-end: 0.65rem;
-    justify-content: flex-start;
+    letter-spacing: -0.01em;
+    margin-block-end: 0.5rem;
   }
 
   .project-caption {
     font-size: 0.95rem;
     color: var(--color-text-muted);
     margin-block-end: 0.5rem;
-    line-height: 1.4;
   }
 
   .case-for {
@@ -199,109 +208,140 @@ const serviceTitle = item.service[locale];
   }
 
   .project-link {
-    color: var(--color-blue);
-    font-weight: 500;
+    color: var(--color-text-secondary);
   }
 
   .project-link.muted {
     color: var(--color-text-muted);
-    font-weight: 400;
+  }
+
+  .project-expanded {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--color-text-secondary);
+    margin-block-end: 0.55rem;
   }
 
   .roles {
     font-size: 0.85rem;
-    color: var(--color-teal);
-    margin-block-end: 0.5rem;
+    color: var(--color-teal, var(--color-blue));
+    margin-block-end: 0.45rem;
   }
 
   .stack-line {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    margin-block-start: 0.35rem;
-  }
-
-  .stack-label {
+    font-size: 0.82rem;
     color: var(--color-text-muted);
   }
 
-  .stack-value {
-    color: var(--color-text-secondary);
+  .label {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-block-end: 0.45rem;
   }
 
   .body-text {
-    font-size: 1.05rem;
-    line-height: 1.55;
-    color: var(--color-text-primary);
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+  }
+
+  .solution-list {
+    margin: 0;
+    padding-inline-start: 1.1rem;
+    list-style: disc;
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .solution-list li {
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--color-text-secondary);
   }
 
   .result-block {
     margin-block-start: 1.15rem;
   }
 
-  .result-value {
-    font-size: 1.1rem;
+  .result-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .result-list li {
+    font-size: 1.05rem;
     font-weight: 500;
-    line-height: 1.45;
     color: var(--color-text);
+    line-height: 1.4;
+  }
+
+  .metric-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .metric-value {
+    font-family: var(--font-heading);
+    font-size: clamp(1.75rem, 1.4rem + 1vw, 2.25rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--color-blue);
+    line-height: 1;
+  }
+
+  .metric-label {
+    font-size: 0.88rem;
+    color: var(--color-text-muted);
   }
 
   .media-stage {
-    border-top: 1px solid var(--color-border);
-    background: transparent;
-    min-height: 0;
-    padding: 1.5rem clamp(1.25rem, 3vw, 2rem) 1.75rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 100%;
   }
 
   .media-video {
     width: 100%;
-    max-width: 100%;
     aspect-ratio: 16 / 9;
-    height: auto;
-    max-height: min(48vh, 480px);
     object-fit: contain;
-    object-position: center;
-    display: block;
-    border-radius: 8px;
+    border-radius: var(--radius-media, 8px);
     background: transparent;
   }
 
   .media-placeholder {
-    width: 100%;
     aspect-ratio: 16 / 9;
-    max-height: min(48vh, 480px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-items: center;
     gap: 1rem;
-    padding: 2rem;
-    text-align: center;
-    color: var(--color-text-muted);
     border: 1px dashed var(--color-border);
-    border-radius: 8px;
+    border-radius: var(--radius-media, 8px);
+    color: var(--color-text-muted);
   }
 
   .case-next {
-    padding-block: 1.5rem 3rem;
+    padding-block: 0 var(--section-gap);
   }
 
   .next-inner {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     align-items: center;
     gap: 1rem;
   }
 
   .back-link {
-    color: var(--color-text-secondary);
-    font-weight: 500;
-  }
-
-  .back-link:hover {
-    color: var(--color-blue);
+    color: var(--color-text-muted);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 </style>

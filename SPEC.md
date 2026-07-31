@@ -48,8 +48,14 @@ Path: header Discuss / Telegram; free express-audit = conversation opener ⊥ pr
 - hreflang + sitemap ∀ bilingual page (оба домена `.ru` / `.com` когда оба live)
 - UI switcher EN|RU → cookie `lang` + twin URL
 - geo на reg.ru: client script first-visit → IP API (напр. `ipapi.co` / `ipwho.is` free) → set cookie → redirect once. ⊥ spam API каждый pageview.
-- `src/i18n/{en,ru}.ts` dict для brand copy
+- Brand UI dict: `src/i18n/ui.ts`. Case body copy: `src/i18n/cases.ts` (nested keys).
 - middleware сейчас: Typograf only — locale detect на static = client; Typograf ru/en по locale
+
+### Strict i18n (brand + cases)
+1. ⊥ hardcoded user-facing strings ∈ components. ∀ labels/copy → `t()` | case dict lookup.
+2. **Author RU first** ∈ master locale (`ui.ru` / `cases.ru`) — source of truth for new/changed copy. Route default still `en` (V11).
+3. After RU keys change → immediately sync twin keys ∈ `en` (parity). ⊥ leave EN stale/missing.
+4. Key names = nested semantic by feature: `cases.progolos.problem`, `case.problemWas` (dot path / nested object).
 
 ### Host / domains
 - build: static `dist/` → upload reg.ru
@@ -117,11 +123,13 @@ Accent roles: blue = primary action, ∀ real CTA button (header/modal/card) alw
 - Interlude = pin mid-viewport: stage `100svh`, frame centered with `--section-gap` top+bottom + `--content-inline` sides. Width/height screen-fluid (`calc(100svh - 2*section-gap)` × content width). `border-radius: var(--radius-media)`, cover, asset `simulator_backdrop.webp`. ⊥ fixed px media box. Cite V7.
 
 ### Case layout (ref `docs/design/figma-case.png`)
-- Top: Service (serif, main H) + caption `for`/`для` Project (link) · roles; then 3-col Problem | Solution | (Result under Solution when metric ∃)
-- Stack line (Clean code / Yandex Kit / …) = case page only, muted meta under caption. ⊥ home cards
-- Result ? only real number (Honesty > volume). ⊥ invent / empty placeholder row
-- Below: large rounded media stage → **screen-recording / interactive video** of site (scroll + click). Poster frame while loading.
-- Optional: link opens live URL | immersive demo
+- **Home cases stage** (`#cases`): sticky opaque stage + rails. Pin `top: header-height`, height = content (`max-height: 100svh − header`) ⊥ full-viewport empty pad. Desktop ! match Superdesign **Balanced Magazine Overlap** (`982a80e2`, from C `8bb32640`): grid `1.15fr/0.85fr`, **16:9 media LEFT** (video edge-to-edge, ⊥ tinted plaque under video) + **Result/metrics**, **structured copy RIGHT** (service+chips row → project → live host → barrier/intervention; even gaps). Dots+index chrome = LEFT above media. Metrics/result only when real. ⊥ giant overlapping tag on media. ⊥ watermark index digits on video. ⊥ case deep-link CTA while write-ups deferred (`showCaseDeepLink`).
+- Home copy spine: Tag → Project → Problem (Was) → Solution (Done) → Result metrics? | qualitative. Role honesty kept. Stack = case page only.
+- Case page: Tag/Service (serif H) + project caption (link · roles) | Problem | Solution (+ Result) + media stage. May reuse expanded fields.
+- Result ? only real number when claim metric (Honesty > volume). ⊥ invent / empty placeholder row.
+- Media: video stage preferential; poster while loading. Optional live URL | immersive demo.
+- Mobile &lt;900: pin off → stacked cases (readable), same copy spine.
+- v1 home featured while redesign lands: **progolos** + **grom-bike** + **creator**; other registry cases wait approval (T28).
 
 ### Brand / tech
 - Tokens + motion scripts under `src/styles/`, `src/scripts/motion.ts` (?)
@@ -144,7 +152,8 @@ V11: Brand UI ! EN+RU паритет. Default EN. Auto locale: cookie → client
 V12: Manual lang switch ! persist cookie + twin URL. Geo ⊥ override cookie. IP API ≤ 1× / visitor until cookie set.
 V13: `html[lang]` + hreflang корректны ∀ bilingual page.
 V14: Один static build → reg.ru; `.ru` + `.com` (когда купишь) = same site.
-V15: Case structure = Service (H) + project caption | Problem | Solution (+ Result ? metric) + media stage (video). Stack = case-page only.
+V15: Case structure = Tag/Service (H) + project caption | Problem (Was) | Solution (Done, list OK) (+ Result ? metric) + media stage (video). Home desktop = sticky stage, video|copy split, content-layer crossfade on scroll rails ⊥ whole-card scroll-away. Stack = case-page only.
+V20: ∀ user-facing copy ∈ i18n dicts. Author RU first → sync EN. Nested semantic keys. ⊥ hardcoded strings ∈ components.
 V16: GSAP motion on brand surfaces; honor `prefers-reduced-motion`. ≥2 intentional motions on home.
 V17: Single-sentence UI fragments (cards, labels, subheads, short leads) ⊥ trailing period when no following sentence.
 V18: Agent ! treat `SPEC.md` as source of truth for scope/IA/type/copy spine. Code explore only for narrow fix or SPEC drift.
@@ -185,6 +194,8 @@ V19: **Phase gate** — Phase 2 (blog nav, expand services pages, more cases) �
 | T25 | . | later: client IP geo soft-redirect (cookie wins) | V11–V12 |
 | T26 | . | later Phase2: dedicated service pages polish EN+RU parity | V11,V19 |
 | T27 | . | later Phase2: expand case registry (more real works + video) | V4,V9,V15,V19 |
+| T28 | ~ | Home cases: cinema-band A + B readable copy; metrics only when real | V4,V15,V16,V20 |
+| T29 | . | After T28 OK: migrate remaining featured cases to new panel format | V4,V15,V19 |
 
 ## §B Bugs
 | id | date | cause | fix |
@@ -196,6 +207,7 @@ V19: **Phase gate** — Phase 2 (blog nav, expand services pages, more cases) �
 | B5 | 2026-07-25 | B3's fix set `--st-accent-3` = black, but tab4's hero/product-img/mid/fly/toast *washes* still read that same var at low % for their pale tint (`color-mix(accent-3 14%, #fff)` etc) — with accent-3 now black those washes turned pure grayscale, whole tab4 illustration looked gray. Separately, tab3's hero/mid washes used low-% mixes of the *dark* `--st-accent-2` (12-32%) instead of the *light* `--st-tint-2` directly, unlike tab1's pattern (uses `--color-blue-tint` directly) — read washed-out/muddy vs tab1's vivid blue. `--st-accent-2` itself (`#27863F`, S55%) also read dull/blackish next to tab1's saturated `#0274DE` | Tab4: swapped all wash-only `--st-accent-3` refs (hero/product-img/mid/fly/toast-border, ⊥ solid cta fill + toast-icon color, those stay black) → `--st-tint-3`, restoring yellow tint in washes. Tab3: hero/mid washes now mix `--st-tint-2` (was `--st-accent-2`) matching tab1's direct-tint recipe. Bumped `--st-accent-2` → `#0C972F` (S85%, brighter/more saturated, ⊥ black-mixed muddy read), still ≥3:1 vs white |
 | B6 | 2026-07-25 | Tab4 cta bar (`.st-shop-slot--cta`/`.st-shop-fly--cta`) fill flipped `--st-accent-3`(black)→`--st-tint-3`(yellow) on request, then toast-icon flipped bg `--st-tint-3`(solid)→28%-tint + glyph `--st-accent-3`(black)→`--st-tint-3` on the same "no black" ask — but glyph-on-28%-tint-bg is same hue at low contrast, bell icon blended into its own chip (unreadable), regressing the original black-on-black concern from B3 into a yellow-on-yellow one | Toast-icon reverted to bg `var(--st-tint-3)` (solid) + glyph `var(--st-accent-3)` (black) — matches `.st-shop-cart`'s already-working bg/glyph pair exactly. Cta bar fill stays yellow (that one has enough surrounding white/gray to read fine solid) |
 | B7 | 2026-07-25 | Services scroll-pin used 4 equal `100vh` rails (1 per tab) with plain nearest-rail-center `onScroll`, no minimum dwell — a hard/fast scroll flick could cross the whole tab4 rail's capture zone in one gesture and land past the section entirely, so tab4 (last tab, ecommerce) was never consciously seen. CSS `scroll-snap` was considered but rejected: this page already runs GSAP ScrollTrigger `pin:true` (interlude) and mixing native scroll-snap with ScrollTrigger pinning is a known conflict source (janky/incorrect pin recalculation) | Gave the last rail (`.st-rail--last`) `flex: 1.5` and bumped `.st-section` height `4×100vh → 4.5×100vh` — tab4 now needs ~50% more scroll distance to clear, so the same flick that comfortably crosses tabs 1→2→3 can no longer also skip tab4 unnoticed. Purely local to this section; no global scroll behavior touched |
+| B8 | 2026-07-31 | Home cases sticky `.case-pin` stack read as whole-screen card cover, not content-block change; expanded case copy needs fuller panel | T28: sticky full-viewport **stage** + N scroll rails; active rail swaps layered copy/video via opacity+y (in from below). Desktop split video\|copy, no card chrome. ⊥ document-wide scroll-snap during interlude/services pins. Mobile: stacked, no pin |
 
 ## §Notes (context, not law)
 
@@ -204,7 +216,7 @@ v1 = done when ∀ true:
 1. **Visual** — Source Serif 4 / Source Sans 3 live EN+RU; tokens Notion; no lime; letter-spacing serif ≈ −0.01em; weight table: heads Serif 500, body/nav/btn Sans 400–500, logo Kirp Sans 300; hierarchy via family ⊥ weight spam.
 2. **Home cold path** — hero (H1 + support + cue) → interlude → services → cases (video proof) → approach → Review ! empty → Discuss CTA. Nav matches V1.
 3. **Marketing spine** — §G who/promise/proof/path readable on page (EN+RU parity); ⊥ draft gibberish / empty Review.
-4. **Cases** — ∀ featured: Service\|Problem\|Solution (+ Result ? metric) + working video (or honest demo link) + role tag; stack on case page only; posters preferred; heavy mp4 compressed when feasible.
+4. **Cases** — ∀ featured: Tag\|Project\|Problem\|Solution (+ Result ? metric) + working video + role tag; home = full-viewport snap panels (content-block transition); stack on case page only; posters preferred.
 5. **i18n** — `/` EN + `/ru/...` parity for brand surfaces; lang cookie + switcher. Geo soft-redirect ? nice-to-have (T25), ⊥ block v1.
 6. **Ship** — `astro build` → `dist/` → reg.ru; no commercial Neue Montreal on brand live.
 ⊥ v1 scope: blog in nav, audit as product, `.com` canonical, Phase2 expansions.
