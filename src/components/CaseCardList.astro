@@ -23,20 +23,6 @@ function siteHost(url: string): string {
     return url;
   }
 }
-
-/** Same stroke icons as services bullets — cycled per solution step */
-const solutionIcons: string[][] = [
-  ['M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z', 'M21 21l-4.35-4.35'],
-  [
-    'M5 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z',
-    'M19 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z',
-    'M7 16l2.5-1.5c2-1.2 5-1.2 7 0L19 16',
-  ],
-  ['M12 2 2 7l10 5 10-5-10-5Z', 'M2 17l10 5 10-5', 'M2 12l10 5 10-5'],
-  [
-    'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.1 2.1-2.2-2.2 2.1-2.1Z',
-  ],
-];
 ---
 
 <section
@@ -48,30 +34,30 @@ const solutionIcons: string[][] = [
 >
   <div class="cs-pin">
     <div class="cs-stage">
-      {/* LEFT — chrome + media + tag + CTA */}
-      <div class="cs-visual">
-        <div class="cs-chrome">
-          <div class="cs-progress" role="tablist" aria-label={t(locale, 'cases')}>
-            {
-              cases.map((item, i) => (
-                <button
-                  type="button"
-                  class:list={['cs-dot', i === 0 && 'is-active']}
-                  data-cs-dot={i}
-                  role="tab"
-                  aria-selected={i === 0 ? 'true' : 'false'}
-                  aria-label={`${pad(i)} · ${caseLocalized(item, locale).tag}`}
-                />
-              ))
-            }
-          </div>
-          <p class="cs-index" data-cs-index aria-hidden="true">
-            <span data-cs-index-cur>01</span>
-            <span class="cs-index-sep">/</span>
-            <span>{pad(n - 1)}</span>
-          </p>
+      <div class="cs-chrome">
+        <div class="cs-progress" role="tablist" aria-label={t(locale, 'cases')}>
+          {
+            cases.map((item, i) => (
+              <button
+                type="button"
+                class:list={['cs-bar', i === 0 && 'is-active']}
+                data-cs-dot={i}
+                role="tab"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                aria-label={`${pad(i)} · ${caseLocalized(item, locale).tag}`}
+              />
+            ))
+          }
         </div>
+        <p class="cs-index" data-cs-index aria-hidden="true">
+          <span data-cs-index-cur>01</span>
+          <span class="cs-index-sep">/</span>
+          <span>{pad(n - 1)}</span>
+        </p>
+      </div>
 
+      {/* LEFT — media + result CTA */}
+      <div class="cs-visual">
         <div class="cs-stack cs-stack--media">
           {
             cases.map((item, i) => (
@@ -186,29 +172,11 @@ const solutionIcons: string[][] = [
                     <p class="cs-label">{t(locale, 'theBarrier')}</p>
                     <p class="cs-text">{copy.problem}</p>
                   </div>
-                  <div class="cs-field">
-                    <p class="cs-label">{t(locale, 'theIntervention')}</p>
+                  <div class="cs-field cs-field--done">
+                    <p class="cs-label cs-label--done">{t(locale, 'theIntervention')}</p>
                     <ul class="cs-list">
-                      {copy.solution.map((step, si) => (
-                        <li class="cs-bullet">
-                          <svg
-                            class="cs-bullet-icon"
-                            viewBox="0 0 24 24"
-                            width="18"
-                            height="18"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="1.75"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
-                          >
-                            {solutionIcons[si % solutionIcons.length].map((d) => (
-                              <path d={d} />
-                            ))}
-                          </svg>
-                          <span>{step}</span>
-                        </li>
+                      {copy.solution.map((step) => (
+                        <li class="cs-bullet">{step}</li>
                       ))}
                     </ul>
                   </div>
@@ -278,28 +246,10 @@ const solutionIcons: string[][] = [
             )}
             <p class="cs-label">{t(locale, 'theBarrier')}</p>
             <p class="cs-text">{copy.problem}</p>
-            <p class="cs-label">{t(locale, 'theIntervention')}</p>
+            <p class="cs-label cs-label--done">{t(locale, 'theIntervention')}</p>
             <ul class="cs-list">
-              {copy.solution.map((step, si) => (
-                <li class="cs-bullet">
-                  <svg
-                    class="cs-bullet-icon"
-                    viewBox="0 0 24 24"
-                    width="18"
-                    height="18"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.75"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    {solutionIcons[si % solutionIcons.length].map((d) => (
-                      <path d={d} />
-                    ))}
-                  </svg>
-                  <span>{step}</span>
-                </li>
+              {copy.solution.map((step) => (
+                <li class="cs-bullet">{step}</li>
               ))}
             </ul>
             {copy.metrics.length > 0 && (
@@ -316,12 +266,12 @@ const solutionIcons: string[][] = [
               </div>
             )}
             {copy.metrics.length === 0 && copy.result.length > 0 && (
-              <>
+              <div class="cs-result-prose">
                 <p class="cs-result-label">{t(locale, 'result')}</p>
                 {copy.result.map((line) => (
                   <p class:list={['cs-text', 'cs-text--result']}>{line}</p>
                 ))}
-              </>
+              </div>
             )}
             {showCaseDeepLink && (
               <div class="cs-cta">
@@ -384,7 +334,7 @@ const solutionIcons: string[][] = [
       max-height: calc(100svh - var(--header-height));
       z-index: 4;
       box-sizing: border-box;
-      padding: 0.5rem var(--cs-pad) 1rem;
+      padding: 1.25rem var(--cs-pad) 1.25rem;
       background: var(--color-surface);
       overflow: hidden;
     }
@@ -404,31 +354,32 @@ const solutionIcons: string[][] = [
       scroll-snap-stop: always;
     }
 
-    /* Magazine grid — height follows content (⊥ stretch to full viewport) */
+    /* Video slightly wider than copy */
     .cs-stage {
-      --cs-align-top: 0.35rem; /* media + copy share this top */
+      --cs-col-gap: 2.5rem;
+      --cs-align-top: 0;
       position: relative;
       z-index: 2;
       height: auto;
       max-inline-size: 1400px;
       margin-inline: auto;
       display: grid;
-      grid-template-columns: 60vw minmax(0, 1fr);
-      gap: 1.75rem;
+      grid-template-columns: minmax(0, 1.125fr) minmax(0, 1fr);
+      gap: var(--cs-col-gap);
       align-items: start;
       background: var(--color-surface);
     }
 
     .cs-chrome {
       display: flex;
+      grid-column: 1 / -1;
       position: relative;
-      top: auto;
-      right: auto;
       z-index: 30;
       align-items: center;
+      justify-content: space-between;
       gap: 1rem;
-      margin-block-end: 0.75rem;
-      align-self: flex-start;
+      margin: 0 0 1.25rem;
+      width: 100%;
     }
   }
 
@@ -444,29 +395,29 @@ const solutionIcons: string[][] = [
 
   .cs-progress {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.4rem;
     align-items: center;
   }
 
-  .cs-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
+  .cs-bar {
+    width: 1rem;
+    height: 3px;
+    border-radius: 2px;
     border: none;
     padding: 0;
     background: #d1d5db;
     cursor: pointer;
     transition:
       background 200ms ease,
-      transform 200ms ease;
+      width 200ms ease;
   }
 
-  .cs-dot.is-active {
+  .cs-bar.is-active {
+    width: 2.25rem;
     background: var(--color-blue);
-    transform: scale(1.3);
   }
 
-  .cs-dot:focus-visible {
+  .cs-bar:focus-visible {
     outline: 2px solid var(--color-blue);
     outline-offset: 3px;
   }
@@ -494,12 +445,11 @@ const solutionIcons: string[][] = [
     justify-content: flex-start;
     min-width: 0;
     min-height: 0;
-    padding-block-start: var(--cs-align-top, 2.75rem);
+    padding-block-start: 0;
   }
 
   .cs-stack--media {
-    --cs-media-screen: 60vw;
-    width: var(--cs-media-screen);
+    width: 100%;
     max-width: 100%;
     margin-inline-start: 0;
     margin-block-start: 0;
@@ -552,14 +502,14 @@ const solutionIcons: string[][] = [
     justify-content: stretch;
     min-width: 0;
     min-height: 0;
-    padding-block-start: var(--cs-align-top, 2.75rem);
+    padding-block-start: 0;
     width: 100%;
   }
 
   .cs-copy-panel {
     display: flex;
     flex-direction: column;
-    gap: 1.35rem;
+    gap: 1.85rem;
     width: 100%;
     max-inline-size: none;
   }
@@ -574,6 +524,11 @@ const solutionIcons: string[][] = [
     margin: 0 0 0.35rem;
   }
 
+  .cs-label--done {
+    color: var(--color-blue);
+    font-weight: 400;
+  }
+
   .cs-result-label {
     font-family: var(--font-body);
     font-size: 1rem;
@@ -581,7 +536,7 @@ const solutionIcons: string[][] = [
     text-transform: none;
     color: var(--color-blue);
     font-weight: 400;
-    margin: 0 0 0.35rem;
+    margin: 0 0 0.5rem;
   }
 
   .cs-project-title {
@@ -597,7 +552,7 @@ const solutionIcons: string[][] = [
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.65rem;
+    gap: 0.85rem;
   }
 
   .cs-meta {
@@ -654,7 +609,7 @@ const solutionIcons: string[][] = [
 
   .cs-fields {
     display: grid;
-    gap: 1.25rem;
+    gap: 1.75rem;
     max-inline-size: none;
   }
 
@@ -673,10 +628,13 @@ const solutionIcons: string[][] = [
   }
 
   .cs-text--result {
-    font-weight: 500;
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
     color: var(--color-text-primary);
-    border-inline-start: 2px solid var(--color-blue);
-    padding-inline-start: 1rem;
+    margin: 0;
   }
 
   .cs-list {
@@ -685,34 +643,39 @@ const solutionIcons: string[][] = [
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.65rem;
   }
 
   .cs-bullet {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.45rem;
     font-family: var(--font-body);
     font-size: 1rem;
+    font-weight: 400;
     color: var(--color-text-secondary);
     line-height: 1.55;
     margin: 0;
     padding: 0;
   }
 
-  .cs-bullet-icon {
-    color: var(--color-blue);
-    flex-shrink: 0;
-    margin-block-start: 0.15em;
+  .cs-field--done .cs-bullet {
+    color: var(--color-text-secondary);
+    font-weight: 400;
+  }
+
+  .cs-proof-block,
+  .cs-result-prose {
+    box-sizing: border-box;
+    width: 100%;
+    max-inline-size: none;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius-media);
+    background: var(--color-blue-tint, #e6f4fe);
   }
 
   .cs-proof-block {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
-    width: 100%;
-    max-inline-size: 36rem;
+    gap: 0.65rem;
   }
 
   .cs-proof {
@@ -732,8 +695,8 @@ const solutionIcons: string[][] = [
 
   .cs-proof-value {
     font-family: var(--font-heading);
-    font-size: clamp(2.5rem, 3vw, 3.25rem);
-    font-weight: 500;
+    font-size: clamp(2.25rem, 2.6vw, 2.85rem);
+    font-weight: 400;
     letter-spacing: -0.03em;
     line-height: 1;
     color: var(--color-blue);
@@ -743,15 +706,16 @@ const solutionIcons: string[][] = [
   .cs-proof-desc {
     font-family: var(--font-body);
     font-size: 1rem;
+    font-weight: 400;
     line-height: 1.4;
     color: var(--color-text-secondary);
     margin: 0;
   }
 
   .cs-result-prose {
-    padding-block: 0.15rem;
-    width: 100%;
-    max-inline-size: 36rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
   .cs-cta {
@@ -760,8 +724,8 @@ const solutionIcons: string[][] = [
     align-items: flex-start;
     gap: 1.25rem;
     margin-block-start: 1.25rem;
-    margin-inline-start: 2rem;
-    max-inline-size: min(100%, 60vw);
+    margin-inline-start: 0;
+    max-inline-size: 100%;
   }
 
   .cs-cta-row {
