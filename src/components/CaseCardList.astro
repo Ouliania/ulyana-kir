@@ -1,7 +1,7 @@
 ---
 import type { Locale } from '../i18n/ui';
 import { t } from '../i18n/ui';
-import type { CaseStudy } from '../data/cases';
+import { caseLocalized, type CaseStudy } from '../data/cases';
 
 interface Props {
   locale: Locale;
@@ -10,212 +10,902 @@ interface Props {
 }
 
 const { locale, cases, caseBase } = Astro.props;
+const n = cases.length;
+const pad = (i: number) => String(i + 1).padStart(2, '0');
+/** Case write-ups deferred — hide «more about the case» until pages ready */
+const showCaseDeepLink = false;
+/** Layer swap: `curtain` (shutter crossfade) | `cube` (3D rotateX face) */
+const casesMotion: 'curtain' | 'cube' = 'curtain';
+
+/** Display host only — no path/query (progolos.pro/vladivostok → progolos.pro) */
+function siteHost(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+}
 ---
 
-{
-  cases.map((item, i) => (
-    <div class="case-pin" style={`--case-z: ${i + 1}`}>
-      <article class="case-card" data-animate="reveal">
-        <a href={`${caseBase}${item.slug}/`} class="case-top">
-          <div class="case-meta">
-            <h3 class="case-service">{item.service[locale]}</h3>
-            <p class="case-project">
-              <span class="case-for">{t(locale, 'caseFor')}</span>{' '}
-              <span class="case-project-name">{item.project}</span>
-            </p>
-            <p class="case-roles">{item.role.join(' · ')}</p>
-          </div>
-          <div class="case-meta">
-            <p class="case-label">{t(locale, 'problem')}</p>
-            <p class="case-text">{item.problem[locale]}</p>
-          </div>
-          <div class="case-meta">
-            <p class="case-label">{t(locale, 'solution')}</p>
-            <p class="case-text">{item.solution[locale]}</p>
-            {item.result && (
-              <div class="case-result">
-                <p class="case-label">{t(locale, 'result')}</p>
-                <p class="case-result-value">{item.result[locale]}</p>
+<section
+  class="cs"
+  data-cases-stage
+  data-cs-draft="982a80e2"
+  data-cs-motion={casesMotion}
+  style={`--cs-n: ${n}`}
+  aria-label={t(locale, 'cases')}
+>
+  <div class="cs-pin">
+    <div class="cs-stage">
+      <div class="cs-chrome">
+        <div class="cs-progress" role="tablist" aria-label={t(locale, 'cases')}>
+          {
+            cases.map((item, i) => (
+              <button
+                type="button"
+                class:list={['cs-bar', i === 0 && 'is-active']}
+                data-cs-dot={i}
+                role="tab"
+                aria-selected={i === 0 ? 'true' : 'false'}
+                aria-label={`${pad(i)} · ${caseLocalized(item, locale).tag}`}
+              />
+            ))
+          }
+        </div>
+        <p class="cs-index" data-cs-index aria-hidden="true">
+          <span data-cs-index-cur>01</span>
+          <span class="cs-index-sep">/</span>
+          <span>{pad(n - 1)}</span>
+        </p>
+      </div>
+
+      {/* LEFT — media + result CTA */}
+      <div class="cs-visual">
+        <div class="cs-stack cs-stack--media">
+          {
+            cases.map((item, i) => (
+              <div
+                class:list={['cs-layer', 'cs-layer--media', i === 0 && 'is-active']}
+                data-cs-i={i}
+              >
+                <div class="cs-floating-media">
+                  {item.video ? (
+                    <video
+                      class="cs-video"
+                      src={item.video}
+                      poster={item.poster}
+                      muted
+                      playsinline
+                      loop
+                      preload={i === 0 ? 'metadata' : 'none'}
+                      data-cs-video
+                    />
+                  ) : (
+                    <div class="cs-video-ph">{t(locale, 'videoSoon')}</div>
+                  )}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="cs-stack cs-stack--cta">
+          {
+            cases.map((item, i) => {
+              const href = `${caseBase}${item.slug}/`;
+              const copy = caseLocalized(item, locale);
+              return (
+                <div class:list={['cs-layer', 'cs-cta', i === 0 && 'is-active']} data-cs-i={i}>
+                  {copy.metrics.length > 0 && (
+                    <div class="cs-proof-block">
+                      <p class="cs-result-label">{t(locale, 'result')}</p>
+                      <div class="cs-proof">
+                        {copy.metrics.map((m) => (
+                          <div class="cs-proof-item">
+                            <p class="cs-proof-value">{m.value}</p>
+                            <p class="cs-proof-desc">{m.label}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {copy.metrics.length === 0 && copy.result.length > 0 && (
+                    <div class="cs-result-prose">
+                      <p class="cs-result-label">{t(locale, 'result')}</p>
+                      {copy.result.map((line) => (
+                        <p class:list={['cs-text', 'cs-text--result']}>{line}</p>
+                      ))}
+                    </div>
+                  )}
+
+                  {showCaseDeepLink && (
+                    <div class="cs-cta-row">
+                      <a href={href} class="btn btn-primary">
+                        {t(locale, 'caseExplore')}
+                        <span class="cs-btn-arrow" aria-hidden="true">
+                          →
+                        </span>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              );
+            })
+          }
+        </div>
+      </div>
+
+      {/* RIGHT — structured copy */}
+      <aside class="cs-copy cs-stack cs-stack--copy">
+        {
+          cases.map((item, i) => {
+            const copy = caseLocalized(item, locale);
+            return (
+              <div class:list={['cs-layer', 'cs-copy-panel', i === 0 && 'is-active']} data-cs-i={i}>
+                <div class="cs-project-block">
+                  <div class="cs-meta">
+                    <p class="cs-service">{copy.tag}</p>
+                    <div class="cs-chips">
+                      {item.role.map((role) => (
+                        <span class="cs-chip">{role}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <p class="cs-project">{copy.project}</p>
+                  {item.url?.startsWith('http') && (
+                    <a
+                      href={item.url}
+                      class="cs-live"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {siteHost(item.url)}
+                    </a>
+                  )}
+                  {item.url?.startsWith('/') && (
+                    <a href={item.url} class="cs-live">
+                      {t(locale, 'openDemo')}
+                    </a>
+                  )}
+                </div>
+
+                <div class="cs-fields">
+                  <div class="cs-field">
+                    <p class="cs-label">{t(locale, 'theBarrier')}</p>
+                    <p class="cs-text">{copy.problem}</p>
+                  </div>
+                  <div class="cs-field cs-field--done">
+                    <p class="cs-label cs-label--done">{t(locale, 'theIntervention')}</p>
+                    <ul class="cs-list">
+                      {copy.solution.map((step) => (
+                        <li class="cs-bullet">{step}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        }
+      </aside>
+    </div>
+  </div>
+
+  <div class="cs-rails" aria-hidden="true">
+    {
+      cases.map((_, i) => (
+        <div class="cs-rail" data-cs-rail={i}></div>
+      ))
+    }
+  </div>
+
+  <div class="cs-mobile">
+    {
+      cases.map((item, i) => {
+        const copy = caseLocalized(item, locale);
+        const href = `${caseBase}${item.slug}/`;
+        return (
+          <article class="cs-m-card">
+            <div class="cs-layer--media">
+              <div class="cs-floating-media">
+                {item.video && (
+                  <video
+                    class="cs-video"
+                    src={item.video}
+                    poster={item.poster}
+                    muted
+                    playsinline
+                    loop
+                    autoplay
+                    preload="metadata"
+                  />
+                )}
+              </div>
+            </div>
+            <div class="cs-meta">
+              <p class="cs-service">{copy.tag}</p>
+              <div class="cs-chips">
+                {item.role.map((role) => (
+                  <span class="cs-chip">{role}</span>
+                ))}
+              </div>
+            </div>
+            <p class="cs-project">{copy.project}</p>
+            {item.url?.startsWith('http') && (
+              <a
+                href={item.url}
+                class="cs-live"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {siteHost(item.url)}
+              </a>
+            )}
+            {item.url?.startsWith('/') && (
+              <a href={item.url} class="cs-live">
+                {t(locale, 'openDemo')}
+              </a>
+            )}
+            <p class="cs-label">{t(locale, 'theBarrier')}</p>
+            <p class="cs-text">{copy.problem}</p>
+            <p class="cs-label cs-label--done">{t(locale, 'theIntervention')}</p>
+            <ul class="cs-list">
+              {copy.solution.map((step) => (
+                <li class="cs-bullet">{step}</li>
+              ))}
+            </ul>
+            {copy.metrics.length > 0 && (
+              <div class="cs-proof-block">
+                <p class="cs-result-label">{t(locale, 'result')}</p>
+                <div class="cs-proof">
+                  {copy.metrics.map((m) => (
+                    <div class="cs-proof-item">
+                      <p class="cs-proof-value">{m.value}</p>
+                      <p class="cs-proof-desc">{m.label}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
-          </div>
-        </a>
-
-        <div class="case-divider" aria-hidden="true"></div>
-
-        <div class="case-media">
-          {item.video ? (
-            <video
-              class="case-video"
-              src={item.video}
-              muted
-              playsinline
-              loop
-              autoplay
-              preload="metadata"
-            />
-          ) : (
-            <div class="case-video-placeholder">
-              <p>{t(locale, 'videoSoon')}</p>
-            </div>
-          )}
-        </div>
-      </article>
-    </div>
-  ))
-}
+            {copy.metrics.length === 0 && copy.result.length > 0 && (
+              <div class="cs-result-prose">
+                <p class="cs-result-label">{t(locale, 'result')}</p>
+                {copy.result.map((line) => (
+                  <p class:list={['cs-text', 'cs-text--result']}>{line}</p>
+                ))}
+              </div>
+            )}
+            {showCaseDeepLink && (
+              <div class="cs-cta">
+                <a href={href} class="btn btn-primary">
+                  {t(locale, 'caseExplore')}
+                </a>
+              </div>
+            )}
+          </article>
+        );
+      })
+    }
+  </div>
+</section>
 
 <style>
-  .case-pin {
-    position: sticky;
-    top: calc(var(--header-height) + 0.75rem);
-    z-index: var(--case-z, 1);
-    padding-bottom: 0.25rem;
+  /* Superdesign 982a80e2 — Balanced Magazine Overlap — Case Stage */
+  .cs {
+    --cs-pad: var(--content-inline);
+    --cs-draft: 982a80e2;
+    position: relative;
+    background: var(--color-surface);
+    isolation: isolate;
   }
 
-  .case-card {
+  .cs-pin {
+    display: none;
+  }
+
+  .cs-rails {
+    display: none;
+  }
+
+  .cs-chrome {
+    display: none;
+  }
+
+  .cs-mobile {
     display: flex;
     flex-direction: column;
-    min-height: min(78vh, 820px);
+    gap: 3.5rem;
+    padding: 2rem var(--cs-pad) 3rem;
     background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-card);
-    overflow: hidden;
-    box-shadow:
-      0 1px 0 rgba(13, 13, 13, 0.03),
-      0 18px 40px -28px rgba(13, 13, 13, 0.28);
-  }
-
-  .case-card:hover,
-  .case-card:focus-within {
-    border-color: var(--color-border);
-  }
-
-  .case-top {
-    display: grid;
-    gap: 1.25rem;
-    padding: 1.85rem 1.6rem 1.4rem;
-    text-decoration: none;
-    color: inherit;
   }
 
   @media (min-width: 900px) {
-    .case-top {
-      grid-template-columns: 1.1fr 1.2fr 1.2fr;
-      gap: 2.25rem;
-      padding: 2.25rem 2.25rem 1.6rem;
+    .cs {
+      height: calc(var(--cs-n) * 100vh);
+    }
+
+    .cs-mobile {
+      display: none;
+    }
+
+    .cs-pin {
+      display: block;
+      position: sticky;
+      top: var(--header-height);
+      height: auto;
+      max-height: calc(100svh - var(--header-height));
+      z-index: 4;
+      box-sizing: border-box;
+      padding: 1.25rem var(--cs-pad) 1.25rem;
+      background: var(--color-surface);
+      overflow: visible;
+    }
+
+    .cs-rails {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .cs-rail {
+      flex: 1;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    /* Video slightly wider than copy */
+    .cs-stage {
+      --cs-col-gap: 2.5rem;
+      --cs-align-top: 0;
+      position: relative;
+      z-index: 2;
+      height: auto;
+      max-inline-size: 1400px;
+      margin-inline: auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: var(--cs-col-gap);
+      align-items: start;
+      background: var(--color-surface);
+    }
+
+    .cs-chrome {
+      display: flex;
+      grid-column: 1 / -1;
+      position: relative;
+      z-index: 30;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: 0 0 1.25rem;
+      width: 100%;
     }
   }
 
-  .case-service {
-    font-size: clamp(1.35rem, 1.15rem + 0.8vw, 1.7rem);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    margin-block-end: 0.4rem;
-  }
-
-  .case-project {
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
-    margin-block-end: 0.35rem;
-    line-height: 1.4;
-  }
-
-  .case-for {
-    color: var(--color-text-muted);
-  }
-
-  .case-project-name {
-    color: var(--color-text-secondary);
-  }
-
-  .case-label {
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
-    margin-block-end: 0.45rem;
-  }
-
-  .case-roles {
-    font-size: 0.85rem;
-    color: var(--color-blue);
-  }
-
-  .case-text {
-    font-size: 1rem;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-  }
-
-  .case-result {
-    margin-block-start: 1rem;
-  }
-
-  .case-result-value {
-    font-size: 1.05rem;
-    font-weight: 500;
-    color: var(--color-text);
-    line-height: 1.4;
-  }
-
-  .case-divider {
-    height: 1px;
-    background: var(--color-border);
-    margin-inline: 1.6rem;
-  }
-
-  @media (min-width: 900px) {
-    .case-divider {
-      margin-inline: 2.25rem;
-    }
-  }
-
-  .case-media {
-    width: 100%;
-    flex: 1;
-    background: transparent;
-    padding: 1.25rem 1.6rem 1.85rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 0;
-  }
-
-  @media (min-width: 900px) {
-    .case-media {
-      padding-inline: 2.25rem;
-      padding-bottom: 2.1rem;
-    }
-  }
-
-  .case-video {
-    width: 100%;
-    max-width: 100%;
-    aspect-ratio: 16 / 9;
-    height: auto;
-    max-height: min(52vh, 560px);
-    object-fit: contain;
-    object-position: center;
-    display: block;
-    border-radius: 8px;
-    background: transparent;
-  }
-
-  .case-video-placeholder {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    max-height: min(52vh, 560px);
-    display: grid;
-    place-items: center;
-    border: 1px dashed var(--color-border);
-    border-radius: 8px;
-    color: var(--color-text-muted);
-    font-size: 0.95rem;
+  :global(html.is-cases-snapping) {
+    /* proximity — mandatory traps the page scroll */
+    scroll-snap-type: y proximity;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .case-pin {
-      position: relative;
-      top: auto;
+    :global(html.is-cases-snapping) {
+      scroll-snap-type: none;
     }
+  }
+
+  .cs-progress {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+  }
+
+  .cs-bar {
+    width: 1rem;
+    height: 3px;
+    border-radius: 2px;
+    border: none;
+    padding: 0;
+    background: #d1d5db;
+    cursor: pointer;
+    transition:
+      background 200ms ease,
+      width 200ms ease;
+  }
+
+  .cs-bar.is-active {
+    width: 2.25rem;
+    background: var(--color-blue);
+  }
+
+  .cs-bar:focus-visible {
+    outline: 2px solid var(--color-blue);
+    outline-offset: 3px;
+  }
+
+  .cs-index {
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    color: #9ca3af;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+  }
+
+  .cs-index [data-cs-index-cur] {
+    color: var(--color-blue);
+  }
+
+  .cs-index-sep {
+    margin-inline: 0.2rem;
+    opacity: 0.6;
+  }
+
+  /* —— LEFT visual —— */
+  .cs-visual {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-width: 0;
+    min-height: 0;
+    padding-block-start: 0;
+  }
+
+  .cs-stack--media {
+    width: 100%;
+    max-width: 100%;
+    margin-inline-start: 0;
+    margin-block-start: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cs-layer--media {
+    position: relative;
+    min-height: 0;
+  }
+
+  .cs-floating-media {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-media);
+    overflow: hidden;
+    box-sizing: border-box;
+    background: #0f1218;
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.08);
+  }
+
+  .cs-video {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    display: block;
+  }
+
+  .cs-video-ph {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    color: var(--color-text-muted);
+  }
+
+  /* —— RIGHT copy — top-aligned with media —— */
+  .cs-copy {
+    position: relative;
+    z-index: 20;
+    display: grid;
+    justify-content: stretch;
+    min-width: 0;
+    min-height: 0;
+    padding-block-start: 0;
+    width: 100%;
+  }
+
+  .cs-copy-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.85rem;
+    width: 100%;
+    max-inline-size: none;
+  }
+
+  .cs-label {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-text-muted);
+    font-weight: 400;
+    margin: 0 0 0.35rem;
+  }
+
+  .cs-label--done {
+    color: var(--color-blue);
+    font-weight: 400;
+  }
+
+  .cs-result-label {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-blue);
+    font-weight: 400;
+    margin: 0 0 0.5rem;
+  }
+
+  .cs-project-title {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--color-text-primary);
+    margin: 0 0 0.375rem;
+  }
+
+  .cs-project-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+
+  .cs-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    width: 100%;
+  }
+
+  .cs-service {
+    font-family: var(--font-heading);
+    font-size: 1.0625rem;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    color: var(--color-blue);
+    margin: 0;
+    min-width: 0;
+  }
+
+  .cs-project {
+    font-family: var(--font-heading);
+    font-size: 2rem; /* subhead */
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin: 0;
+    --cs-project-fs: 2rem;
+  }
+
+  .cs-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .cs-chip {
+    padding: 0.125rem 0.5rem;
+    background: transparent;
+    color: var(--color-blue);
+    font-size: 0.7rem;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    border-radius: var(--radius-default);
+    border: 1px solid var(--color-blue);
+  }
+
+  .cs-fields {
+    display: grid;
+    gap: 1.75rem;
+    max-inline-size: none;
+  }
+
+  .cs-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .cs-text {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .cs-text--result {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.55;
+    letter-spacing: 0;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .cs-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .cs-bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Three tiny blue dots as list marker */
+  .cs-bullet::before {
+    content: '';
+    flex-shrink: 0;
+    width: 3px;
+    height: 3px;
+    margin-block-start: 0.65em;
+    border-radius: 50%;
+    background: var(--color-blue);
+    box-shadow:
+      5px 0 0 var(--color-blue),
+      10px 0 0 var(--color-blue);
+    margin-inline-end: 10px;
+  }
+
+  .cs-field--done .cs-bullet {
+    color: var(--color-text-secondary);
+    font-weight: 400;
+  }
+
+  .cs-proof-block,
+  .cs-result-prose {
+    box-sizing: border-box;
+    width: 100%;
+    max-inline-size: none;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius-media);
+    background: var(--color-blue-tint, #e6f4fe);
+  }
+
+  .cs-proof-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+
+  .cs-proof {
+    display: flex;
+    gap: 1.5rem;
+    padding-block: 0;
+    width: 100%;
+  }
+
+  .cs-proof-item {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .cs-proof-value {
+    font-family: var(--font-body);
+    font-size: clamp(2.25rem, 2.6vw, 2.85rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--color-blue);
+    margin: 0;
+  }
+
+  .cs-proof-desc {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .cs-result-prose {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cs-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-block-start: 1.25rem;
+    margin-inline-start: 0;
+    max-inline-size: 100%;
+  }
+
+  .cs-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .cs-btn-arrow {
+    font-size: 1em;
+    line-height: 1;
+  }
+
+  .cs-live {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #6b7280;
+    text-decoration: none;
+    border-bottom: 1px solid #e5e7eb;
+    padding-block-end: 0.1rem;
+    cursor: pointer;
+    transition: color 0.15s ease;
+    align-self: flex-start;
+  }
+
+  .cs-project-block .cs-live {
+    margin-block-start: -0.15rem;
+  }
+
+  .cs-live:hover,
+  .cs-live:focus-visible {
+    color: var(--color-text-primary);
+  }
+
+  /* —— Layers: curtain (default) | cube (opt-in via data-cs-motion) —— */
+  .cs-stack {
+    display: grid;
+  }
+
+  .cs-stack > .cs-layer {
+    grid-area: 1 / 1;
+    align-self: start;
+    width: 100%;
+  }
+
+  .cs-layer {
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  /* Curtain: leave snaps off; enter slides + fades in */
+  :global(.cs[data-cs-motion='curtain']) .cs-layer {
+    transform: translate3d(0, 28px, 0);
+    transition: none;
+  }
+
+  :global(.cs[data-cs-motion='curtain'][data-cs-dir='prev']) .cs-layer {
+    transform: translate3d(0, -28px, 0);
+  }
+
+  :global(.cs[data-cs-motion='curtain']) .cs-layer.is-leaving {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1;
+    transition: none;
+  }
+
+  :global(.cs[data-cs-motion='curtain']) .cs-layer.is-active {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    pointer-events: auto;
+    visibility: visible;
+    z-index: 3;
+    transition:
+      opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s;
+  }
+
+  /* —— Cube face (alt): data-cs-motion="cube" —— */
+  :global(.cs[data-cs-motion='cube']) .cs-stack {
+    perspective: 1400px;
+    perspective-origin: 50% 40%;
+    overflow: visible;
+  }
+
+  :global(.cs[data-cs-motion='cube']) .cs-stack > .cs-layer {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
+
+  :global(.cs[data-cs-motion='cube']) .cs-layer {
+    transform: rotateX(42deg) translate3d(0, 24px, 0);
+    transform-origin: 50% 100%;
+    transition: none;
+  }
+
+  :global(.cs[data-cs-motion='cube'][data-cs-dir='prev']) .cs-layer {
+    transform: rotateX(-42deg) translate3d(0, -24px, 0);
+    transform-origin: 50% 0%;
+  }
+
+  :global(.cs[data-cs-motion='cube']) .cs-layer.is-leaving {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1;
+    transition: none;
+  }
+
+  :global(.cs[data-cs-motion='cube']) .cs-layer.is-active {
+    opacity: 1;
+    transform: rotateX(0deg) translate3d(0, 0, 0);
+    transform-origin: 50% 50%;
+    pointer-events: auto;
+    visibility: visible;
+    z-index: 3;
+    transition:
+      opacity 560ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 720ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cs-layer,
+    .cs-layer.is-leaving,
+    .cs-layer.is-active {
+      transition: none !important;
+      transform: none !important;
+    }
+  }
+
+  /* —— Mobile —— */
+  .cs-m-card .cs-floating-media {
+    width: 100%;
+    margin: 0 0 0.5rem;
+  }
+
+  .cs-m-card .cs-meta {
+    margin-block-start: 0.75rem;
+  }
+
+  .cs-m-card .cs-label {
+    margin-block-start: 1.25rem;
+  }
+
+  .cs-m-card .cs-project {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
+
+  .cs-m-card .cs-proof {
+    margin-block: 1rem;
   }
 </style>

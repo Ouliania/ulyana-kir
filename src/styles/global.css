@@ -212,7 +212,10 @@
     --font-body: 'Source Sans 3', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
     --fs-h1: clamp(2.6rem, 1.8rem + 3.2vw, 4.25rem);
-    --fs-h2: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+    /* Section H2 roles — one scale, three emphases (§I / V21) */
+    --fs-h2-label: clamp(1.35rem, 1.15rem + 0.85vw, 1.85rem);   /* content-led: quiet */
+    --fs-h2: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);           /* band / default */
+    --fs-h2-display: clamp(2.15rem, 1.55rem + 2.1vw, 3.35rem); /* title-led: loud */
     --fs-h3: clamp(1.25rem, 1.1rem + 0.8vw, 1.65rem);
     --fs-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
     --fs-small: 0.9375rem;
@@ -269,8 +272,23 @@
     padding-inline: var(--content-inline);
   }
 
+  /*
+   * Section chrome (SPEC §I Content grid).
+   * Section owns vertical + horizontal rhythm; content sits inside.
+   * --bleed: pin stages (services/cases) — no inline pad; .section-head restores title edge.
+   */
+  .section-block {
+    padding-block: var(--section-gap);
+    padding-inline: var(--content-inline);
+  }
+
+  .section-block--bleed {
+    padding-inline: 0;
+  }
+
+  /* Legacy alias — prefer .section-block */
   .section-padding {
-    padding-block: clamp(4rem, 8vw, 7rem);
+    padding-block: var(--section-gap);
   }
 
   /*
@@ -308,6 +326,90 @@
 }
 
 @layer components {
+  /*
+   * Section title roles (SPEC §I / V21).
+   * Semantic h2 stays h2 — class picks emphasis, not a fake heading level.
+   * label = quiet (content carries) · display = loud (title shares stage) · band = CTA strip
+   */
+  .type-label,
+  .type-display,
+  .type-band {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .type-label {
+    font-size: var(--fs-h2-label);
+    line-height: 1.25;
+    color: var(--color-text-secondary);
+  }
+
+  .type-display {
+    font-size: var(--fs-h2-display);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  .type-band {
+    font-size: var(--fs-h2);
+    line-height: 1.15;
+  }
+
+  /* Handoff line between dense pins (services→cases). Not a section title. */
+  .type-bridge {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: var(--fs-h2);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    text-wrap: balance;
+    max-inline-size: 36rem;
+  }
+
+  .section-bridge {
+    padding-block: var(--section-gap);
+    padding-inline: var(--content-inline);
+  }
+
+  /* Junction air owned by bridge — avoid 2× section-gap stack */
+  .section-block--bleed.services {
+    padding-block-end: 0;
+  }
+
+  .section-block--bleed.cases-block {
+    padding-block-start: 0;
+  }
+
+  .type-lead {
+    margin-block: 1rem 1.75rem;
+    font-family: var(--font-body);
+    font-size: clamp(1.05rem, 1rem + 0.25vw, 1.2rem);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    max-inline-size: 40rem;
+    text-wrap: pretty;
+  }
+
+  .section-head {
+    /* Title edge inside --bleed sections only; default .section-block already pads inline */
+    padding-inline: 0;
+  }
+
+  .section-block--bleed > .section-head {
+    padding-inline: var(--content-inline);
+  }
+
+  .section-head--label {
+    margin-block-end: 1.5rem;
+  }
+
   .btn {
     display: inline-flex;
     align-items: center;

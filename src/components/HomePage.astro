@@ -84,35 +84,34 @@ const methods = [
 
     <Interlude locale={locale} />
 
-    <section id="services" class="services">
-      <div class="services-header">
-        <div class="container">
-          <h2 class="section-heading">{t(locale, 'whatIDo')}</h2>
-        </div>
-      </div>
+    <section id="services" class="section-block section-block--bleed services">
+      <header class="section-head section-head--label">
+        <h2 class="type-label">{t(locale, 'whatIDo')}</h2>
+      </header>
       <ServiceTabsSection locale={locale} />
     </section>
 
-    <section id="cases" class="cases">
-      <div class="container cases-container">
-        <div class="case-list">
-          <CaseCardList locale={locale} cases={featured} caseBase={caseBase} />
-        </div>
-      </div>
+    <div class="section-bridge" data-animate="reveal">
+      <p class="type-bridge">{t(locale, 'casesBridge')}</p>
+    </div>
+
+    <section id="cases" class="section-block section-block--bleed cases-block">
+      <header class="section-head section-head--label">
+        <h2 class="type-label">{t(locale, 'cases')}</h2>
+      </header>
+      <CaseCardList locale={locale} cases={featured} caseBase={caseBase} />
     </section>
 
-    <section id="reviews" class="section-padding reviews">
-      <div class="container reviews-inner">
-        <h2 class="section-heading" data-animate="reveal">{t(locale, 'howIWork')}</h2>
-        <p class="reviews-lead" data-animate="reveal">{t(locale, 'howIWorkLead')}</p>
-        <WorkFlow locale={locale} />
-      </div>
+    <section id="reviews" class="section-block reviews">
+      <h2 class="type-display" data-animate="reveal">{t(locale, 'howIWork')}</h2>
+      <p class="type-lead" data-animate="reveal">{t(locale, 'howIWorkLead')}</p>
+      <WorkFlow locale={locale} />
     </section>
 
-    <section id="discuss" class="section-padding cta-band">
-      <div class="container cta-inner" data-animate="reveal">
-        <h2 class="cta-heading">{t(locale, 'ctaTitle')}</h2>
-        <p>{t(locale, 'ctaLead')}</p>
+    <section id="discuss" class="section-block cta-band">
+      <div class="cta-inner" data-animate="reveal">
+        <h2 class="type-band">{t(locale, 'ctaTitle')}</h2>
+        <p class="type-lead">{t(locale, 'ctaLead')}</p>
         <div class="cta-actions">
           <InteractiveHoverButton href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" label={t(locale, 'discuss')} />
           <a href={contactsHref} class="btn btn-secondary">{t(locale, 'allContacts')}</a>
@@ -135,8 +134,10 @@ const methods = [
     import { initDeepAssemble } from '../scripts/deep-assemble';
     import { initConvAssemble } from '../scripts/conv-assemble';
     import { initStoreAssemble } from '../scripts/store-assemble';
+    import { initCasesSnap } from '../scripts/cases-snap';
     initBrandMotion();
     initInterlude();
+    initCasesSnap();
     initMagicSurfaces();
     initWorkFlowBeams();
     initHeroForm();
@@ -326,18 +327,13 @@ const methods = [
     color: #d32f2f;
   }
 
-  /* Services section */
+  /* Services / cases: chrome from .section-block; stages stay bleed */
   .services {
     background: transparent;
-    padding-block: 5rem 0;
   }
 
-  .services-header {
-    margin-block-end: 2.5rem;
-  }
-
-  .services-header .container {
-    max-inline-size: 1180px;
+  .cases-block {
+    background: var(--color-surface);
   }
 
   /* === reused from previous === */
@@ -353,54 +349,25 @@ const methods = [
   }
 
   :global(html[lang='ru']) .hero-support,
-  :global(html[lang='ru']) .reviews-lead,
-  :global(html[lang='ru']) .cta-inner p {
+  :global(html[lang='ru']) .type-lead {
     line-height: 1.44;
   }
 
-  :global(html[lang='ru']) .reviews-inner .kinetic,
+  :global(html[lang='ru']) .reviews .kinetic,
   :global(html[lang='ru']) .cta-inner .kinetic {
     line-height: 1.08;
-  }
-
-  .cases {
-    background: transparent;
-    padding-block: 1rem 5rem;
-  }
-
-  .cases-container {
-    max-inline-size: 1180px;
-  }
-
-  .case-list {
-    display: flex;
-    flex-direction: column;
-    gap: 100px;
-  }
-
-  .reviews-inner .section-heading,
-  .cta-inner .cta-heading {
-    font-size: var(--fs-h2);
-    font-weight: 500;
-    line-height: 1.2;
   }
 
   .reviews {
     background: transparent;
   }
 
-  .reviews-inner {
-    max-inline-size: 1180px;
-  }
-
-  .reviews-lead {
-    margin-block: 1rem 1.5rem;
-    font-size: 1.15rem;
-    max-inline-size: 640px;
-  }
-
   .cta-band {
     background: var(--color-blue-tint);
+  }
+
+  .cta-band .type-lead {
+    margin-block: 0.35rem 0;
   }
 
   .cta-inner {
