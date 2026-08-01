@@ -1,0 +1,45 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PageShell from '../components/PageShell.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CaseStackList from '../components/CaseStackList.astro';
+import { cases } from '../data/cases';
+import { t, type Locale } from '../i18n/ui';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale: Locale = Astro.props.locale ?? 'en';
+const caseBase = locale === 'ru' ? '/ru/cases/' : '/cases/';
+const title =
+  locale === 'ru' ? 'Кейсы — Ulyana Kirp' : 'Cases — Ulyana Kirp';
+const description = t(locale, 'casesArchiveLead');
+---
+
+<Layout title={title} description={description} lang={locale}>
+  <Header locale={locale} />
+
+  <PageShell>
+    <main class="cases-archive">
+      <Breadcrumbs locale={locale} items={[{ label: t(locale, 'cases') }]} />
+      <header class="cases-archive-head">
+        <h1 class="type-display">{t(locale, 'cases')}</h1>
+      </header>
+      <CaseStackList locale={locale} cases={cases} caseBase={caseBase} />
+    </main>
+    <Footer locale={locale} />
+  </PageShell>
+</Layout>
+
+<style>
+  .cases-archive {
+    background: var(--color-surface);
+  }
+
+  .cases-archive-head {
+    padding: clamp(1.25rem, 3vw, 2rem) var(--content-inline) clamp(1.5rem, 3vw, 2.5rem);
+  }
+</style>

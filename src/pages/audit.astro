@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageShell from '../components/PageShell.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { t } from '../i18n/ui';
 
 const auditSchema = {
   "@context": "https://schema.org",
@@ -29,6 +31,7 @@ const auditSchema = {
 
   <PageShell>
   <main class="audit-page">
+    <Breadcrumbs locale="ru" items={[{ label: t('ru', 'auditPage') }]} />
     {/* Section 1: Hero */}
     <section class="hero-section section-padding">
       <div class="container hero-container">

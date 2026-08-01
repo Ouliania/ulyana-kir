@@ -17,7 +17,7 @@ const isHome =
   (locale === 'en' && (pathname === '/' || pathname === ''));
 const contactsHref = locale === 'ru' ? '/ru/contacts/' : '/contacts/';
 const discussHref = 'https://t.me/UlyanaKir';
-const casesHref = isHome ? '#cases' : `${homePath}#cases`;
+const casesHref = locale === 'ru' ? '/ru/cases/' : '/cases/';
 const servicesHref = isHome ? '#services' : `${homePath}#services`;
 const reviewHref = isHome ? '#reviews' : `${homePath}#reviews`;
 ---

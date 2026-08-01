@@ -171,8 +171,8 @@
     --color-blue-soft: #62ACEF;
     --color-blue-tint: #E6F4FE;
     --color-violet: #6B5CE7;
-    --color-lime: #61F185;
-    --color-yellow: #EBF151;
+    --color-lime: #DFFEDF;
+    --color-yellow: #FFFDC2;
     --color-teal: #2B9D99; /* legacy — CasePage .roles only */
 
     /* Surfaces */
@@ -359,22 +359,25 @@
     line-height: 1.15;
   }
 
-  /* Handoff line between dense pins (services→cases). Not a section title. */
-  .type-bridge {
-    margin: 0;
-    font-family: var(--font-heading);
-    font-size: var(--fs-h2);
-    font-weight: 500;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    color: var(--color-text-primary);
-    text-wrap: balance;
-    max-inline-size: 36rem;
-  }
-
+  /* Cases title-in-air — junction breath before sticky stage (SPEC §I Home IA C) */
   .section-bridge {
     padding-block: var(--section-gap);
     padding-inline: var(--content-inline);
+  }
+
+  .section-bridge .type-display {
+    overflow: visible;
+  }
+
+  .cases-bridge-mask {
+    display: block;
+    overflow: hidden;
+    padding-block-end: 0.08em; /* serif descenders */
+  }
+
+  .cases-bridge-inner {
+    display: inline-block;
+    will-change: transform;
   }
 
   /* Junction air owned by bridge — avoid 2× section-gap stack */

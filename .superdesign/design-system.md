@@ -9,8 +9,8 @@ Not boring = **rhythm of emphasis** (quiet labels → loud stages → display be
 Every major block = `<section class="section-block">`.
 - Section owns `--section-gap` (vertical) + `--content-inline` (horizontal).
 - Content sits inside. ⊥ section air on inner `div`s.
-- Pin stages (services, cases): add `section-block--bleed` (full shell width; title via `.section-head`).
-- **Bridge** (services→cases): `.section-bridge` + `.type-bridge` — air + one proof handoff line. ! section, ! pin.
+- Pin stages (services, cases): add `section-block--bleed` (full shell width; title via `.section-head` or `.section-bridge`).
+- **Cases air:** `#cases` starts with `.section-bridge` + `.type-display` (title-in-air) → sticky stage. One H2. GSAP scrub clip on `data-animate="cases-bridge"`.
 - Exceptions: hero, interlude.
 
 ## Voice / IA
@@ -36,12 +36,10 @@ Semantic `h2` always. Class = where the eye should land:
 Hero = `--fs-h1` / `.hero-title` (own). Case Tag inside panel = case chrome, not a section role.
 Chrome pad: `.section-head` + `.section-head--label`. ⊥ one-off `font-size` on section H2.
 
-## Cases block — current (SPEC sticky stage)
-Desktop: sticky opaque stage + scroll rails. Chrome (inactive short bars / active long bar + index) above columns. Grid ~`1.125fr / 1fr` + gutter. Copy spine: Tag → Project → Problem → Solution → Result? Layer swap on rail change (`curtain` default). Mobile &lt;900: pin off → stacked.
-
-⊥ magazine watermark-index draft. ⊥ cinema band. ⊥ card chrome soup. ⊥ fake metrics.
-
-Canonical motion/copy: SPEC §I Case layout + V15. Superdesign drafts = exploration only until SPEC amended.
+## Cases block — current (SPEC)
+Home + `/cases`: soft **whole-case plaque** + **copy | visual** + smaller video inset.
+Desktop ≤4: sticky stack (cards ride over). Archive >4: static plaques.
+⊥ full-bleed video column. ⊥ `100vh` rails.
 
 ## Motion
 GSAP ScrollTrigger rails. Honor reduced-motion. ≥2–3 intentional motions on home.
