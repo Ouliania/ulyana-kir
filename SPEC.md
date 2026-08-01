@@ -135,7 +135,8 @@ Rhythm = quiet label next to loud stage, then big display beat — ∴ not flat,
 - Tab4 `viz-store`: tab1 chassis reused (hero/lines/mid/cta), mid = product cards, yellow accent + live-sale toasts + cart badge (FAB rides mockup corner ∈ `.st-shop-frame`). See motion §9 above. Mobile &lt;768: viz hidden (current).
 
 ### Home IA
-- Order: hero → **interlude** (manifesto / about beat) → services → cases → approach → discuss CTA
+- Order: hero → **interlude** (manifesto / about beat) → services → **bridge** → cases → approach → discuss CTA
+- **Bridge (A+B):** handoff air between two dense pin blocks. ! section, ! pin. One short line → «why scroll = proof». Owns junction `--section-gap` (services pad-end / cases pad-start = 0 at this joint). Class `.section-bridge` + `.type-bridge`. Copy ∈ i18n `casesBridge`. ⊥ second manifesto / who-I-am. ⊥ full interlude (D) until Review/copy v1 done. Escalate → C (Cases as display before stage) only if air still feels tight.
 - Interlude = pin mid-viewport: stage `100svh`, frame centered with `--section-gap` top+bottom + `--content-inline` sides. Width/height screen-fluid (`calc(100svh - 2*section-gap)` × content width). `border-radius: var(--radius-media)`, cover, asset `simulator_backdrop.webp`. ⊥ fixed px media box. Cite V7.
 
 ### Case layout (ref `docs/design/figma-case.png`)
@@ -214,6 +215,7 @@ V21: Home section titles ! use type roles (§I): services+cases = `.type-label`;
 | T28 | ~ | Home cases: cinema-band A + B readable copy; metrics only when real | V4,V15,V16,V20 |
 | T29 | . | After T28 OK: migrate remaining featured cases to new panel format | V4,V15,V19 |
 | T30 | x | Type roles: label/display/band ∈ global.css + home; sync superdesign docs | V21,§I |
+| T31 | x | Services→cases bridge (A+B): air + one proof handoff line; ⊥ pin/interlude | V7,§I Home IA |
 
 ## §B Bugs
 | id | date | cause | fix |

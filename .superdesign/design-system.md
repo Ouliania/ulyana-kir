@@ -10,6 +10,7 @@ Every major block = `<section class="section-block">`.
 - Section owns `--section-gap` (vertical) + `--content-inline` (horizontal).
 - Content sits inside. ⊥ section air on inner `div`s.
 - Pin stages (services, cases): add `section-block--bleed` (full shell width; title via `.section-head`).
+- **Bridge** (services→cases): `.section-bridge` + `.type-bridge` — air + one proof handoff line. ! section, ! pin.
 - Exceptions: hero, interlude.
 
 ## Voice / IA
