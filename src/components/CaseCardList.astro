@@ -14,6 +14,8 @@ const n = cases.length;
 const pad = (i: number) => String(i + 1).padStart(2, '0');
 /** Case write-ups deferred — hide «more about the case» until pages ready */
 const showCaseDeepLink = false;
+/** Layer swap: `curtain` (shutter crossfade) | `cube` (3D rotateX face) */
+const casesMotion: 'curtain' | 'cube' = 'curtain';
 
 /** Display host only — no path/query (progolos.pro/vladivostok → progolos.pro) */
 function siteHost(url: string): string {
@@ -29,6 +31,7 @@ function siteHost(url: string): string {
   class="cs"
   data-cases-stage
   data-cs-draft="982a80e2"
+  data-cs-motion={casesMotion}
   style={`--cs-n: ${n}`}
   aria-label={t(locale, 'cases')}
 >
@@ -336,7 +339,7 @@ function siteHost(url: string): string {
       box-sizing: border-box;
       padding: 1.25rem var(--cs-pad) 1.25rem;
       background: var(--color-surface);
-      overflow: hidden;
+      overflow: visible;
     }
 
     .cs-rails {
@@ -364,7 +367,7 @@ function siteHost(url: string): string {
       max-inline-size: 1400px;
       margin-inline: auto;
       display: grid;
-      grid-template-columns: minmax(0, 1.125fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
       gap: var(--cs-col-gap);
       align-items: start;
       background: var(--color-surface);
@@ -384,6 +387,7 @@ function siteHost(url: string): string {
   }
 
   :global(html.is-cases-snapping) {
+    /* proximity — mandatory traps the page scroll */
     scroll-snap-type: y proximity;
   }
 
@@ -632,12 +636,12 @@ function siteHost(url: string): string {
   }
 
   .cs-text--result {
-    font-family: var(--font-heading);
-    font-size: 1.125rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
     font-weight: 400;
-    line-height: 1.45;
-    letter-spacing: -0.01em;
-    color: var(--color-text-primary);
+    line-height: 1.55;
+    letter-spacing: 0;
+    color: var(--color-text-secondary);
     margin: 0;
   }
 
@@ -716,10 +720,10 @@ function siteHost(url: string): string {
   }
 
   .cs-proof-value {
-    font-family: var(--font-heading);
+    font-family: var(--font-body);
     font-size: clamp(2.25rem, 2.6vw, 2.85rem);
-    font-weight: 400;
-    letter-spacing: -0.03em;
+    font-weight: 500;
+    letter-spacing: -0.02em;
     line-height: 1;
     color: var(--color-blue);
     margin: 0;
@@ -783,54 +787,103 @@ function siteHost(url: string): string {
     color: var(--color-text-primary);
   }
 
-  /* —— Layers —— */
+  /* —— Layers: curtain (default) | cube (opt-in via data-cs-motion) —— */
   .cs-stack {
     display: grid;
   }
 
   .cs-stack > .cs-layer {
     grid-area: 1 / 1;
+    align-self: start;
+    width: 100%;
   }
 
   .cs-layer {
     opacity: 0;
-    transform: translateY(12px);
     pointer-events: none;
     visibility: hidden;
-    transition:
-      opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
-      transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 0s linear 420ms;
   }
 
-  .cs-layer.is-leaving {
+  /* Curtain: leave snaps off; enter slides + fades in */
+  :global(.cs[data-cs-motion='curtain']) .cs-layer {
+    transform: translate3d(0, 28px, 0);
+    transition: none;
+  }
+
+  :global(.cs[data-cs-motion='curtain'][data-cs-dir='prev']) .cs-layer {
+    transform: translate3d(0, -28px, 0);
+  }
+
+  :global(.cs[data-cs-motion='curtain']) .cs-layer.is-leaving {
     opacity: 0;
-    transform: translateY(-8px);
-    visibility: visible;
-    transition:
-      opacity 280ms cubic-bezier(0.4, 0, 1, 1),
-      transform 280ms cubic-bezier(0.4, 0, 1, 1),
-      visibility 0s linear 280ms;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1;
+    transition: none;
   }
 
-  .cs-layer.is-active {
+  :global(.cs[data-cs-motion='curtain']) .cs-layer.is-active {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
     pointer-events: auto;
     visibility: visible;
+    z-index: 3;
     transition:
-      opacity 480ms cubic-bezier(0.22, 1, 0.36, 1) 40ms,
-      transform 480ms cubic-bezier(0.22, 1, 0.36, 1) 40ms,
+      opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
       visibility 0s;
+  }
+
+  /* —— Cube face (alt): data-cs-motion="cube" —— */
+  :global(.cs[data-cs-motion='cube']) .cs-stack {
+    perspective: 1400px;
+    perspective-origin: 50% 40%;
+    overflow: visible;
+  }
+
+  :global(.cs[data-cs-motion='cube']) .cs-stack > .cs-layer {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
+
+  :global(.cs[data-cs-motion='cube']) .cs-layer {
+    transform: rotateX(42deg) translate3d(0, 24px, 0);
+    transform-origin: 50% 100%;
+    transition: none;
+  }
+
+  :global(.cs[data-cs-motion='cube'][data-cs-dir='prev']) .cs-layer {
+    transform: rotateX(-42deg) translate3d(0, -24px, 0);
+    transform-origin: 50% 0%;
+  }
+
+  :global(.cs[data-cs-motion='cube']) .cs-layer.is-leaving {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
     z-index: 1;
+    transition: none;
+  }
+
+  :global(.cs[data-cs-motion='cube']) .cs-layer.is-active {
+    opacity: 1;
+    transform: rotateX(0deg) translate3d(0, 0, 0);
+    transform-origin: 50% 50%;
+    pointer-events: auto;
+    visibility: visible;
+    z-index: 3;
+    transition:
+      opacity 560ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 720ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .cs-layer,
     .cs-layer.is-leaving,
     .cs-layer.is-active {
-      transition: none;
-      transform: none;
+      transition: none !important;
+      transform: none !important;
     }
   }
 

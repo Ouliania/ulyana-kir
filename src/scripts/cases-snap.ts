@@ -1,6 +1,6 @@
 /**
  * Home cases stage: sticky shell + scroll rails.
- * Active rail swaps layered copy/video (opacity + y) — stage stays put (SPEC B8).
+ * Layer swap modes via `data-cs-motion`: curtain (default) | cube (alt).
  */
 
 const SNAP_CLASS = 'is-cases-snapping';
@@ -49,12 +49,16 @@ export function initCasesSnap(root: ParentNode = document): () => void {
   const setActive = (next: number, { scrollToRail = false } = {}) => {
     if (next < 0 || next >= n) return;
     if (next === active && !scrollToRail) {
-      // still refresh video play state
+      // keep chrome/videos in sync only when index actually changes
     } else {
       const prev = active;
       active = next;
 
       if (leaveTimer) window.clearTimeout(leaveTimer);
+
+      if (prev !== next) {
+        section.dataset.csDir = next > prev ? 'next' : 'prev';
+      }
 
       section.querySelectorAll<HTMLElement>('[data-cs-i]').forEach((layer) => {
         const i = Number(layer.dataset.csI);
@@ -72,7 +76,7 @@ export function initCasesSnap(root: ParentNode = document): () => void {
         section.querySelectorAll<HTMLElement>('.is-leaving').forEach((el) => {
           el.classList.remove('is-leaving');
         });
-      }, 360);
+      }, prefersReducedMotion() ? 0 : 40);
 
       dots.forEach((dot, i) => {
         const on = i === next;
@@ -153,7 +157,6 @@ export function initCasesSnap(root: ParentNode = document): () => void {
   const mqMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   mqMotion.addEventListener('change', setSnap);
 
-  // First video
   setActive(0);
   const firstVideo = section.querySelector<HTMLVideoElement>('.cs-layer.is-active [data-cs-video]');
   void firstVideo?.play?.().catch(() => {});

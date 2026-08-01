@@ -90,8 +90,24 @@ Accent roles: blue = primary action, ∀ real CTA button (header/modal/card) alw
 ### Content grid
 - Inside `page-shell`: shared inline inset `--content-inline: clamp(1.5rem, 3.5vw, 2.75rem)` (services tabs edge = law).
 - Section stack gap: `--section-gap: clamp(2.5rem, 5vw, 4rem)` — between major home blocks. ! > hero inner gap (`1.25rem`).
-- `.container`, services tabs/columns, interlude media ! use `--content-inline`. Media may stretch full content-width (to that pad).
+- **Section owns chrome.** Default `.section-block` = `padding-block: var(--section-gap)` + `padding-inline: var(--content-inline)`. Content sits inside `<section>` — ⊥ put section air on inner wrappers (`.reviews-inner`, one-off head pads).
+- Exception `.section-block--bleed`: pad-inline = 0 (pin stages: services rails, cases stage — children apply `--content-inline` where needed; title via `.section-head`).
+- Other exceptions: hero (own), interlude (pin recipe). ⊥ invent 3rd pad token per block.
+- `.container` = optional measure cap (legacy/pages) — ∉ required for home section chrome.
 - Blog prose later ? wider reading measure / larger text inset — exception, not default.
+
+### Section title roles (type system)
+Semantic `h2` always (a11y). Visual role ≠ level — pick by **where eye should land**:
+| role | class | when | size token |
+|------|-------|------|------------|
+| **label** | `.type-label` | content-led block (services, cases) — title quiet, stage/content carries | `--fs-h2-label` (< `--fs-h2`) |
+| **display** | `.type-display` | title-led block (how I work) — title + optional `.type-lead` share stage with content | `--fs-h2-display` (> `--fs-h2`) |
+| **band** | `.type-band` | CTA strip / tint band — strong close | `--fs-h2` |
+Hero H1 = own (`.hero-title` / `--fs-h1`). Case in-panel Tag = case chrome, ∉ section roles.
+Support copy under display/band → `.type-lead` (body, muted, measure ≤~40rem).
+Chrome: `.section-head` + `--label`\|`--display` for pad/gap only. ⊥ invent 4th H2 size per section. ⊥ style via wrong tag (`h4` for look).
+Home map: services+cases → label; `#reviews` how-I-work → display; `#discuss` → band.
+Rhythm = quiet label next to loud stage, then big display beat — ∴ not flat, ⊥ not random.
 
 ### Motion (GSAP)
 - Lib: `gsap` + `ScrollTrigger` (CDN или npm). Vanilla/Astro script islands.
@@ -123,7 +139,7 @@ Accent roles: blue = primary action, ∀ real CTA button (header/modal/card) alw
 - Interlude = pin mid-viewport: stage `100svh`, frame centered with `--section-gap` top+bottom + `--content-inline` sides. Width/height screen-fluid (`calc(100svh - 2*section-gap)` × content width). `border-radius: var(--radius-media)`, cover, asset `simulator_backdrop.webp`. ⊥ fixed px media box. Cite V7.
 
 ### Case layout (ref `docs/design/figma-case.png`)
-- **Home cases stage** (`#cases`): sticky opaque stage + rails. Chrome (inactive short bars / active long bar + index) spans above columns. Grid `1.125fr / 1fr` + `2.5rem` gutter. Result on soft `--color-blue-tint` plaque; serif copy, weight 400. Solution list = text only (⊥ icons). «Что сделано» = blue label, normal weight. Classic snapshot = commit `037d452`. ⊥ case deep-link CTA while write-ups deferred.
+- **Home cases stage** (`#cases`): sticky opaque stage + rails. Chrome (inactive short bars / active long bar + index) spans above columns. Grid `1.125fr / 1fr` + `2.5rem` gutter. Result on soft `--color-blue-tint` plaque; serif copy, weight 400. Solution list = text + tiny triple-dot markers. Layer swap `data-cs-motion`: **curtain** (default — leave rises/fades, enter from below, ~800ms) | **cube** (3D rotateX, kept as alt). Classic snapshot = commit `037d452`. ⊥ case deep-link CTA while write-ups deferred.
 - Home copy spine: Tag → Project → Problem (Was) → Solution (Done) → Result metrics? | qualitative. Role honesty kept. Stack = case page only.
 - Case page: Tag/Service (serif H) + project caption (link · roles) | Problem | Solution (+ Result) + media stage. May reuse expanded fields.
 - Result ? only real number when claim metric (Honesty > volume). ⊥ invent / empty placeholder row.
@@ -158,6 +174,7 @@ V16: GSAP motion on brand surfaces; honor `prefers-reduced-motion`. ≥2 intenti
 V17: Single-sentence UI fragments (cards, labels, subheads, short leads) ⊥ trailing period when no following sentence.
 V18: Agent ! treat `SPEC.md` as source of truth for scope/IA/type/copy spine. Code explore only for narrow fix or SPEC drift.
 V19: **Phase gate** — Phase 2 (blog nav, expand services pages, more cases) ⊥ until v1 Definition of Done (§Notes) = met. Amend SPEC → then code.
+V21: Home section titles ! use type roles (§I): services+cases = `.type-label`; how-I-work = `.type-display` (+ `.type-lead`); discuss = `.type-band`. ⊥ one-off `font-size` on section H2; ⊥ skip heading levels for style.
 
 ## §T Tasks
 | id | status | task | cites |
@@ -196,6 +213,7 @@ V19: **Phase gate** — Phase 2 (blog nav, expand services pages, more cases) �
 | T27 | . | later Phase2: expand case registry (more real works + video) | V4,V9,V15,V19 |
 | T28 | ~ | Home cases: cinema-band A + B readable copy; metrics only when real | V4,V15,V16,V20 |
 | T29 | . | After T28 OK: migrate remaining featured cases to new panel format | V4,V15,V19 |
+| T30 | x | Type roles: label/display/band ∈ global.css + home; sync superdesign docs | V21,§I |
 
 ## §B Bugs
 | id | date | cause | fix |
@@ -213,7 +231,7 @@ V19: **Phase gate** — Phase 2 (blog nav, expand services pages, more cases) �
 
 ### Definition of Done — v1 (витрина + смыслы)
 v1 = done when ∀ true:
-1. **Visual** — Source Serif 4 / Source Sans 3 live EN+RU; tokens Notion; no lime; letter-spacing serif ≈ −0.01em; weight table: heads Serif 500, body/nav/btn Sans 400–500, logo Kirp Sans 300; hierarchy via family ⊥ weight spam.
+1. **Visual** — Source Serif 4 / Source Sans 3 live EN+RU; tokens Notion; no lime; letter-spacing serif ≈ −0.01em; weight table: heads Serif 500, body/nav/btn Sans 400–500, logo Kirp Sans 300; hierarchy via family + **section title roles** (label/display/band, V21) ⊥ weight spam / one-off H2 sizes.
 2. **Home cold path** — hero (H1 + support + cue) → interlude → services → cases (video proof) → approach → Review ! empty → Discuss CTA. Nav matches V1.
 3. **Marketing spine** — §G who/promise/proof/path readable on page (EN+RU parity); ⊥ draft gibberish / empty Review.
 4. **Cases** — ∀ featured: Tag\|Project\|Problem\|Solution (+ Result ? metric) + working video + role tag; home = full-viewport snap panels (content-block transition); stack on case page only; posters preferred.
