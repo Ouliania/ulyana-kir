@@ -1,0 +1,559 @@
+---
+import type { Locale } from '../i18n/ui';
+import { t } from '../i18n/ui';
+import { caseLocalized, type CaseStudy } from '../data/cases';
+
+interface Props {
+  locale: Locale;
+  cases: CaseStudy[];
+  caseBase: string;
+}
+
+const { locale, cases, caseBase } = Astro.props;
+const n = cases.length;
+const pad = (i: number) => String(i + 1).padStart(2, '0');
+/** Case write-ups deferred — hide deep-link until pages ready */
+const showCaseDeepLink = false;
+/** Sticky overlap only for short stacks (home ≤3; long archive stays static) */
+const stickyStack = n > 0 && n <= 4;
+
+function siteHost(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+}
+---
+
+<section
+  class:list={['csk', stickyStack && 'csk--sticky']}
+  aria-label={t(locale, 'cases')}
+>
+  {
+    cases.map((item, i) => {
+      const copy = caseLocalized(item, locale);
+      const href = `${caseBase}${item.slug}/`;
+      return (
+        <article
+          class="csk-panel"
+          id={item.slug}
+          data-animate="case-panel"
+          style={`--csk-z: ${i + 1}`}
+        >
+          <div class={`csk-plaque csk-plaque--${i % 4}`}>
+            <p class="csk-index" aria-hidden="true">
+              <span class="csk-index-cur">{pad(i)}</span>
+              <span class="csk-index-sep">/</span>
+              <span>{pad(n - 1)}</span>
+            </p>
+
+            <div class="csk-grid">
+              {/* Copy first — matches services text-left / viz-right */}
+              <div class="csk-copy">
+                {/* Service + role tags — own block, ⊥ mixed with title */}
+                <div class="csk-meta">
+                  <p class="csk-service">{copy.tag}</p>
+                  <div class="csk-chips">
+                    {item.role.map((role) => (
+                      <span class="csk-chip">{role}</span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Title + live link — tight inner stack */}
+                <div class="csk-project-block">
+                  <p class="csk-project">{copy.project}</p>
+                  {item.url?.startsWith('http') && (
+                    <a
+                      href={item.url}
+                      class="csk-live"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {siteHost(item.url)}
+                    </a>
+                  )}
+                  {item.url?.startsWith('/') && (
+                    <a href={item.url} class="csk-live">
+                      {t(locale, 'openDemo')}
+                    </a>
+                  )}
+                </div>
+
+                <div class="csk-fields">
+                  <div class="csk-field">
+                    <p class="csk-label">{t(locale, 'theBarrier')}</p>
+                    <p class="csk-text">{copy.problem}</p>
+                  </div>
+                  <div class="csk-field">
+                    <p class="csk-label csk-label--done">{t(locale, 'theIntervention')}</p>
+                    <ul class="csk-list">
+                      {copy.solution.map((step) => (
+                        <li class="csk-bullet">{step}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="csk-visual">
+                <div class="csk-media">
+                  {item.video ? (
+                    <video
+                      class="csk-video"
+                      src={item.video}
+                      poster={item.poster}
+                      muted
+                      playsinline
+                      loop
+                      autoplay
+                      preload="metadata"
+                    />
+                  ) : (
+                    <div class="csk-video-ph">{t(locale, 'videoSoon')}</div>
+                  )}
+                </div>
+
+                {copy.metrics.length > 0 && (
+                  <div class="csk-proof-block">
+                    <p class="csk-result-label">{t(locale, 'result')}</p>
+                    <div class="csk-proof">
+                      {copy.metrics.map((m) => (
+                        <div class="csk-proof-item">
+                          <p class="csk-proof-value">{m.value}</p>
+                          <p class="csk-proof-desc">{m.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {copy.metrics.length === 0 && copy.result.length > 0 && (
+                  <div class="csk-result-prose">
+                    <p class="csk-result-label">{t(locale, 'result')}</p>
+                    {copy.result.map((line) => (
+                      <p class="csk-text csk-text--result">{line}</p>
+                    ))}
+                  </div>
+                )}
+
+                {showCaseDeepLink && (
+                  <div class="csk-cta-row">
+                    <a href={href} class="btn btn-primary">
+                      {t(locale, 'caseExplore')}
+                      <span aria-hidden="true"> →</span>
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </article>
+      );
+    })
+  }
+  {
+    stickyStack && (
+      <div class="csk-runway" aria-hidden="true" />
+    )
+  }
+</section>
+
+<style>
+  /*
+   * Whole-case plaque (services-like wash) + smaller video inset.
+   * Desktop short stacks: sticky panels ride over each other (наезд).
+   */
+  .csk {
+    --csk-pad: var(--content-inline);
+    /* Outer frame around sticky plaque = same as side gutter */
+    --csk-frame: var(--csk-pad);
+    /* One sticky stop for ∀ panels — ⊥ per-card stepped tops */
+    --csk-sticky-top: calc(var(--header-height) + var(--csk-frame));
+    /* Same tint family as ServiceTabsSection .st-stage tabs */
+    --csk-tint-0: var(--color-blue-tint);
+    --csk-tint-1: #c8c4ee;
+    --csk-tint-2: var(--color-lime);
+    --csk-tint-3: var(--color-yellow);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+    padding: 0 var(--csk-pad) clamp(1.5rem, 3vw, 2.5rem);
+    background: transparent;
+  }
+
+  .csk-panel {
+    max-inline-size: 1400px;
+    margin-inline: auto;
+    width: 100%;
+    z-index: var(--csk-z, 1);
+  }
+
+  /* Plaque bg = tint as-is (already pastel wash). ⊥ 55% mix that washed new lime/yellow back to “old” */
+  .csk-plaque {
+    --csk-tint: var(--csk-tint-0);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    /* Equal inset all sides — match former side padding, bump a touch for air */
+    padding: clamp(2rem, 2.75vw, 2.5rem);
+    background: var(--csk-tint);
+    border-radius: var(--radius-card);
+    border: 1px solid color-mix(in srgb, var(--csk-tint) 55%, transparent);
+    box-shadow: 0 12px 40px -24px color-mix(in srgb, var(--color-text-primary) 22%, transparent);
+  }
+
+  .csk-plaque--0 { --csk-tint: var(--csk-tint-0); }
+  .csk-plaque--1 { --csk-tint: var(--csk-tint-1); --csk-result-bg: var(--color-surface); }
+  .csk-plaque--2 { --csk-tint: var(--csk-tint-2); --csk-result-bg: var(--color-surface); }
+  .csk-plaque--3 { --csk-tint: var(--csk-tint-3); --csk-result-bg: var(--color-surface); }
+
+  @media (min-width: 900px) {
+    /*
+     * Sticky deck: block (⊥ flex — sticky siblings desync on release).
+     * ∀ panels same height; runway after last so hold then release together.
+     */
+    .csk--sticky {
+      --csk-frame-h: calc(100svh - var(--header-height) - 2 * var(--csk-frame));
+      display: block;
+    }
+
+    .csk--sticky .csk-panel {
+      position: sticky;
+      top: var(--csk-sticky-top);
+      box-sizing: border-box;
+      height: var(--csk-frame-h);
+      margin-block-end: 0;
+      padding-block-end: 0;
+    }
+
+    .csk--sticky .csk-plaque {
+      height: 100%;
+      min-height: 0;
+      overflow: auto;
+    }
+
+    /*
+     * Non-sticky spacer after all panels. Extends `.csk` so last card holds
+     * at the same top; when runway ends, ∀ equal-height stickies release together.
+     */
+    .csk--sticky .csk-runway {
+      display: block;
+      width: 100%;
+      height: var(--csk-frame-h);
+      pointer-events: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .csk--sticky {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .csk--sticky .csk-panel {
+      position: relative;
+      top: auto;
+      height: auto;
+      margin-block-end: 0;
+      padding-block-end: 0;
+    }
+
+    .csk--sticky .csk-plaque {
+      height: auto;
+      min-height: 0;
+      overflow: visible;
+    }
+
+    .csk--sticky .csk-runway {
+      display: none;
+    }
+  }
+
+  .csk-index {
+    margin: 0 0 1rem;
+    flex-shrink: 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    color: #9ca3af;
+  }
+
+  .csk-index-cur {
+    color: var(--color-blue);
+  }
+
+  .csk-index-sep {
+    margin-inline: 0.2rem;
+    opacity: 0.6;
+  }
+
+  .csk-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-height: 0;
+  }
+
+  @media (min-width: 900px) {
+    .csk-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 2rem 2.5rem;
+      align-items: start;
+    }
+
+    .csk--sticky .csk-grid {
+      /* Don’t flex-stretch columns — keeps copy tight, video 16:9 */
+      flex: 0 1 auto;
+      align-items: start;
+    }
+  }
+
+  .csk-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* Gaps on children — outer > inner */
+    gap: 0;
+    min-width: 0;
+  }
+
+  .csk-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 1rem;
+    min-width: 0;
+  }
+
+  /* Always 16:9 — screen recordings; ⊥ stretch to square */
+  .csk-media {
+    position: relative;
+    width: 100%;
+    max-inline-size: none;
+    aspect-ratio: 16 / 9;
+    flex: none;
+    border-radius: var(--radius-media);
+    overflow: hidden;
+    background: #0f1218;
+    box-shadow: 0 20px 48px -18px rgba(0, 0, 0, 0.16);
+  }
+
+  .csk-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .csk-video-ph {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--color-text-muted);
+  }
+
+  /* Outer: service/tags → title (largest step in copy) */
+  .csk-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    width: 100%;
+    margin-block-end: 1.35rem;
+  }
+
+  /* Title + link — tight inner; then smaller step to Barrier */
+  .csk-project-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    margin-block-end: 1rem;
+  }
+
+  .csk-service {
+    font-family: var(--font-heading);
+    font-size: 1.0625rem;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    color: var(--color-blue);
+    margin: 0;
+    min-width: 0;
+  }
+
+  .csk-project {
+    font-family: var(--font-heading);
+    font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.85rem);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .csk-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .csk-chip {
+    padding: 0.125rem 0.5rem;
+    background: transparent;
+    color: var(--color-blue);
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    border-radius: var(--radius-default);
+    border: 1px solid var(--color-blue);
+  }
+
+  .csk-live {
+    font-size: 0.9rem;
+    color: var(--color-blue);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .csk-fields {
+    display: grid;
+    gap: 0.9rem;
+    max-inline-size: 31.25rem; /* 500px */
+  }
+
+  .csk-label {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    font-weight: 400;
+    margin: 0 0 0.3rem;
+  }
+
+  .csk-label--done {
+    color: var(--color-blue);
+  }
+
+  .csk-text {
+    font-family: var(--font-body);
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .csk-text--result {
+    margin-block-end: 0.35rem;
+  }
+
+  .csk-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .csk-bullet {
+    position: relative;
+    padding-inline-start: 1.1rem;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+  }
+
+  .csk-bullet::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0.55em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-blue);
+    box-shadow:
+      6px 0 0 var(--color-blue),
+      12px 0 0 var(--color-blue);
+    transform: scale(0.55);
+  }
+
+  .csk-result-label {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-blue);
+    font-weight: 400;
+    margin: 0;
+  }
+
+  .csk-proof-block,
+  .csk-result-prose {
+    box-sizing: border-box;
+    width: 100%;
+    max-inline-size: none;
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius-media);
+    /* Blue plaque keeps tint; others → soft near-white */
+    background: var(--csk-result-bg, var(--color-blue-tint));
+    border: none;
+  }
+
+  .csk-proof-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+
+  .csk-proof {
+    display: flex;
+    gap: 1.5rem;
+    padding-block: 0;
+    width: 100%;
+  }
+
+  .csk-proof-item {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .csk-proof-value {
+    font-family: var(--font-body);
+    font-size: clamp(2.25rem, 2.6vw, 2.85rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--color-blue);
+  }
+
+  .csk-proof-desc {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .csk-cta-row {
+    margin-block-start: 0.25rem;
+    width: 100%;
+  }
+</style>

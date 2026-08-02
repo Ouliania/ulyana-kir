@@ -14,9 +14,11 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
     "astro": "^6.4.6",
+    "canvas-confetti": "^1.9.4",
     "gsap": "^3.15.0"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
     "typograf": "^7.7.0"
   }
 }

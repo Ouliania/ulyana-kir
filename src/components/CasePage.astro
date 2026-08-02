@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import PageShell from './PageShell.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
 import InteractiveHoverButton from './InteractiveHoverButton.astro';
 import KineticText from './KineticText.astro';
 import { t, type Locale } from '../i18n/ui';
@@ -16,6 +17,7 @@ interface Props {
 const { locale, item } = Astro.props;
 const copy = caseLocalized(item, locale);
 const homeCases = locale === 'ru' ? '/ru/#cases' : '/#cases';
+const casesIndex = locale === 'ru' ? '/ru/cases/' : '/cases/';
 const serviceTitle = copy.tag;
 ---
 
@@ -28,6 +30,13 @@ const serviceTitle = copy.tag;
 
   <PageShell>
   <main class="case-page">
+    <Breadcrumbs
+      locale={locale}
+      items={[
+        { label: t(locale, 'cases'), href: casesIndex },
+        { label: item.projectName },
+      ]}
+    />
     <section class="case-first">
       <div class="container case-stack">
         <div class="case-grid" data-animate="hero">
@@ -168,7 +177,7 @@ const serviceTitle = copy.tag;
   }
 
   .case-first {
-    padding-block: calc(var(--header-height) + 1.5rem) var(--section-gap);
+    padding-block: 1.5rem var(--section-gap);
   }
 
   .case-stack {

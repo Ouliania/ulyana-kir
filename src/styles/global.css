@@ -171,8 +171,8 @@
     --color-blue-soft: #62ACEF;
     --color-blue-tint: #E6F4FE;
     --color-violet: #6B5CE7;
-    --color-lime: #61F185;
-    --color-yellow: #EBF151;
+    --color-lime: #DFFEDF;
+    --color-yellow: #FFFDC2;
     --color-teal: #2B9D99; /* legacy — CasePage .roles only */
 
     /* Surfaces */
@@ -198,6 +198,8 @@
     --radius-media: 16px;
     --shadow-card: none;
 
+    /* Beige frame around white page-shell — also used by fixed header to match shell edges */
+    --page-shell-inset: clamp(1rem, 2.4vw, 1.75rem);
     /* Content grid inset inside page-shell (matches services tabs). Blog prose may use larger later. */
     --content-inline: clamp(1.5rem, 3.5vw, 2.75rem);
     /* Vertical gap between major sections — must beat hero inner gap (1.25rem) */
@@ -298,7 +300,6 @@
    */
   .page-shell {
     --page-shell-radius: clamp(1rem, 1.8vw, 1.5rem);
-    --page-shell-inset: clamp(1rem, 2.4vw, 1.75rem);
     margin-block-start: calc(var(--header-height) + clamp(0.45rem, 1.1vw, 0.75rem));
     margin-block-end: var(--page-shell-inset);
     margin-inline: var(--page-shell-inset);
@@ -318,8 +319,11 @@
   }
 
   @media (max-width: 720px) {
-    .page-shell {
+    :root {
       --page-shell-inset: 0.75rem;
+    }
+
+    .page-shell {
       --page-shell-radius: 0.875rem;
     }
   }
@@ -359,22 +363,25 @@
     line-height: 1.15;
   }
 
-  /* Handoff line between dense pins (services→cases). Not a section title. */
-  .type-bridge {
-    margin: 0;
-    font-family: var(--font-heading);
-    font-size: var(--fs-h2);
-    font-weight: 500;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    color: var(--color-text-primary);
-    text-wrap: balance;
-    max-inline-size: 36rem;
-  }
-
+  /* Cases title-in-air — junction breath before sticky stage (SPEC §I Home IA C) */
   .section-bridge {
     padding-block: var(--section-gap);
     padding-inline: var(--content-inline);
+  }
+
+  .section-bridge .type-display {
+    overflow: visible;
+  }
+
+  .cases-bridge-mask {
+    display: block;
+    overflow: hidden;
+    padding-block-end: 0.08em; /* serif descenders */
+  }
+
+  .cases-bridge-inner {
+    display: inline-block;
+    will-change: transform;
   }
 
   /* Junction air owned by bridge — avoid 2× section-gap stack */

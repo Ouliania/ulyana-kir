@@ -75,6 +75,83 @@ export function initBrandMotion(root: ParentNode = document): void {
     });
   });
 
+  // Cases title-in-air: start hidden, once-play rise when bridge enters
+  root.querySelectorAll<HTMLElement>('[data-animate="cases-bridge"]').forEach((el) => {
+    const trigger = el.closest('.section-bridge') ?? el;
+    const inner = el.querySelector<HTMLElement>('.cases-bridge-inner') ?? el;
+    if (reduce) {
+      gsap.set(inner, { clearProps: 'transform,opacity' });
+      return;
+    }
+
+    gsap.set(inner, { yPercent: 120, opacity: 0 });
+
+    const playIn = () => {
+      gsap.to(inner, {
+        yPercent: 0,
+        opacity: 1,
+        duration: 1.1,
+        ease: 'power3.out',
+        overwrite: true,
+        clearProps: 'transform,opacity',
+      });
+    };
+
+    ScrollTrigger.create({
+      trigger,
+      start: 'top 82%',
+      once: true,
+      onEnter: playIn,
+      // Tall pins above can refresh past start — don't leave title stuck hidden
+      onRefresh: (self) => {
+        if (self.progress > 0 || self.start < self.scroll()) {
+          gsap.set(inner, { yPercent: 0, opacity: 1, clearProps: 'transform,opacity' });
+        }
+      },
+    });
+  });
+
+  // Case panels: staggered enter (copy + media) — replaces pin/rails
+  root.querySelectorAll<HTMLElement>('[data-animate="case-panel"]').forEach((panel) => {
+    const copyBits = panel.querySelectorAll<HTMLElement>(
+      '.csk-index, .csk-project-block, .csk-field',
+    );
+    const visualBits = panel.querySelectorAll<HTMLElement>(
+      '.csk-media, .csk-proof-block, .csk-result-prose',
+    );
+    const bits = [...copyBits, ...visualBits];
+    if (!bits.length) return;
+
+    if (reduce) {
+      gsap.set(bits, { clearProps: 'transform,opacity' });
+      return;
+    }
+
+    gsap.set(bits, { opacity: 0, y: 36 });
+
+    ScrollTrigger.create({
+      trigger: panel,
+      start: 'top 78%',
+      once: true,
+      onEnter: () => {
+        gsap.to(bits, {
+          opacity: 1,
+          y: 0,
+          duration: 0.85,
+          stagger: 0.07,
+          ease: 'power3.out',
+          overwrite: true,
+          clearProps: 'transform,opacity',
+        });
+      },
+      onRefresh: (self) => {
+        if (self.progress > 0 || self.start < self.scroll()) {
+          gsap.set(bits, { opacity: 1, y: 0, clearProps: 'transform,opacity' });
+        }
+      },
+    });
+  });
+
   // Sticky / tall pin sections above can desync ScrollTrigger — refresh after layout
   requestAnimationFrame(() => {
     ScrollTrigger.refresh();

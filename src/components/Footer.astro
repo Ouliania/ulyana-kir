@@ -19,20 +19,20 @@ const privacyHref = locale === 'ru' ? '/ru/privacy-policy/' : '/privacy-policy/'
 ---
 
 <footer class="site-footer">
-  <div class="container footer-inner">
+  <div class="footer-inner">
     <div class="footer-brand">
       <Wordmark href={homePath} />
       <p>{t(locale, 'footerTagline')}</p>
     </div>
     <nav class="footer-nav" aria-label="Footer">
       <a href={isHome ? '#cases' : `${homePath}#cases`}>{t(locale, 'navCases')}</a>
-      <a href={isHome ? '#reviews' : `${homePath}#reviews`}>{t(locale, 'navReview')}</a>
+      <a href={isHome ? '#reviews' : `${homePath}#reviews`}>{t(locale, 'navApproach')}</a>
       <a href={contactsHref}>{t(locale, 'navContacts')}</a>
       <a href={codeHref}>{t(locale, 'codeSites')}</a>
       <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer">Telegram</a>
     </nav>
   </div>
-  <div class="container footer-bottom">
+  <div class="footer-bottom">
     <p>© {year} Ulyana Kirpichnikova</p>
     <a href={privacyHref}>{t(locale, 'privacy')}</a>
   </div>
@@ -42,7 +42,9 @@ const privacyHref = locale === 'ru' ? '/ru/privacy-policy/' : '/privacy-policy/'
   .site-footer {
     border-top: 1px solid var(--color-border);
     background: transparent;
+    /* Match .section-block horizontal edge (no .container 1200 cap) */
     padding-block: 3.5rem 2rem;
+    padding-inline: var(--content-inline);
     margin-block-start: 0;
   }
 
@@ -52,6 +54,7 @@ const privacyHref = locale === 'ru' ? '/ru/privacy-policy/' : '/privacy-policy/'
     justify-content: space-between;
     gap: 2rem;
     margin-block-end: 2.5rem;
+    max-inline-size: none;
   }
 
   .footer-brand {

@@ -3,12 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PageShell from '../components/PageShell.astro';
-import CaseCardList from '../components/CaseCardList.astro';
+import CaseStackList from '../components/CaseStackList.astro';
 import InteractiveHoverButton from '../components/InteractiveHoverButton.astro';
 import KineticText from '../components/KineticText.astro';
 import Interlude from '../components/Interlude.astro';
 import ServiceTabsSection from '../components/ServiceTabsSection.astro';
 import WorkFlow from '../components/WorkFlow.astro';
+import CtaSiteToy from '../components/CtaSiteToy.astro';
 import { cases } from '../data/cases';
 import { t, type Locale } from '../i18n/ui';
 
@@ -19,6 +20,7 @@ interface Props {
 const locale: Locale = Astro.props.locale ?? 'en';
 const featured = cases.filter((c) => c.featured);
 const caseBase = locale === 'ru' ? '/ru/cases/' : '/cases/';
+const casesIndexHref = caseBase;
 const contactsHref = locale === 'ru' ? '/ru/contacts/' : '/contacts/';
 
 const title =
@@ -91,15 +93,18 @@ const methods = [
       <ServiceTabsSection locale={locale} />
     </section>
 
-    <div class="section-bridge" data-animate="reveal">
-      <p class="type-bridge">{t(locale, 'casesBridge')}</p>
-    </div>
-
     <section id="cases" class="section-block section-block--bleed cases-block">
-      <header class="section-head section-head--label">
-        <h2 class="type-label">{t(locale, 'cases')}</h2>
+      <header class="section-bridge">
+        <h2 class="type-display" data-animate="cases-bridge">
+          <span class="cases-bridge-mask">
+            <span class="cases-bridge-inner">{t(locale, 'cases')}</span>
+          </span>
+        </h2>
       </header>
-      <CaseCardList locale={locale} cases={featured} caseBase={caseBase} />
+      <CaseStackList locale={locale} cases={featured} caseBase={caseBase} />
+      <div class="cases-more">
+        <a href={casesIndexHref} class="btn btn-secondary">{t(locale, 'seeAllCases')}</a>
+      </div>
     </section>
 
     <section id="reviews" class="section-block reviews">
@@ -109,13 +114,16 @@ const methods = [
     </section>
 
     <section id="discuss" class="section-block cta-band">
-      <div class="cta-inner" data-animate="reveal">
-        <h2 class="type-band">{t(locale, 'ctaTitle')}</h2>
-        <p class="type-lead">{t(locale, 'ctaLead')}</p>
-        <div class="cta-actions">
-          <InteractiveHoverButton href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" label={t(locale, 'discuss')} />
-          <a href={contactsHref} class="btn btn-secondary">{t(locale, 'allContacts')}</a>
+      <div class="cta-layout" data-animate="reveal">
+        <div class="cta-inner">
+          <h2 class="type-band">{t(locale, 'ctaTitle')}</h2>
+          <p class="type-lead">{t(locale, 'ctaLead')}</p>
+          <div class="cta-actions">
+            <InteractiveHoverButton href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" label={t(locale, 'discuss')} />
+            <a href={contactsHref} class="btn btn-secondary">{t(locale, 'allContacts')}</a>
+          </div>
         </div>
+        <CtaSiteToy locale={locale} />
       </div>
     </section>
   </main>
@@ -134,10 +142,9 @@ const methods = [
     import { initDeepAssemble } from '../scripts/deep-assemble';
     import { initConvAssemble } from '../scripts/conv-assemble';
     import { initStoreAssemble } from '../scripts/store-assemble';
-    import { initCasesSnap } from '../scripts/cases-snap';
+    import { initCtaSiteToy } from '../scripts/cta-site-toy';
     initBrandMotion();
     initInterlude();
-    initCasesSnap();
     initMagicSurfaces();
     initWorkFlowBeams();
     initHeroForm();
@@ -145,6 +152,7 @@ const methods = [
     initDeepAssemble();
     initConvAssemble();
     initStoreAssemble();
+    initCtaSiteToy();
   </script>
 </Layout>
 
@@ -336,6 +344,12 @@ const methods = [
     background: var(--color-surface);
   }
 
+  .cases-more {
+    display: flex;
+    justify-content: center;
+    padding: 0 var(--content-inline) clamp(2.5rem, 5vw, 3.5rem);
+  }
+
   /* === reused from previous === */
 
   :global(html[lang='ru']) .hero-title {
@@ -366,20 +380,43 @@ const methods = [
     background: var(--color-blue-tint);
   }
 
+  .cta-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.75rem);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .cta-layout {
+      grid-template-columns: minmax(0, 1fr) minmax(28rem, 34rem);
+      gap: clamp(1.75rem, 3vw, 2.75rem);
+      align-items: center;
+    }
+  }
+
   .cta-band .type-lead {
     margin-block: 0.35rem 0;
+    margin-inline: auto;
+    text-align: center;
   }
 
   .cta-inner {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: 0.75rem;
+  }
+
+  .cta-inner .type-band {
+    text-wrap: balance;
   }
 
   .cta-actions {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 0.75rem;
     margin-block-start: 1rem;
   }
