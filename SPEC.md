@@ -153,14 +153,15 @@ Rhythm = quiet label next to loud stage, then big display beat — ∴ not flat,
 
 ### Case layout (ref `docs/design/figma-case.png`)
 - **Home + archive** (`CaseStackList`): desktop grid **copy | visual**. Soft **plaque** wraps whole case (copy+media+result) — tint fill as-is (`--csk-tint` = blue-tint / violet / lime `#DFFEDF` / yellow `#FFFDC2`), `radius-card`, inner pad. ⊥ 55% surface mix (washes pastels back). ⊥ heavy card chrome / shadow soup.
-- Video = smaller inset (~70% visual col, max ~26rem), ! full-bleed column. Result under media.
+- Video default = landscape **16:9** inset (! full-bleed). Result under media.
+- **Portrait media** (`mediaAspect: 'portrait'`) — Mini App / phone capture (e.g. **interval-lingo** 500×1080). Home plaque: same copy|visual grid, visual col centers phone frame `aspect-ratio: 9/19.5` (≈ source), `max-block-size` fits sticky frame, `object-fit: cover`. ⊥ force 16:9 crop on portrait sources. Case page: centered phone stage same ratio.
 - **Sticky stack** (desktop ≥900, ≤4 panels — home featured; long archive stays static plaques): `.csk--sticky` = **block** deck (⊥ flex sticky desync). ∀ `.csk-panel` sticky at **same** `--csk-sticky-top` + **same height** `--csk-frame-h`; later z-index rides over. Hold = `.csk-runway` after panels. Release together. ⊥ per-card stepped tops / margin-on-last-sticky. ⊥ old `100vh` rails. Classic pin = `037d452` retired.
 - Separation = plaque + sticky overlap air (pad-bottom), ⊥ hairline glue.
-- Home = featured ≤3 + See-all. Archive = ∀ registry (static stack if >4).
+- Home = featured ≤4 + See-all. Archive = ∀ registry (static stack if >4).
 - Copy spine: Tag → Project → Problem → Solution → Result?. Role honesty.
-- Case page: denser media-first OK.
+- Case page: denser media-first OK; portrait = phone stage.
 - Result ? real metric only. Media: video + poster. Mobile: plaques stacked, ⊥ sticky overlap.
-- v1 featured: **progolos** + **grom-bike** + **creator**.
+- v1 featured: **progolos** + **grom-bike** + **creator** + **interval-lingo**.
 - ⊥ case deep-link CTA while write-ups deferred.
 
 ### Brand / tech
@@ -178,20 +179,20 @@ V5: Brand type = Source Serif 4 (headings) + Source Sans 3 (body/UI), local woff
 V6: Primary CTA = Discuss / Telegram | free express-audit as conversation. ⊥ paid audit price as primary.
 V7: Перед новым разделом → cite §G: помогает cold lead? Нет → ⊥.
 V8: Agent session ! читать `SPEC.md` + `.cursor/rules/ulyanaweb.mdc` до кода.
-V9: ∀ case card ! role tag: design | layout | copy | structure | booking UX | full. Honesty > volume.
+V9: ∀ case card ! role tag: design | layout | copy | structure | booking UX | product design | Telegram Mini App | full. Honesty > volume.
 V10: Demo-кейсы (hotel tree) под `/cases/...`; immersive demo без brand Header OK.
 V11: Brand UI ! EN+RU паритет. Default EN. Auto locale: cookie → client IP geo → Accept-Language → `en`.
 V12: Manual lang switch ! persist cookie + twin URL. Geo ⊥ override cookie. IP API ≤ 1× / visitor until cookie set.
 V13: `html[lang]` + hreflang корректны ∀ bilingual page.
 V14: Один static build → reg.ru; `.ru` + `.com` (когда купишь) = same site.
-V15: Case structure = Tag/Service (H) + project caption | Problem (Was) | Solution (Done, list OK) (+ Result ? metric) + media (smaller inset). Home+archive = soft whole-case plaque + grid **copy | visual**. Desktop ≤4 panels: sticky stack (наезд). >4 archive: static plaques. ⊥ `100vh` rails / layer swap. Case page denser OK.
+V15: Case structure = Tag/Service (H) + project caption | Problem (Was) | Solution (Done, list OK) (+ Result ? metric) + media (smaller inset). Home+archive = soft whole-case plaque + grid **copy | visual**. Desktop ≤4 panels: sticky stack (наезд). >4 archive: static plaques. Media aspect = `landscape` 16:9 default | `portrait` phone/Mini App (centered frame, ⊥ 16:9 crop). ⊥ `100vh` rails / layer swap. Case page denser OK.
 V20: ∀ user-facing copy ∈ i18n dicts. Author RU first → sync EN. Nested semantic keys. ⊥ hardcoded strings ∈ components.
 V16: GSAP motion on brand surfaces; honor `prefers-reduced-motion`. ≥2 intentional motions on home.
 V17: Single-sentence UI fragments (cards, labels, subheads, short leads) ⊥ trailing period when no following sentence.
 V18: Agent ! treat `SPEC.md` as source of truth for scope/IA/type/copy spine. Code explore only for narrow fix or SPEC drift.
 V19: **Phase gate** — Phase 2 (blog nav, expand services pages, more cases) ⊥ until v1 Definition of Done (§Notes) = met. Amend SPEC → then code.
 V21: Home section titles ! use type roles (§I): services = `.type-label`; cases title ∈ `.section-bridge` = `.type-display`; how-I-work = `.type-display` (+ `.type-lead`); discuss = `.type-band`. ⊥ one-off `font-size` on section H2; ⊥ skip heading levels for style; ⊥ handoff phrase that restates Cases.
-V22: Home cases = featured ≤3 `CaseStackList` plaques + sticky stack + `seeAllCases` → archive. Archive = full registry, same plaque language (sticky if ≤4). ⊥ rails.
+V22: Home cases = featured ≤4 `CaseStackList` plaques + sticky stack + `seeAllCases` → archive. Archive = full registry, same plaque language (sticky if ≤4). ⊥ rails.
 V23: Breadcrumbs ∀ brand pages ⊥ home. Quiet Home→…→current; `Breadcrumbs.astro`; `--content-inline`. ⊥ home; ⊥ loud chrome.
 
 ## §T Tasks
@@ -228,7 +229,7 @@ V23: Breadcrumbs ∀ brand pages ⊥ home. Quiet Home→…→current; `Breadcru
 | T24 | . | Drop unused Neue Montreal from brand (keep only if hotel-demo needs) | V5 |
 | T25 | . | later: client IP geo soft-redirect (cookie wins) | V11–V12 |
 | T26 | . | later Phase2: dedicated service pages polish EN+RU parity | V11,V19 |
-| T27 | . | later Phase2: expand case registry (more real works + video) | V4,V9,V15,V19 |
+| T27 | ~ | Case registry: +interval-lingo (portrait Mini App) on home featured; more later Phase2 | V4,V9,V15,V19,V22 |
 | T28 | ~ | Home cases: cinema-band A + B readable copy; metrics only when real | V4,V15,V16,V20 |
 | T29 | . | After T28 OK: migrate remaining featured cases to new panel format | V4,V15,V19 |
 | T30 | x | Type roles: label/display/band ∈ global.css + home; sync superdesign docs | V21,§I |

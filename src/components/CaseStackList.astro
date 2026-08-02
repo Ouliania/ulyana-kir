@@ -14,7 +14,7 @@ const n = cases.length;
 const pad = (i: number) => String(i + 1).padStart(2, '0');
 /** Case write-ups deferred — hide deep-link until pages ready */
 const showCaseDeepLink = false;
-/** Sticky overlap only for short stacks (home ≤3; long archive stays static) */
+/** Sticky overlap only for short stacks (home ≤4; long archive stays static) */
 const stickyStack = n > 0 && n <= 4;
 
 function siteHost(url: string): string {
@@ -34,14 +34,22 @@ function siteHost(url: string): string {
     cases.map((item, i) => {
       const copy = caseLocalized(item, locale);
       const href = `${caseBase}${item.slug}/`;
+      const isPortrait = item.mediaAspect === 'portrait';
       return (
         <article
           class="csk-panel"
           id={item.slug}
           data-animate="case-panel"
+          data-media-aspect={item.mediaAspect ?? 'landscape'}
           style={`--csk-z: ${i + 1}`}
         >
-          <div class={`csk-plaque csk-plaque--${i % 4}`}>
+          <div
+            class:list={[
+              'csk-plaque',
+              `csk-plaque--${i % 4}`,
+              isPortrait && 'csk-plaque--portrait',
+            ]}
+          >
             <p class="csk-index" aria-hidden="true">
               <span class="csk-index-cur">{pad(i)}</span>
               <span class="csk-index-sep">/</span>
@@ -98,7 +106,7 @@ function siteHost(url: string): string {
               </div>
 
               <div class="csk-visual">
-                <div class="csk-media">
+                <div class:list={['csk-media', isPortrait && 'csk-media--portrait']}>
                   {item.video ? (
                     <video
                       class="csk-video"
@@ -330,7 +338,7 @@ function siteHost(url: string): string {
     min-width: 0;
   }
 
-  /* Always 16:9 — screen recordings; ⊥ stretch to square */
+  /* Landscape 16:9 — site screen recordings; ⊥ stretch to square */
   .csk-media {
     position: relative;
     width: 100%;
@@ -341,6 +349,39 @@ function siteHost(url: string): string {
     overflow: hidden;
     background: #0f1218;
     box-shadow: 0 20px 48px -18px rgba(0, 0, 0, 0.16);
+  }
+
+  /* Portrait phone / Mini App — source ≈ 500×1080 */
+  .csk-media--portrait {
+    width: auto;
+    aspect-ratio: 9 / 19.5;
+    max-inline-size: min(13.5rem, 52vw);
+    max-block-size: min(28rem, 62svh);
+    margin-inline: auto;
+  }
+
+  @media (min-width: 900px) {
+    .csk-plaque--portrait .csk-grid {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      align-items: center;
+    }
+
+    .csk-plaque--portrait .csk-visual {
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+    }
+
+    .csk-media--portrait {
+      max-inline-size: min(15rem, 100%);
+      max-block-size: min(34rem, calc(var(--csk-frame-h, 80svh) * 0.78));
+      width: auto;
+      height: auto;
+    }
+
+    .csk--sticky .csk-plaque--portrait .csk-media--portrait {
+      max-block-size: min(32rem, calc(var(--csk-frame-h) * 0.72));
+    }
   }
 
   .csk-video {

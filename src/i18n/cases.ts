@@ -52,6 +52,22 @@ export const caseCopy = {
         'Имиджевый, высокоскоростной сайт с интерактивом, который через понятную структуру отвечает на самые важные вопросы клиента перед заявкой и вызывает доверие',
       ],
     },
+    'interval-lingo': {
+      tag: 'Продуктовый дизайн',
+      project:
+        'Telegram Mini App для изучения английских слов и фраз в контексте',
+      problem:
+        'Большинство приложений (Quizlet, Anki) используют механическое заучивание изолированных слов по карточкам (Flashcards). Это создает «иллюзию знания»: человек помнит перевод слова на карточке, но не может использовать его в реальной речи и контексте',
+      solution: [
+        'Отказалась от заучивания отдельных слов в пользу освоения готовых устойчивых фраз и смысловых контекстов через написание слов',
+        'Спроектировала удобное добавление слов и фраз — в том числе с AI-генерацией в контексте предложения — плюс интервальное повторение',
+        'Спроектировала интерфейс и с помощью вайбкодинга с базой данных через сервер запустила приложение',
+      ],
+      metrics: [] as { value: string; label: string }[],
+      result: [
+        'Работающий MVP, где пользователь заучивает не абстрактные слова, а готовые паттерны речи через написание их в контексте — с лёгким AI-пополнением словаря под интерес пользователя',
+      ],
+    },
     'aliya-wooden': {
       tag: 'UX бронирования',
       project: 'Путь бронирования для Wooden Chalets · Aliya',
@@ -109,6 +125,22 @@ export const caseCopy = {
       metrics: [] as { value: string; label: string }[],
       result: [
         'An image-led, fast site with interaction — a clear structure that answers the client’s main questions before inquiry and builds trust',
+      ],
+    },
+    'interval-lingo': {
+      tag: 'Product design',
+      project:
+        'Telegram Mini App for learning English words and phrases in context',
+      problem:
+        'Most apps (Quizlet, Anki) rely on mechanical memorization of isolated words on flashcards. That creates an “illusion of knowing”: people recall the translation on the card but cannot use the word in real speech and context',
+      solution: [
+        'Dropped isolated-word drills in favor of ready-made collocations and meaning contexts learned by writing the words',
+        'Designed easy add-word / add-phrase flows — including AI generation inside a sentence — plus spaced repetition',
+        'Designed the interface and shipped the app with vibe coding against a server-backed database',
+      ],
+      metrics: [] as { value: string; label: string }[],
+      result: [
+        'A working MVP where users learn speech patterns, not abstract words — by writing them in context, with light AI vocabulary growth tailored to their interests',
       ],
     },
     'aliya-wooden': {
