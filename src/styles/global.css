@@ -198,6 +198,8 @@
     --radius-media: 16px;
     --shadow-card: none;
 
+    /* Beige frame around white page-shell — also used by fixed header to match shell edges */
+    --page-shell-inset: clamp(1rem, 2.4vw, 1.75rem);
     /* Content grid inset inside page-shell (matches services tabs). Blog prose may use larger later. */
     --content-inline: clamp(1.5rem, 3.5vw, 2.75rem);
     /* Vertical gap between major sections — must beat hero inner gap (1.25rem) */
@@ -298,7 +300,6 @@
    */
   .page-shell {
     --page-shell-radius: clamp(1rem, 1.8vw, 1.5rem);
-    --page-shell-inset: clamp(1rem, 2.4vw, 1.75rem);
     margin-block-start: calc(var(--header-height) + clamp(0.45rem, 1.1vw, 0.75rem));
     margin-block-end: var(--page-shell-inset);
     margin-inline: var(--page-shell-inset);
@@ -318,8 +319,11 @@
   }
 
   @media (max-width: 720px) {
-    .page-shell {
+    :root {
       --page-shell-inset: 0.75rem;
+    }
+
+    .page-shell {
       --page-shell-radius: 0.875rem;
     }
   }

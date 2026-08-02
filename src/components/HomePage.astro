@@ -9,6 +9,7 @@ import KineticText from '../components/KineticText.astro';
 import Interlude from '../components/Interlude.astro';
 import ServiceTabsSection from '../components/ServiceTabsSection.astro';
 import WorkFlow from '../components/WorkFlow.astro';
+import CtaSiteToy from '../components/CtaSiteToy.astro';
 import { cases } from '../data/cases';
 import { t, type Locale } from '../i18n/ui';
 
@@ -113,13 +114,16 @@ const methods = [
     </section>
 
     <section id="discuss" class="section-block cta-band">
-      <div class="cta-inner" data-animate="reveal">
-        <h2 class="type-band">{t(locale, 'ctaTitle')}</h2>
-        <p class="type-lead">{t(locale, 'ctaLead')}</p>
-        <div class="cta-actions">
-          <InteractiveHoverButton href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" label={t(locale, 'discuss')} />
-          <a href={contactsHref} class="btn btn-secondary">{t(locale, 'allContacts')}</a>
+      <div class="cta-layout" data-animate="reveal">
+        <div class="cta-inner">
+          <h2 class="type-band">{t(locale, 'ctaTitle')}</h2>
+          <p class="type-lead">{t(locale, 'ctaLead')}</p>
+          <div class="cta-actions">
+            <InteractiveHoverButton href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" label={t(locale, 'discuss')} />
+            <a href={contactsHref} class="btn btn-secondary">{t(locale, 'allContacts')}</a>
+          </div>
         </div>
+        <CtaSiteToy locale={locale} />
       </div>
     </section>
   </main>
@@ -138,6 +142,7 @@ const methods = [
     import { initDeepAssemble } from '../scripts/deep-assemble';
     import { initConvAssemble } from '../scripts/conv-assemble';
     import { initStoreAssemble } from '../scripts/store-assemble';
+    import { initCtaSiteToy } from '../scripts/cta-site-toy';
     initBrandMotion();
     initInterlude();
     initMagicSurfaces();
@@ -147,6 +152,7 @@ const methods = [
     initDeepAssemble();
     initConvAssemble();
     initStoreAssemble();
+    initCtaSiteToy();
   </script>
 </Layout>
 
@@ -374,20 +380,43 @@ const methods = [
     background: var(--color-blue-tint);
   }
 
+  .cta-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.75rem);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .cta-layout {
+      grid-template-columns: minmax(0, 1fr) minmax(28rem, 34rem);
+      gap: clamp(1.75rem, 3vw, 2.75rem);
+      align-items: center;
+    }
+  }
+
   .cta-band .type-lead {
     margin-block: 0.35rem 0;
+    margin-inline: auto;
+    text-align: center;
   }
 
   .cta-inner {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: 0.75rem;
+  }
+
+  .cta-inner .type-band {
+    text-wrap: balance;
   }
 
   .cta-actions {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 0.75rem;
     margin-block-start: 1rem;
   }

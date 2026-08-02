@@ -95,52 +95,52 @@ const cards = [
             </div>
           </div>
           <div class="browser-viewport">
-            <div class="site-slide site-slide--gray">
-              <div class="site-scroll">
-                <div class="s-bar"></div>
-                <div class="s-hero"></div>
-                <div class="s-line"></div>
-                <div class="s-line s-line--short"></div>
-                <div class="s-btn"></div>
-                <div class="s-row"><i></i><i></i></div>
-                <div class="s-band"></div>
-                <div class="s-row"><i></i><i></i><i></i></div>
-                <div class="s-hero s-hero--soft"></div>
-                <div class="s-line"></div>
-                <div class="s-row"><i></i><i></i></div>
-              </div>
-            </div>
-            <div class="site-slide site-slide--rose">
-              <div class="site-scroll">
-                <div class="s-bar"></div>
-                <div class="s-hero"></div>
-                <div class="s-line"></div>
-                <div class="s-line s-line--short"></div>
-                <div class="s-btn"></div>
-                <div class="s-row"><i></i><i></i></div>
-                <div class="s-band"></div>
-                <div class="s-row"><i></i><i></i><i></i></div>
-                <div class="s-hero s-hero--soft"></div>
-                <div class="s-line"></div>
-                <div class="s-row"><i></i><i></i></div>
-              </div>
-            </div>
-            <div class="site-slide site-slide--sky">
-              <div class="site-scroll">
-                <div class="s-bar"></div>
-                <div class="s-hero"></div>
-                <div class="s-line"></div>
-                <div class="s-line s-line--short"></div>
-                <div class="s-btn"></div>
-                <div class="s-row"><i></i><i></i></div>
-                <div class="s-band"></div>
-                <div class="s-row"><i></i><i></i><i></i></div>
-                <div class="s-hero s-hero--soft"></div>
-                <div class="s-line"></div>
-                <div class="s-row"><i></i><i></i></div>
-              </div>
-            </div>
             <div class="site-slide site-slide--blue">
+              <div class="site-scroll">
+                <div class="s-bar"></div>
+                <div class="s-hero"></div>
+                <div class="s-line"></div>
+                <div class="s-line s-line--short"></div>
+                <div class="s-btn"></div>
+                <div class="s-row"><i></i><i></i></div>
+                <div class="s-band"></div>
+                <div class="s-row"><i></i><i></i><i></i></div>
+                <div class="s-hero s-hero--soft"></div>
+                <div class="s-line"></div>
+                <div class="s-row"><i></i><i></i></div>
+              </div>
+            </div>
+            <div class="site-slide site-slide--violet">
+              <div class="site-scroll">
+                <div class="s-bar"></div>
+                <div class="s-hero"></div>
+                <div class="s-line"></div>
+                <div class="s-line s-line--short"></div>
+                <div class="s-btn"></div>
+                <div class="s-row"><i></i><i></i></div>
+                <div class="s-band"></div>
+                <div class="s-row"><i></i><i></i><i></i></div>
+                <div class="s-hero s-hero--soft"></div>
+                <div class="s-line"></div>
+                <div class="s-row"><i></i><i></i></div>
+              </div>
+            </div>
+            <div class="site-slide site-slide--lime">
+              <div class="site-scroll">
+                <div class="s-bar"></div>
+                <div class="s-hero"></div>
+                <div class="s-line"></div>
+                <div class="s-line s-line--short"></div>
+                <div class="s-btn"></div>
+                <div class="s-row"><i></i><i></i></div>
+                <div class="s-band"></div>
+                <div class="s-row"><i></i><i></i><i></i></div>
+                <div class="s-hero s-hero--soft"></div>
+                <div class="s-line"></div>
+                <div class="s-row"><i></i><i></i></div>
+              </div>
+            </div>
+            <div class="site-slide site-slide--yellow">
               <div class="site-scroll">
                 <div class="s-bar"></div>
                 <div class="s-hero"></div>
@@ -263,19 +263,19 @@ const cards = [
     pointer-events: none;
   }
 
-  /* —— Mac browser —— */
+  /* —— Mac browser (brand tokens only) —— */
   .flow-browser {
-    --site-ink: #cfcfcf;
-    --site-soft: #f0f0f0;
-    --site-accent: #bdbdbd;
-    --site-page: #f7f7f7;
+    --site-ink: color-mix(in srgb, var(--color-blue) 28%, white);
+    --site-soft: var(--color-blue-tint);
+    --site-accent: var(--color-blue);
+    --site-page: var(--color-surface);
     width: 100%;
     max-width: 360px;
     border-radius: 12px;
     border: 1px solid var(--color-border);
-    background: #fff;
+    background: var(--color-surface);
     overflow: hidden;
-    box-shadow: 0 18px 40px -24px rgba(13, 13, 13, 0.28);
+    box-shadow: 0 18px 40px -24px color-mix(in srgb, var(--color-text-primary) 28%, transparent);
   }
 
   .browser-chrome {
@@ -283,8 +283,8 @@ const cards = [
     align-items: center;
     gap: 0.75rem;
     padding: 0.5rem 0.65rem;
-    background: #efefef;
-    border-bottom: 1px solid #e2e2e2;
+    background: var(--color-shell);
+    border-bottom: 1px solid var(--color-border);
   }
 
   .browser-dots {
@@ -297,7 +297,7 @@ const cards = [
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #c8c8c8;
+    background: color-mix(in srgb, var(--color-text-muted) 50%, var(--color-shell));
   }
 
   .browser-url-stack {
@@ -313,9 +313,9 @@ const cards = [
     align-items: center;
     justify-content: center;
     font-size: 0.62rem;
-    color: #8a8a8a;
-    background: #fff;
-    border: 1px solid #e2e2e2;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
     border-radius: 5px;
     letter-spacing: 0.01em;
     opacity: 0;
@@ -356,32 +356,32 @@ const cards = [
     25%, 100% { opacity: 0; z-index: 0; }
   }
 
-  .site-slide--gray {
-    --site-ink: #cfcfcf;
-    --site-soft: #f0f0f0;
-    --site-accent: #b5b5b5;
-    --site-page: #f6f6f6;
-  }
-
-  .site-slide--rose {
-    --site-ink: #e8c4c8;
-    --site-soft: #faf0f1;
-    --site-accent: #d998a0;
-    --site-page: #fff8f8;
-  }
-
-  .site-slide--sky {
-    --site-ink: #b9d8e8;
-    --site-soft: #eef6fa;
-    --site-accent: #7eb6d0;
-    --site-page: #f5fafc;
-  }
-
   .site-slide--blue {
-    --site-ink: #b7cce8;
-    --site-soft: #eaf1fa;
-    --site-accent: #6f97d2;
-    --site-page: #f4f8fd;
+    --site-ink: color-mix(in srgb, var(--color-blue) 30%, white);
+    --site-soft: var(--color-blue-tint);
+    --site-accent: var(--color-blue);
+    --site-page: color-mix(in srgb, var(--color-blue-tint) 45%, white);
+  }
+
+  .site-slide--violet {
+    --site-ink: color-mix(in srgb, var(--color-violet) 28%, white);
+    --site-soft: color-mix(in srgb, var(--color-violet) 12%, white);
+    --site-accent: var(--color-violet);
+    --site-page: color-mix(in srgb, var(--color-violet) 7%, white);
+  }
+
+  .site-slide--lime {
+    --site-ink: color-mix(in srgb, #0c972f 24%, white);
+    --site-soft: var(--color-lime);
+    --site-accent: #0c972f;
+    --site-page: color-mix(in srgb, var(--color-lime) 40%, white);
+  }
+
+  .site-slide--yellow {
+    --site-ink: color-mix(in srgb, var(--color-text-primary) 16%, var(--color-yellow));
+    --site-soft: var(--color-yellow);
+    --site-accent: var(--color-text-primary);
+    --site-page: color-mix(in srgb, var(--color-yellow) 42%, white);
   }
 
   .site-scroll {
@@ -409,7 +409,7 @@ const cards = [
   .s-hero {
     height: 3.4rem;
     border-radius: 6px;
-    background: linear-gradient(160deg, var(--site-soft), #fff 55%, var(--site-ink));
+    background: linear-gradient(160deg, var(--site-soft), var(--color-surface) 55%, var(--site-ink));
     border: 1px solid color-mix(in srgb, var(--site-ink) 55%, white);
   }
 
@@ -451,7 +451,7 @@ const cards = [
     display: block;
     height: 2rem;
     border-radius: 5px;
-    background: #fff;
+    background: var(--color-surface);
     border: 1px solid color-mix(in srgb, var(--site-ink) 65%, white);
   }
 

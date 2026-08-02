@@ -93,6 +93,7 @@ Accent roles: blue = primary action, ∀ real CTA button (header/modal/card) alw
 - **Section owns chrome.** Default `.section-block` = `padding-block: var(--section-gap)` + `padding-inline: var(--content-inline)`. Content sits inside `<section>` — ⊥ put section air on inner wrappers (`.reviews-inner`, one-off head pads).
 - Exception `.section-block--bleed`: pad-inline = 0 (pin stages: services rails, cases stage — children apply `--content-inline` where needed; title via `.section-head`).
 - Other exceptions: hero (own), interlude (pin recipe). ⊥ invent 3rd pad token per block.
+- **Chrome edges = shell content.** Header (outside shell) pad = `--page-shell-inset` + `--content-inline`. Footer (inside shell) pad = `--content-inline`. ⊥ `.container` 1200 cap on header/footer — edges ! match section text.
 - `.container` = optional measure cap (legacy/pages) — ∉ required for home section chrome.
 - Blog prose later ? wider reading measure / larger text inset — exception, not default.
 - **Breadcrumbs** ∀ brand pages ⊥ home (`/` | `/ru/`). Quiet trail top of shell: Home → … → current. Comp `Breadcrumbs.astro`. Align `--content-inline`. ⊥ home. ⊥ loud chrome.
@@ -122,6 +123,7 @@ Rhythm = quiet label next to loud stage, then big display beat — ∴ not flat,
   7. Services tab2 (`deep-site`): 9 depth steps + rising bar chart (`src/scripts/deep-assemble.ts`). Steps highlight 01→09 then all-lit hold; bars grow each step. Violet tab accent. ⊥ Conversion/CR labels (tab3). Gate + reduced-motion → static all-lit + max bars.
   8. Services tab3 (`conversion`): redesign-story browser (`src/scripts/conv-assemble.ts`). Shortened tab1 chassis ⊥ banner row (5 slots: hero/lines/mid/cta/foot), each slot's turn paired 1:1 with a metric count-up (hero→Bounce↓, lines→Conversion rate↑, mid→ROI↑, cta→Leads↑); `foot` = hold beat, all landed. Color follows tab1's own split, ⊥ "every slot morphs color" — hero (wash) + mid (tile wash) + cta (solid) = lime (`--st-tint-2` `#DFFEDF` wash / `--st-accent-2` `#0C972F` solid, same hue); `lines` + `foot-title`/`foot-line`(+`--short`) = plain neutral gray always, before AND after (text-line mockups, ≡ tab1's `.st-slot--lines`/`.st-foot-title`/`.st-foot-line`/`.st-foot-line--short` — never brand-colored, no tab1 `.st-foot-btn` equivalent here so foot has nothing to color). Metric-number (`.st-dash-val`) text = `--st-accent-2`. Direction via arrow ↑/↓, ⊥ red/green mixed colors. Scene (`.st-illu--conv`) = same outer box as tab1 (`.st-illu--landing`: `--st-sq` + aspect `6/7`); browser + metrics both `width: 78%` ≡ `.st-browser--sq`. ⊥ wider full-column stretch. Gate + reduced-motion → static all-after + metrics at target.
   9. Services tab4 (`ecommerce`): tab1 chassis reused verbatim (fly+dock, 4 parts: hero/lines/mid/cta, ⊥ foot/banner) via `src/scripts/store-assemble.ts`; mid = 6 product cards (img+name+price), 2 rows of 3. Cart FAB lives ∈ `.st-shop-frame` (wraps mockup + FAB together) so it travels with the mockup's shrink/shift-left on assembly, ⊥ float fixed against outer scene. Yellow — `--st-tint-3` (`#FFFDC2`) = pill/pale wash + cta bar/fly solid fill; `--st-accent-3` = `--color-text-primary` (black, ⊥ same-hue-but-darker like tab3 — dark yellow reads mustard/khaki, rejected) = cart-icon glyph + toast-icon glyph (both on solid tint-3 bg, ≡ same recipe — B6: a pale-tint bg + tint-3 glyph was tried for the toast icon and blended into itself, reverted to match the cart's already-working solid-bg/black-glyph pair). Toast card (`.st-shop-toast`) sized up for readability (icon 1.7rem, text 0.78rem, amount 0.82rem). After assembly: 5 live-sale toasts pop near the corner cart FAB, badge ticks up, then fade→reset→reassemble loop. Gate + reduced-motion → static assembled + badge at target, no toasts.
+  10. Home `#discuss` site-toy: pointer DnD + win merge/confetti (`src/scripts/cta-site-toy.ts`). Optional; Discuss left always on.
 - ⊥ animate everything. Intention > quantity.
 - `gsap.matchMedia` + `prefers-reduced-motion: reduce` → instant/opacity-only; interlude → no pin/scrub, static frame + text visible; landing-assemble → static finished site, no loop; deep-assemble → static final steps+bars.
 
@@ -135,11 +137,19 @@ Rhythm = quiet label next to loud stage, then big display beat — ∴ not flat,
 - Tab3 `viz-dashboard`: redesign-story browser (shortened tab1 chassis, no banner row) + 2×2 metric cards (Bounce / Conversion rate / ROI / Leads), lime accent, count-up synced per slot. See motion §7-8 above.
 - Tab4 `viz-store`: tab1 chassis reused (hero/lines/mid/cta), mid = product cards, yellow accent + live-sale toasts + cart badge (FAB rides mockup corner ∈ `.st-shop-frame`). See motion §9 above. Mobile &lt;768: viz hidden (current).
 
+### Home discuss CTA (`#discuss`)
+- Layout desktop: **copy left** (`.type-band` + lead + Discuss/contacts) | **optional site-toy right**. CTA ! always usable — game ⊥ gate.
+- Right plaque ~28–34rem wide (⊥ shrink tiles to force 2 rows): top = free arrange field (Menu pinned; hint hides on first drop) | bottom = 4-col grid → 2 rows, readable tiles (≥44px). Soft Abstract tints.
+- DnD: drag tiles field↔tray (`src/scripts/cta-site-toy.ts`). Tray start = shuffled. In stack: right slot → green plaque, wrong → red. Win = exact top→bottom order (hero→path→benefits→trust→objections→finalCta→faq) → keep separate plaques, same blue-tint fill + Magic UI–style `canvas-confetti` (`src/scripts/magic-confetti.ts`: fireworks + side cannons). ⊥ React/shadcn install (Astro ∉ React). ⊥ white underlay merge / bar infographic. Reduced-motion → skip confetti.
+- Mobile: stack copy → toy. Touch DnD OK.
+- ⊥ dashed named slots / CMS page-builder chrome / Arrange footer copy.
+
 ### Home IA
 - Order: hero → **interlude** (manifesto / about beat) → services → **cases** (title-in-air → stack → **See all**) → approach → discuss CTA
 - **Cases air:** after services pin, junction breath = Cases **display** title ∈ `.section-bridge` (header of `#cases`), then **stack** (⊥ sticky pin / rails). One H2. GSAP: once-play mask rise on title (`data-animate="cases-bridge"`); per-case enter (`data-animate="case-panel"`). Honor reduced-motion. Services `padding-block-end: 0`; cases `padding-block-start: 0` — bridge owns `--section-gap` at joint.
 - After featured stack: CTA `.cases-more` → `/cases` | `/ru/cases` (`seeAllCases`). ⊥ pin on archive.
 - Interlude = pin mid-viewport: stage `100svh`, frame centered with `--section-gap` top+bottom + `--content-inline` sides. Width/height screen-fluid (`calc(100svh - 2*section-gap)` × content width). `border-radius: var(--radius-media)`, cover, asset `simulator_backdrop.webp`. ⊥ fixed px media box. Cite V7.
+- Interlude copy = Jobs quote (EN/RU) + quiet attribution bottom-right of frame (`Steve Jobs` / `Стив Джобс`). ⊥ old 3-line manifesto.
 
 ### Case layout (ref `docs/design/figma-case.png`)
 - **Home + archive** (`CaseStackList`): desktop grid **copy | visual**. Soft **plaque** wraps whole case (copy+media+result) — tint fill as-is (`--csk-tint` = blue-tint / violet / lime `#DFFEDF` / yellow `#FFFDC2`), `radius-card`, inner pad. ⊥ 55% surface mix (washes pastels back). ⊥ heavy card chrome / shadow soup.
@@ -227,6 +237,7 @@ V23: Breadcrumbs ∀ brand pages ⊥ home. Quiet Home→…→current; `Breadcru
 | T33 | x | Home+archive: unpinned stack, copy\|visual, panel separation, GSAP case enter | V15,V16,V22 |
 | T34 | x | Case plaques + smaller video + sticky stack overlap (≤4) | V15,V16,V22 |
 | T35 | x | Breadcrumbs ∀ pages ⊥ home | V23,V20 |
+| T36 | x | Home `#discuss` optional site-toy DnD (tint tiles → free field → win merge+confetti) | V6,V16,V20,§I |
 
 ## §B Bugs
 | id | date | cause | fix |

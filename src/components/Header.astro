@@ -23,7 +23,7 @@ const reviewHref = isHome ? '#reviews' : `${homePath}#reviews`;
 ---
 
 <header class="main-header">
-  <div class="container header-bar">
+  <div class="header-bar">
     <Wordmark href={homePath} />
 
     <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-label="Open menu" />
@@ -57,6 +57,8 @@ const reviewHref = isHome ? '#reviews' : `${homePath}#reviews`;
     backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
+    /* Match page-shell outer edge, then section content inset */
+    padding-inline: calc(var(--page-shell-inset) + var(--content-inline));
   }
 
   .header-bar {
@@ -65,6 +67,7 @@ const reviewHref = isHome ? '#reviews' : `${homePath}#reviews`;
     justify-content: space-between;
     gap: 1.5rem;
     width: 100%;
+    max-inline-size: none;
   }
 
   .menu-toggle {
