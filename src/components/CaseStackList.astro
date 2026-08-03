@@ -233,7 +233,7 @@ function siteHost(url: string): string {
     background: var(--csk-tint);
     border-radius: var(--radius-card);
     border: 1px solid color-mix(in srgb, var(--csk-tint) 55%, transparent);
-    box-shadow: 0 12px 40px -24px color-mix(in srgb, var(--color-text-primary) 22%, transparent);
+    box-shadow: none;
   }
 
   .csk-plaque--0 { --csk-tint: var(--csk-tint-0); }
@@ -263,17 +263,13 @@ function siteHost(url: string): string {
     .csk--sticky .csk-plaque {
       height: 100%;
       min-height: 0;
-      overflow: auto;
+      overflow: hidden;
     }
 
-    /*
-     * Non-sticky spacer after all panels. Extends `.csk` so last card holds
-     * at the same top; when runway ends, ∀ equal-height stickies release together.
-     */
     .csk--sticky .csk-runway {
       display: block;
       width: 100%;
-      height: var(--csk-frame-h);
+      height: 80px;
       pointer-events: none;
     }
   }
