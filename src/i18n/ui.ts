@@ -69,10 +69,10 @@ export const ui = {
     linkSoon: 'Link coming soon',
     videoSoon: 'Screen video coming soon',
     backCases: 'All cases',
-    heroTitleLine1: 'Create websites for',
-    heroTitleLine2: 'business goals',
+    heroTitleLine1: 'I build websites',
+    heroTitleLine2: 'tailored to business goals',
     heroSupport:
-      'I find where the business loses customers, design the path to purchase, and build a website that works as part of the sales, acquisition, and retention system',
+      'I help businesses stand out from competitors and boost conversions. I analyze business goals, map out user journeys, craft persuasive copy, and build the site using code or no-code',
     interludeQuote:
       'Design is not just what it looks like and feels like. Design is how it works',
     interludeAttr: 'Steve Jobs',
@@ -287,10 +287,10 @@ export const ui = {
     linkSoon: 'Ссылка скоро',
     videoSoon: 'Видео скоро',
     backCases: 'Все кейсы',
-    heroTitleLine1: 'Делаю сайты для',
-    heroTitleLine2: 'бизнеса',
+    heroTitleLine1: 'Создаю сайты',
+    heroTitleLine2: 'под задачи бизнеса',
     heroSupport:
-      'Разбираюсь, где бизнес теряет клиентов, проектирую путь пользователя до покупки и создаю сайт, который работает как часть системы продаж, привлечения и удержания клиентов',
+      'Помогаю отстроиться от конкурентов и поднять конверсию. Изучаю задачи бизнеса, прорабатываю путь клиента и тексты, собираю сайт на коде или конструкторе',
     interludeQuote:
       'Дизайн — это не только то, как предмет выглядит и ощущается, дизайн — это то, как он работает',
     interludeAttr: 'Стив Джобс',

@@ -17,6 +17,8 @@ export interface CaseStudy {
   /** Path under /public, e.g. /videos/creator.mp4 */
   video?: string;
   poster?: string;
+  /** landscape 16:9 (default) | portrait phone / Mini App */
+  mediaAspect?: 'landscape' | 'portrait';
   featured?: boolean;
 }
 
@@ -54,6 +56,19 @@ export const cases: CaseStudy[] = [
       ru: 'React + Node.js',
     },
     video: '/videos/creator.mp4',
+    featured: true,
+  },
+  {
+    slug: 'interval-lingo',
+    projectName: 'IntervalLingo',
+    role: ['Telegram Mini App', 'React'],
+    tint: 'shell',
+    stack: {
+      en: 'React · Telegram Mini App',
+      ru: 'React · Telegram Mini App',
+    },
+    video: '/videos/interval-lingo.mp4',
+    mediaAspect: 'portrait',
     featured: true,
   },
   {

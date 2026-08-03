@@ -14,7 +14,7 @@ const n = cases.length;
 const pad = (i: number) => String(i + 1).padStart(2, '0');
 /** Case write-ups deferred — hide deep-link until pages ready */
 const showCaseDeepLink = false;
-/** Sticky overlap only for short stacks (home ≤3; long archive stays static) */
+/** Sticky overlap only for short stacks (home ≤4; long archive stays static) */
 const stickyStack = n > 0 && n <= 4;
 
 function siteHost(url: string): string {
@@ -34,14 +34,22 @@ function siteHost(url: string): string {
     cases.map((item, i) => {
       const copy = caseLocalized(item, locale);
       const href = `${caseBase}${item.slug}/`;
+      const isPortrait = item.mediaAspect === 'portrait';
       return (
         <article
           class="csk-panel"
           id={item.slug}
           data-animate="case-panel"
+          data-media-aspect={item.mediaAspect ?? 'landscape'}
           style={`--csk-z: ${i + 1}`}
         >
-          <div class={`csk-plaque csk-plaque--${i % 4}`}>
+          <div
+            class:list={[
+              'csk-plaque',
+              `csk-plaque--${i % 4}`,
+              isPortrait && 'csk-plaque--portrait',
+            ]}
+          >
             <p class="csk-index" aria-hidden="true">
               <span class="csk-index-cur">{pad(i)}</span>
               <span class="csk-index-sep">/</span>
@@ -95,10 +103,33 @@ function siteHost(url: string): string {
                     </ul>
                   </div>
                 </div>
+
+                {/* Portrait: Result under copy — frees visual for larger phone */}
+                {isPortrait && copy.metrics.length > 0 && (
+                  <div class="csk-proof-block">
+                    <p class="csk-result-label">{t(locale, 'result')}</p>
+                    <div class="csk-proof">
+                      {copy.metrics.map((m) => (
+                        <div class="csk-proof-item">
+                          <p class="csk-proof-value">{m.value}</p>
+                          <p class="csk-proof-desc">{m.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {isPortrait && copy.metrics.length === 0 && copy.result.length > 0 && (
+                  <div class="csk-result-prose">
+                    <p class="csk-result-label">{t(locale, 'result')}</p>
+                    {copy.result.map((line) => (
+                      <p class="csk-text csk-text--result">{line}</p>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div class="csk-visual">
-                <div class="csk-media">
+                <div class:list={['csk-media', isPortrait && 'csk-media--portrait']}>
                   {item.video ? (
                     <video
                       class="csk-video"
@@ -115,7 +146,8 @@ function siteHost(url: string): string {
                   )}
                 </div>
 
-                {copy.metrics.length > 0 && (
+                {/* Landscape: Result under media */}
+                {!isPortrait && copy.metrics.length > 0 && (
                   <div class="csk-proof-block">
                     <p class="csk-result-label">{t(locale, 'result')}</p>
                     <div class="csk-proof">
@@ -129,7 +161,7 @@ function siteHost(url: string): string {
                   </div>
                 )}
 
-                {copy.metrics.length === 0 && copy.result.length > 0 && (
+                {!isPortrait && copy.metrics.length === 0 && copy.result.length > 0 && (
                   <div class="csk-result-prose">
                     <p class="csk-result-label">{t(locale, 'result')}</p>
                     {copy.result.map((line) => (
@@ -201,7 +233,7 @@ function siteHost(url: string): string {
     background: var(--csk-tint);
     border-radius: var(--radius-card);
     border: 1px solid color-mix(in srgb, var(--csk-tint) 55%, transparent);
-    box-shadow: 0 12px 40px -24px color-mix(in srgb, var(--color-text-primary) 22%, transparent);
+    box-shadow: none;
   }
 
   .csk-plaque--0 { --csk-tint: var(--csk-tint-0); }
@@ -224,24 +256,20 @@ function siteHost(url: string): string {
       top: var(--csk-sticky-top);
       box-sizing: border-box;
       height: var(--csk-frame-h);
-      margin-block-end: 0;
+      margin-block-end: 80px;
       padding-block-end: 0;
     }
 
     .csk--sticky .csk-plaque {
       height: 100%;
       min-height: 0;
-      overflow: auto;
+      overflow: hidden;
     }
 
-    /*
-     * Non-sticky spacer after all panels. Extends `.csk` so last card holds
-     * at the same top; when runway ends, ∀ equal-height stickies release together.
-     */
     .csk--sticky .csk-runway {
       display: block;
       width: 100%;
-      height: var(--csk-frame-h);
+      height: 80px;
       pointer-events: none;
     }
   }
@@ -321,6 +349,16 @@ function siteHost(url: string): string {
     min-width: 0;
   }
 
+  .csk-copy > .csk-proof-block {
+    margin-block-start: 1.15rem;
+    max-inline-size: 31.25rem;
+  }
+
+  .csk-copy > .csk-result-prose {
+    margin-block-start: 1.15rem;
+    max-inline-size: none;
+  }
+
   .csk-visual {
     display: flex;
     flex-direction: column;
@@ -330,7 +368,7 @@ function siteHost(url: string): string {
     min-width: 0;
   }
 
-  /* Always 16:9 — screen recordings; ⊥ stretch to square */
+  /* Landscape 16:9 — site screen recordings; ⊥ stretch to square */
   .csk-media {
     position: relative;
     width: 100%;
@@ -341,6 +379,47 @@ function siteHost(url: string): string {
     overflow: hidden;
     background: #0f1218;
     box-shadow: 0 20px 48px -18px rgba(0, 0, 0, 0.16);
+  }
+
+  /*
+   * Portrait phone / Mini App — source ≈ 500×1080.
+   * Need definite width: video is position:absolute, so width:auto → 0×0.
+   */
+  .csk-media--portrait {
+    width: min(16rem, 58vw);
+    aspect-ratio: 9 / 19.5;
+    height: auto;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 900px) {
+    .csk-plaque--portrait .csk-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(16rem, 1fr);
+      align-items: stretch;
+    }
+
+    .csk-plaque--portrait .csk-visual {
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+      min-height: 0;
+    }
+
+    .csk-media--portrait {
+      /* Fill visual col — Result moved to copy */
+      width: min(20rem, 88%);
+      height: auto;
+      aspect-ratio: 9 / 19.5;
+      max-block-size: min(36rem, calc(var(--csk-frame-h, 80svh) * 0.82));
+    }
+
+    .csk--sticky .csk-plaque--portrait .csk-media--portrait {
+      max-block-size: calc(var(--csk-frame-h) - 3.5rem);
+      width: auto;
+      height: min(36rem, calc(var(--csk-frame-h) - 3.5rem));
+      max-inline-size: min(20rem, 88%);
+      aspect-ratio: 9 / 19.5;
+    }
   }
 
   .csk-video {

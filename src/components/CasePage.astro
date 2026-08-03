@@ -112,11 +112,15 @@ const serviceTitle = copy.tag;
           </div>
         </div>
 
-        <div class="media-stage" data-animate="hero">
+        <div
+          class:list={['media-stage', item.mediaAspect === 'portrait' && 'media-stage--portrait']}
+          data-animate="hero"
+          data-media-aspect={item.mediaAspect ?? 'landscape'}
+        >
           {
             item.video ? (
               <video
-                class="media-video"
+                class:list={['media-video', item.mediaAspect === 'portrait' && 'media-video--portrait']}
                 src={item.video}
                 poster={item.poster}
                 muted
@@ -127,7 +131,7 @@ const serviceTitle = copy.tag;
                 preload="metadata"
               />
             ) : (
-              <div class="media-placeholder">
+              <div class:list={['media-placeholder', item.mediaAspect === 'portrait' && 'media-placeholder--portrait']}>
                 <p>{t(locale, 'videoSoon')}</p>
                 {
                   item.url?.startsWith('http') && (
@@ -319,12 +323,24 @@ const serviceTitle = copy.tag;
     width: 100%;
   }
 
+  .media-stage--portrait {
+    display: flex;
+    justify-content: center;
+  }
+
   .media-video {
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: contain;
     border-radius: var(--radius-media, 8px);
     background: transparent;
+  }
+
+  .media-video--portrait {
+    width: min(20rem, 100%);
+    aspect-ratio: 9 / 19.5;
+    object-fit: cover;
+    background: #0f1218;
   }
 
   .media-placeholder {
@@ -335,6 +351,12 @@ const serviceTitle = copy.tag;
     border: 1px dashed var(--color-border);
     border-radius: var(--radius-media, 8px);
     color: var(--color-text-muted);
+  }
+
+  .media-placeholder--portrait {
+    width: min(20rem, 100%);
+    aspect-ratio: 9 / 19.5;
+    margin-inline: auto;
   }
 
   .case-next {
