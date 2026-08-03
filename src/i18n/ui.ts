@@ -69,10 +69,10 @@ export const ui = {
     linkSoon: 'Link coming soon',
     videoSoon: 'Screen video coming soon',
     backCases: 'All cases',
-    heroTitleLine1: 'I build websites tailored to',
-    heroTitleLine2: 'business goals',
+    heroTitleLine1: 'I build websites',
+    heroTitleLine2: 'tailored to business goals',
     heroSupport:
-      'I help you stand out from competitors and lift conversion. I study the business, design the customer path and write the copy, then build the site on code or a builder',
+      'I help businesses stand out from competitors and boost conversions. I analyze business goals, map out user journeys, craft persuasive copy, and build the site using code or no-code',
     interludeQuote:
       'Design is not just what it looks like and feels like. Design is how it works',
     interludeAttr: 'Steve Jobs',

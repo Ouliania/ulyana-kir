@@ -103,6 +103,29 @@ function siteHost(url: string): string {
                     </ul>
                   </div>
                 </div>
+
+                {/* Portrait: Result under copy — frees visual for larger phone */}
+                {isPortrait && copy.metrics.length > 0 && (
+                  <div class="csk-proof-block">
+                    <p class="csk-result-label">{t(locale, 'result')}</p>
+                    <div class="csk-proof">
+                      {copy.metrics.map((m) => (
+                        <div class="csk-proof-item">
+                          <p class="csk-proof-value">{m.value}</p>
+                          <p class="csk-proof-desc">{m.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {isPortrait && copy.metrics.length === 0 && copy.result.length > 0 && (
+                  <div class="csk-result-prose">
+                    <p class="csk-result-label">{t(locale, 'result')}</p>
+                    {copy.result.map((line) => (
+                      <p class="csk-text csk-text--result">{line}</p>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div class="csk-visual">
@@ -123,7 +146,8 @@ function siteHost(url: string): string {
                   )}
                 </div>
 
-                {copy.metrics.length > 0 && (
+                {/* Landscape: Result under media */}
+                {!isPortrait && copy.metrics.length > 0 && (
                   <div class="csk-proof-block">
                     <p class="csk-result-label">{t(locale, 'result')}</p>
                     <div class="csk-proof">
@@ -137,7 +161,7 @@ function siteHost(url: string): string {
                   </div>
                 )}
 
-                {copy.metrics.length === 0 && copy.result.length > 0 && (
+                {!isPortrait && copy.metrics.length === 0 && copy.result.length > 0 && (
                   <div class="csk-result-prose">
                     <p class="csk-result-label">{t(locale, 'result')}</p>
                     {copy.result.map((line) => (
@@ -329,6 +353,16 @@ function siteHost(url: string): string {
     min-width: 0;
   }
 
+  .csk-copy > .csk-proof-block {
+    margin-block-start: 1.15rem;
+    max-inline-size: 31.25rem;
+  }
+
+  .csk-copy > .csk-result-prose {
+    margin-block-start: 1.15rem;
+    max-inline-size: none;
+  }
+
   .csk-visual {
     display: flex;
     flex-direction: column;
@@ -351,36 +385,44 @@ function siteHost(url: string): string {
     box-shadow: 0 20px 48px -18px rgba(0, 0, 0, 0.16);
   }
 
-  /* Portrait phone / Mini App — source ≈ 500×1080 */
+  /*
+   * Portrait phone / Mini App — source ≈ 500×1080.
+   * Need definite width: video is position:absolute, so width:auto → 0×0.
+   */
   .csk-media--portrait {
-    width: auto;
+    width: min(16rem, 58vw);
     aspect-ratio: 9 / 19.5;
-    max-inline-size: min(13.5rem, 52vw);
-    max-block-size: min(28rem, 62svh);
+    height: auto;
     margin-inline: auto;
   }
 
   @media (min-width: 900px) {
     .csk-plaque--portrait .csk-grid {
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-      align-items: center;
+      grid-template-columns: minmax(0, 1fr) minmax(16rem, 1fr);
+      align-items: stretch;
     }
 
     .csk-plaque--portrait .csk-visual {
       align-items: center;
       justify-content: center;
       align-self: stretch;
+      min-height: 0;
     }
 
     .csk-media--portrait {
-      max-inline-size: min(15rem, 100%);
-      max-block-size: min(34rem, calc(var(--csk-frame-h, 80svh) * 0.78));
-      width: auto;
+      /* Fill visual col — Result moved to copy */
+      width: min(20rem, 88%);
       height: auto;
+      aspect-ratio: 9 / 19.5;
+      max-block-size: min(36rem, calc(var(--csk-frame-h, 80svh) * 0.82));
     }
 
     .csk--sticky .csk-plaque--portrait .csk-media--portrait {
-      max-block-size: min(32rem, calc(var(--csk-frame-h) * 0.72));
+      max-block-size: calc(var(--csk-frame-h) - 3.5rem);
+      width: auto;
+      height: min(36rem, calc(var(--csk-frame-h) - 3.5rem));
+      max-inline-size: min(20rem, 88%);
+      aspect-ratio: 9 / 19.5;
     }
   }
 

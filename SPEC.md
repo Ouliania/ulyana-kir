@@ -154,7 +154,7 @@ Rhythm = quiet label next to loud stage, then big display beat — ∴ not flat,
 ### Case layout (ref `docs/design/figma-case.png`)
 - **Home + archive** (`CaseStackList`): desktop grid **copy | visual**. Soft **plaque** wraps whole case (copy+media+result) — tint fill as-is (`--csk-tint` = blue-tint / violet / lime `#DFFEDF` / yellow `#FFFDC2`), `radius-card`, inner pad. ⊥ 55% surface mix (washes pastels back). ⊥ heavy card chrome / shadow soup.
 - Video default = landscape **16:9** inset (! full-bleed). Result under media.
-- **Portrait media** (`mediaAspect: 'portrait'`) — Mini App / phone capture (e.g. **interval-lingo** 500×1080). Home plaque: same copy|visual grid, visual col centers phone frame `aspect-ratio: 9/19.5` (≈ source), `max-block-size` fits sticky frame, `object-fit: cover`. ⊥ force 16:9 crop on portrait sources. Case page: centered phone stage same ratio.
+- **Portrait media** (`mediaAspect: 'portrait'`) — Mini App / phone capture (e.g. **interval-lingo** 500×1080). Home plaque: copy|visual; Result sits ∈ **copy** col (under Solution); visual = phone only, larger frame `aspect-ratio: 9/19.5`, fills freed col. ⊥ force 16:9 crop. Case page: centered phone stage same ratio.
 - **Sticky stack** (desktop ≥900, ≤4 panels — home featured; long archive stays static plaques): `.csk--sticky` = **block** deck (⊥ flex sticky desync). ∀ `.csk-panel` sticky at **same** `--csk-sticky-top` + **same height** `--csk-frame-h`; later z-index rides over. Hold = `.csk-runway` after panels. Release together. ⊥ per-card stepped tops / margin-on-last-sticky. ⊥ old `100vh` rails. Classic pin = `037d452` retired.
 - Separation = plaque + sticky overlap air (pad-bottom), ⊥ hairline glue.
 - Home = featured ≤4 + See-all. Archive = ∀ registry (static stack if >4).
