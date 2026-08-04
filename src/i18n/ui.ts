@@ -67,7 +67,7 @@ export const ui = {
     heroTitleLine1: 'I build websites',
     heroTitleLine2: 'tailored to business goals',
     heroSupport:
-      'I help businesses stand out from competitors and boost conversions. I analyze business goals, map out user journeys, craft persuasive copy, and build the site using code or no-code',
+      'I help businesses stand out from competitors and boost conversions. I map out clear user journeys, craft persuasive copy, and build websites with clean code or page builders',
     interludeQuote:
       'Design is not just what it looks like and feels like. Design is how it works',
     interludeAttr: 'Steve Jobs',
@@ -166,6 +166,7 @@ export const ui = {
     svcTabCta: 'Discuss project',
     svcTabReadMore: 'Read more',
     svcModalTitle: 'Discuss this service',
+    svcModalSub: 'Leave your contacts and I will get in touch',
     svcModalSending: 'Sending...',
     svcModalThanks: "Thanks! I'll reach out shortly",
     svcModalError: 'Error. Message me on Telegram: @UlyanaKir',
@@ -280,7 +281,7 @@ export const ui = {
     heroTitleLine1: 'Создаю сайты',
     heroTitleLine2: 'под задачи бизнеса',
     heroSupport:
-      'Помогаю отстроиться от конкурентов и поднять конверсию. Изучаю задачи бизнеса, прорабатываю путь клиента и тексты, собираю сайт на коде или конструкторе',
+      'Помогаю отстроиться от конкурентов и поднять конверсию. Выстраиваю понятный путь клиента, пишу тексты и собираю сайт на коде или конструкторе',
     interludeQuote:
       'Дизайн — это не только внешний вид и ощущения. Дизайн — это то, как это работает',
     interludeAttr: 'Стив Джобс',
@@ -379,6 +380,7 @@ export const ui = {
     svcTabCta: 'Обсудить проект',
     svcTabReadMore: 'Читать подробнее',
     svcModalTitle: 'Обсудить услугу',
+    svcModalSub: 'Оставьте контакты и я свяжусь с вами',
     svcModalSending: 'Отправляю...',
     svcModalThanks: 'Спасибо! Скоро свяжусь',
     svcModalError: 'Ошибка. Напишите в Telegram: @UlyanaKir',

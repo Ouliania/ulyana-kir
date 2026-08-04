@@ -224,9 +224,11 @@ const iconPaths: Record<BulletIcon, string[]> = {
               >
                 {t(locale, 'svcTabCta')}
               </button>
+              {/* TEMP: скрыто до готовности страниц услуг — вернуть, когда появятся
               <a href={`${servicesBase}${tab.slug}/`} class="btn btn-secondary">
                 {t(locale, 'svcTabReadMore')}
               </a>
+              */}
             </div>
             <ul class="st-bullets">
               {tab.bullets.map((b) => (
@@ -530,6 +532,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
       ×
     </button>
     <h3 class="st-modal-title" data-st-modal-title>{t(locale, 'svcModalTitle')}</h3>
+    <p class="st-modal-sub">{t(locale, 'svcModalSub')}</p>
     <form class="st-form" data-st-form>
       <div class="st-form-row">
         <input
@@ -977,8 +980,16 @@ const iconPaths: Record<BulletIcon, string[]> = {
     border: none;
     border-radius: var(--radius-media);
     background: transparent;
-    max-width: min(32rem, calc(100vw - 2rem));
+    max-width: min(36rem, calc(100vw - 2rem));
     width: 100%;
+    /* Центрирование по центру экрана + блокировка скролла фона */
+    margin: auto;
+    position: fixed;
+    inset: 0;
+    height: fit-content;
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .st-modal::backdrop {
@@ -986,18 +997,23 @@ const iconPaths: Record<BulletIcon, string[]> = {
     backdrop-filter: blur(4px);
   }
 
+  /* Блокируем скролл страницы под модалкой */
+  body:has(.st-modal[open]) {
+    overflow: hidden;
+  }
+
   .st-modal-panel {
     position: relative;
     background: var(--color-surface);
     border-radius: var(--radius-media);
-    padding: 1.75rem 1.5rem 1.5rem;
+    padding: 2.25rem 2rem 2rem;
     box-shadow: 0 16px 48px color-mix(in srgb, var(--color-text-primary) 18%, transparent);
   }
 
   .st-modal-close {
     position: absolute;
-    top: 0.65rem;
-    right: 0.75rem;
+    top: 0.75rem;
+    right: 0.85rem;
     width: 2rem;
     height: 2rem;
     display: inline-flex;
@@ -1019,9 +1035,17 @@ const iconPaths: Record<BulletIcon, string[]> = {
   .st-modal-title {
     font-size: var(--fs-h3);
     font-weight: 500;
-    margin-block-end: 1.1rem;
+    margin-block-end: 0.4rem;
     padding-inline-end: 1.5rem;
     line-height: 1.25;
+  }
+
+  .st-modal-sub {
+    margin: 0 0 1.1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+    padding-inline-end: 1.5rem;
   }
 
   /* Visuals */
