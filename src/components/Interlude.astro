@@ -8,7 +8,25 @@ interface Props {
 const locale: Locale = Astro.props.locale ?? 'en';
 const quote = t(locale, 'interludeQuote');
 const attr = t(locale, 'interludeAttr');
-const words = quote.split(/\s+/).filter(Boolean);
+
+// Three display lines per locale, authored explicitly so the expanded card
+// reads as three balanced lines. We do NOT parse/split the i18n string:
+// Astro's i18n cache strips special characters (e.g. \u2028 line
+// separators), which produced unreliable splits. Keeping the lines here
+// guarantees a clean, deliberate 3-line layout for each language.
+const quoteLinesByLocale: Record<string, string[]> = {
+  en: [
+    'Design is not just what it looks like',
+    'and feels like.',
+    'Design is how it works.',
+  ],
+  ru: [
+    'Дизайн — это не только внешний вид',
+    'и ощущения.',
+    'Дизайн — это то, как это работает.',
+  ],
+};
+const quoteLines = quoteLinesByLocale[locale] ?? [quote];
 ---
 
 <section id="interlude" class="interlude" data-interlude-root aria-label={locale === 'ru' ? 'Интерлюдия' : 'Interlude'}>
@@ -24,21 +42,24 @@ const words = quote.split(/\s+/).filter(Boolean);
           </svg>
         </div>
         <div class="interlude-vignette" data-interlude="vignette"></div>
-        <div class="interlude-solid-bg" data-interlude="solid-bg"></div>
       </div>
 
       <div class="interlude-copy">
         <blockquote class="interlude-quote">
-          <p class="interlude-line">
-            {
-              words.map((word, wordIdx) => (
-                <>
-                  <span class="interlude-word">{word.split('').map((char) => <span class="interlude-char" data-interlude="char">{char}</span>)}</span>
-                  {wordIdx < words.length - 1 && ' '}
-                </>
-              ))
-            }
-          </p>
+          {
+            quoteLines.map((line, lineIdx) => (
+              <p class="interlude-line" data-interlude="line">
+                {
+                  line.split(/\s+/).map((word, wordIdx) => (
+                    <>
+                      <span class="interlude-word">{word.split('').map((char) => <span class="interlude-char" data-interlude="char">{char}</span>)}</span>
+                      {wordIdx < line.split(/\s+/).length - 1 && ' '}
+                    </>
+                  ))
+                }
+              </p>
+            ))
+          }
         </blockquote>
       </div>
       <cite class="interlude-attr" data-interlude="attr">{attr}</cite>
@@ -53,21 +74,22 @@ const words = quote.split(/\s+/).filter(Boolean);
     width: 100%;
     background: transparent;
     color: #ffffff;
-    margin-top: 0;
     pointer-events: none;
-    /* Pull the interlude up so the circle peeks into the hero's first screen */
-    margin-block-start: calc(-1 * var(--interlude-circle-offset));
+    margin-top: 0;
+    /* 3× viewport: room for morph + text reveal + empty scroll before services */
+    height: calc(250svh - var(--header-height));
   }
 
   .interlude-stage {
     --interlude-view: calc(100svh - var(--header-height));
-    --interlude-circle-offset: 120px;
     box-sizing: border-box;
-    min-height: var(--interlude-view);
+    height: var(--interlude-view);
     display: grid;
-    place-items: center;
-    padding: 0;
+    place-items: start center;
+    padding: calc(var(--section-gap) / 2) var(--content-inline) calc(var(--section-gap) / 2);
     pointer-events: none;
+    position: sticky;
+    top: var(--header-height);
   }
 
   .interlude-frame {
@@ -78,7 +100,9 @@ const words = quote.split(/\s+/).filter(Boolean);
     place-items: center;
     overflow: hidden;
     border-radius: 50%;
-    transform: translateY(0);
+    /* No transform offset here: GSAP overwrites inline transforms.
+       The stage pins the circle's top at hero.bottom − 60px, so the
+       circle's center lands exactly on the hero/interlude boundary. */
     transform-origin: center center;
     pointer-events: auto;
 
@@ -220,31 +244,34 @@ const words = quote.split(/\s+/).filter(Boolean);
     border-radius: inherit;
   }
 
-  .interlude-solid-bg {
+  .interlude-copy {
+    /* Absolutely positioned inside the circle frame: it must NOT
+       contribute to layout size, otherwise the quote text inflates
+       .interlude-stage to hundreds of px instead of the 20vh view.
+       During the morph the frame grows 120px -> 100%, and this
+       container (inset: 0) grows with it, revealing the quote. */
     position: absolute;
     inset: 0;
-    background-color: var(--color-blue);
-    z-index: 2;
-    pointer-events: none;
-    will-change: opacity;
-    border-radius: inherit;
-  }
-
-  .interlude-copy {
-    position: relative;
     z-index: 3;
-    width: min(100%, 48rem);
-    padding: clamp(1.25rem, 3vw, 2rem);
-    text-align: center;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 0.35em;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    text-align: center;
     color: var(--color-text-primary);
     opacity: 0;
+    overflow: hidden;
+    box-sizing: border-box;
   }
 
   .interlude-quote {
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15em;
   }
 
   .interlude-line {
@@ -266,9 +293,6 @@ const words = quote.split(/\s+/).filter(Boolean);
   .interlude-char {
     display: inline-block;
     color: var(--color-text-primary);
-    opacity: 0;
-    filter: blur(10px);
-    transform: translateY(20px);
     will-change: transform, opacity, filter;
   }
 
@@ -296,7 +320,7 @@ const words = quote.split(/\s+/).filter(Boolean);
 
     .interlude-stage {
       min-height: 0;
-      padding-block: var(--section-gap);
+      padding-block: 0 var(--section-gap);
       pointer-events: auto !important;
     }
 
@@ -318,12 +342,8 @@ const words = quote.split(/\s+/).filter(Boolean);
       opacity: 1 !important;
     }
 
-    .interlude-solid-bg {
-      opacity: 0 !important;
-    }
-
     .interlude-waves-container,
-    .interlude-char,
+    .interlude-word,
     .interlude-line,
     .interlude-attr {
       transform: none !important;
