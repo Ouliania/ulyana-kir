@@ -21,23 +21,18 @@ export const ui = {
     services: 'Services',
     review: 'Approach',
     howIWork: 'How I work',
-    howIWorkLead:
-      'Goals, audience, and evidence come in. I connect them — and a website comes out',
-    flowCard1Title: 'Collect the inputs',
+    flowCard1Title: 'Discovery & Research',
     flowCard1Body:
-      'Business goals, audience, competitors, analytics, and the brief — everything that shapes the job',
-    flowCard2Title: 'Find what matters',
+      'I analyze your product, audience, and competitors to identify key buying triggers and customer objections. This shapes a clear user journey designed to maximize lead conversion.',
+    flowCard2Title: 'Funnel & Copy Strategy',
     flowCard2Body:
-      'I cut noise, spot blockers, and keep only what moves people toward the goal',
-    flowCard3Title: 'Connect into a plan',
+      'I map out the page architecture, design the customer journey (CJM) toward the call to action, and write persuasive, conversion-focused copy.',
+    flowCard3Title: 'Design & Development',
     flowCard3Body:
-      'Structure, copy direction, and page logic — decisions before pixels',
-    flowCard4Title: 'Ship the website',
+      'I create a custom design that strengthens brand trust and drives the right emotional response, then build a fast, responsive site using clean code or page builders.',
+    flowCard4Title: 'Testing & Launch',
     flowCard4Body:
-      'A clear site that earns trust and leads to contact, not a pretty shell',
-    flowCard5Title: 'Close the loop',
-    flowCard5Body:
-      'If needed, I look beyond the page: lead handling, notifications, follow-up touchpoints — whatever helps the inquiry actually convert',
+      'I set up analytics, basic SEO tags, a sitemap, and a 404 page. I test loading speed, responsiveness, and element logic to ensure a flawless launch.',
     ctaTitle: 'Have a project in mind?',
     ctaLead: 'Tell me the goal — I’ll say what the site actually needs',
     allContacts: 'All contacts',
@@ -239,23 +234,18 @@ export const ui = {
     services: 'Услуги',
     review: 'Подход',
     howIWork: 'Как я работаю',
-    howIWorkLead:
-      'Сначала цели, аудитория и данные. Дальше я связываю это вместе — и на выходе сайт',
-    flowCard1Title: 'Собираю вводные',
+    flowCard1Title: 'Погружение и аналитика',
     flowCard1Body:
-      'Цели бизнеса, аудитория, конкуренты, аналитика и бриф — всё, что определяет задачу',
-    flowCard2Title: 'Отделяю важное',
+      'Изучаю продукт, аудиторию и конкурентов: почему покупают, какие задачи решает бизнес и какие возражения возникают у клиентов. Это помогает построить понятный путь покупателя и поднять конверсию в заявку.',
+    flowCard2Title: 'Проектирование воронки',
     flowCard2Body:
-      'Убираю шум, нахожу блокеры и оставляю то, что ведёт людей к цели',
-    flowCard3Title: 'Собираю в план',
+      'Проектирую структуру сайта, выстраиваю путь клиента (CJM) от первого экрана до целевого действия и пишу убеждающие тексты.',
+    flowCard3Title: 'Дизайн-концепция и верстка',
     flowCard3Body:
-      'Структура, направление текстов и логика страниц — решения до пикселей',
-    flowCard4Title: 'Выпускаю сайт',
+      'Создаю дизайн, который усиливает бренд и вызывает доверие аудитории. Собираю аккуратный, адаптивный сайт на чистом коде или конструкторе.',
+    flowCard4Title: 'Подготовка и запуск',
     flowCard4Body:
-      'Понятный сайт, который вызывает доверие и ведёт к контакту, а не красивая оболочка',
-    flowCard5Title: 'Довожу до заявки',
-    flowCard5Body:
-      'При необходимости смотрю дальше страницы: обработка заявок, уведомления, повторные касания — всё, что помогает обращению стать клиентом',
+      'Настраиваю аналитику, SEO-теги, карту сайта и страницу 404. Провожу тесты скорости загрузки и проверяю логику работы всех форм и элементов перед запуском.',
     ctaTitle: 'Есть проект?',
     ctaLead: 'Расскажите цель — скажу, что сайту реально нужно',
     allContacts: 'Все контакты',
@@ -292,7 +282,7 @@ export const ui = {
     heroSupport:
       'Помогаю отстроиться от конкурентов и поднять конверсию. Изучаю задачи бизнеса, прорабатываю путь клиента и тексты, собираю сайт на коде или конструкторе',
     interludeQuote:
-      'Дизайн — это не только то, как предмет выглядит и ощущается, дизайн — это то, как он работает',
+      'Дизайн — это не только внешний вид и ощущения. Дизайн — это то, как это работает',
     interludeAttr: 'Стив Джобс',
     whatIDo: 'Что я делаю',
     whatIDoLead:

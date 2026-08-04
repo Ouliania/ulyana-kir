@@ -109,7 +109,6 @@ const methods = [
 
     <section id="reviews" class="section-block reviews">
       <h2 class="type-display" data-animate="reveal">{t(locale, 'howIWork')}</h2>
-      <p class="type-lead" data-animate="reveal">{t(locale, 'howIWorkLead')}</p>
       <WorkFlow locale={locale} />
     </section>
 
@@ -180,6 +179,7 @@ const methods = [
     width: 100%;
     margin-inline: auto;
     padding-inline: 1rem;
+    padding-block-start: 50px;
   }
 
   .hero-title {
@@ -374,6 +374,11 @@ const methods = [
 
   .reviews {
     background: transparent;
+  }
+
+  .reviews h2 {
+    text-align: center;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
   }
 
   .cta-band {

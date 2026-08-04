@@ -13,7 +13,6 @@ const cards = [
   { step: '02', titleKey: 'flowCard2Title' as const, bodyKey: 'flowCard2Body' as const },
   { step: '03', titleKey: 'flowCard3Title' as const, bodyKey: 'flowCard3Body' as const },
   { step: '04', titleKey: 'flowCard4Title' as const, bodyKey: 'flowCard4Body' as const },
-  { step: '05', titleKey: 'flowCard5Title' as const, bodyKey: 'flowCard5Body' as const },
 ];
 ---
 
@@ -510,12 +509,7 @@ const cards = [
       gap: 1rem;
     }
 
-    .flow-card:last-child:nth-child(5) {
-      grid-column: 1 / -1;
-      justify-self: center;
-      max-width: calc(50% - 0.5rem);
-      width: 100%;
-    }
+
   }
 
   /*
