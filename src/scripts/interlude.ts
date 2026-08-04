@@ -9,95 +9,126 @@ export function initInterlude(root: ParentNode = document): void {
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bg = section.querySelector<HTMLElement>('[data-interlude="bg"]');
-  const words = section.querySelectorAll<HTMLElement>('[data-interlude="word"]');
+  const chars = section.querySelectorAll<HTMLElement>('[data-interlude="char"]');
   const vignette = section.querySelector<HTMLElement>('[data-interlude="vignette"]');
-  const grid = section.querySelector<HTMLElement>('[data-interlude="grid"]');
   const lines = section.querySelectorAll<HTMLElement>('.interlude-line');
   const attr = section.querySelector<HTMLElement>('[data-interlude="attr"]');
+  const frame = section.querySelector<HTMLElement>('.interlude-frame');
+  const copy = section.querySelector<HTMLElement>('.interlude-copy');
+  const solidBg = section.querySelector<HTMLElement>('[data-interlude="solid-bg"]');
 
   if (reduce) {
     gsap.set(lines, { clearProps: 'all', opacity: 1 });
-    gsap.set(words, { clearProps: 'all', opacity: 1, scale: 1, filter: 'none' });
+    gsap.set(chars, { clearProps: 'all', opacity: 1, y: 0, filter: 'none' });
     if (attr) gsap.set(attr, { clearProps: 'all', opacity: 1 });
-    if (bg) gsap.set(bg, { clearProps: 'all', scale: 1 });
-    if (grid) gsap.set(grid, { clearProps: 'all' });
+    if (bg) gsap.set(bg, { clearProps: 'all', scale: 1, opacity: 1 });
+    if (frame) gsap.set(frame, { clearProps: 'all' });
+    if (copy) gsap.set(copy, { clearProps: 'all' });
+    if (solidBg) gsap.set(solidBg, { clearProps: 'all' });
     return;
   }
 
   // Initial states
-  gsap.set(bg, { scale: 1.15, y: -40 });
-  gsap.set(grid, { y: 0, opacity: 0.4 });
-  gsap.set(lines, { y: 40, opacity: 0.5 });
+  gsap.set(bg, { scale: 1.05, y: -20, opacity: 0 });
+  if (solidBg) gsap.set(solidBg, { opacity: 1 });
+  if (vignette) gsap.set(vignette, { opacity: 0 });
+  if (frame) {
+    gsap.set(frame, {
+      width: '120px',
+      height: '120px',
+      borderRadius: '50%',
+      y: 0,
+    });
+  }
+  if (copy) gsap.set(copy, { opacity: 0 });
+  gsap.set(lines, { opacity: 1 });
+  gsap.set(chars, { opacity: 0, y: 20, filter: 'blur(10px)' });
   if (attr) gsap.set(attr, { opacity: 0, y: 8 });
 
-  const headerOffset = () => {
-    const raw = getComputedStyle(document.documentElement).getPropertyValue('--header-height').trim();
-    const n = Number.parseFloat(raw);
-    return Number.isFinite(n) ? n : 80;
-  };
-
+  // Scroll-pinned timeline that morphs the circle and reveals text
   const tl = gsap.timeline({
-    defaults: { ease: 'none' },
     scrollTrigger: {
       trigger: section,
-      start: () => `top ${headerOffset()}px`,
-      end: '+=180%',
+      start: 'top 85%',
+      end: '+=120%',
       pin: true,
       pinSpacing: true,
-      scrub: 0.8,
+      scrub: 0.6,
       invalidateOnRefresh: true,
     },
   });
 
-  // Parallax: bg zooms in and settles horizontally
-  tl.to(bg, { scale: 1, y: 0, duration: 1.5 }, 0);
-
-  // Grid drifts upward and fades
-  if (grid) {
-    tl.to(grid, { y: -30, opacity: 0.1, duration: 1.5 }, 0);
+  // 1. Morph circle to full card
+  if (frame) {
+    tl.fromTo(
+      frame,
+      {
+        width: '120px',
+        height: '120px',
+        borderRadius: '50%',
+        y: 0,
+      },
+      {
+        width: '100%',
+        height: '100%',
+        borderRadius: 'var(--radius-media)',
+        y: 0,
+        duration: 1.2,
+        ease: 'power3.inOut',
+      }
+    );
   }
 
-  // Vignette breathing: darken then lighten
+  // 2. Fade in copy container, waves, vignette, and fade out solid blue bg
+  if (copy) {
+    tl.to(copy, { opacity: 1, duration: 0.4 }, '-=0.4');
+  }
+  if (solidBg) {
+    tl.to(solidBg, { opacity: 0, duration: 0.8 }, '-=0.8');
+  }
+  tl.to(bg, { opacity: 1, duration: 0.8 }, '-=0.8');
   if (vignette) {
-    tl.to(
-      vignette,
-      { background: 'radial-gradient(circle at center, transparent 20%, rgba(10,22,48,0.8) 100%)', duration: 0.8 },
-      0,
-    );
-    tl.to(
-      vignette,
-      { background: 'radial-gradient(circle at center, transparent 40%, rgba(10,22,48,0.3) 100%)', duration: 0.7 },
-      0.7,
-    );
+    tl.to(vignette, { opacity: 1, duration: 0.4 }, '-=0.4');
   }
 
-  // Lines slide up
+  // 3. Staggered reveal of characters
   tl.to(
-    lines,
-    { y: 0, opacity: 1, stagger: 0.2, duration: 0.9, ease: 'power2.out' },
-    0.1,
-  );
-
-  // Words pop: scale + blur release with overshoot
-  tl.to(
-    words,
+    chars,
     {
       opacity: 1,
-      scale: 1,
+      y: 0,
       filter: 'blur(0px)',
-      stagger: 0.05,
-      duration: 0.6,
-      ease: 'back.out(1.4)',
+      stagger: 0.012,
+      duration: 0.7,
+      ease: 'power2.out',
     },
-    0.2,
+    '-=0.2'
   );
 
-  // Quiet attribution after the quote settles
+  // 4. Reveal attribution
   if (attr) {
-    tl.to(attr, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }, 0.95);
+    tl.to(attr, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }, '-=0.2');
   }
 
-  tl.to({}, { duration: 0.4 });
+  // Buffer at the end of pin
+  tl.to({}, { duration: 0.3 });
+
+  // Parallax scroll-linked effects for background waves
+  gsap.fromTo(
+    bg,
+    { y: -20, scale: 1.05 },
+    {
+      y: 20,
+      scale: 1,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+      },
+    }
+  );
 
   requestAnimationFrame(() => {
     ScrollTrigger.refresh();
