@@ -8,39 +8,58 @@ interface Props {
 const locale: Locale = Astro.props.locale ?? 'en';
 const quote = t(locale, 'interludeQuote');
 const attr = t(locale, 'interludeAttr');
-const words = quote.split(/\s+/).filter(Boolean);
+
+// Three display lines per locale, authored explicitly so the expanded card
+// reads as three balanced lines. We do NOT parse/split the i18n string:
+// Astro's i18n cache strips special characters (e.g. \u2028 line
+// separators), which produced unreliable splits. Keeping the lines here
+// guarantees a clean, deliberate 3-line layout for each language.
+const quoteLinesByLocale: Record<string, string[]> = {
+  en: [
+    'Design is not just what it looks like',
+    'and feels like.',
+    'Design is how it works.',
+  ],
+  ru: [
+    'Дизайн — это не только внешний вид',
+    'и ощущения.',
+    'Дизайн — это то, как это работает.',
+  ],
+};
+const quoteLines = quoteLinesByLocale[locale] ?? [quote];
 ---
 
 <section id="interlude" class="interlude" data-interlude-root aria-label={locale === 'ru' ? 'Интерлюдия' : 'Interlude'}>
   <div class="interlude-stage">
     <div class="interlude-frame">
       <div class="interlude-bg" aria-hidden="true">
-        <div class="interlude-bg-layer" data-interlude="bg">
-          <img
-            class="interlude-img"
-            src="/images/simulator_backdrop.webp"
-            alt=""
-            width="1920"
-            height="1080"
-            decoding="async"
-            fetchpriority="low"
-          />
+        <div class="interlude-waves-container" data-interlude="bg">
+          <svg class="interlude-waves" viewBox="0 0 1080 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="wave wave-1" d="M0,285 C360,170 720,400 1080,285 C1440,170 1800,400 2160,285 L2160,600 L0,600 Z"></path>
+            <path class="wave wave-2" d="M0,350 C360,240 720,460 1080,350 C1440,240 1800,460 2160,350 L2160,600 L0,600 Z"></path>
+            <path class="wave wave-3" d="M0,415 C360,315 720,515 1080,415 C1440,315 1800,515 2160,415 L2160,600 L0,600 Z"></path>
+            <path class="wave wave-4" d="M0,220 C360,90 720,350 1080,220 C1440,90 1800,350 2160,220 L2160,600 L0,600 Z"></path>
+          </svg>
         </div>
         <div class="interlude-vignette" data-interlude="vignette"></div>
-        <div class="interlude-grid" data-interlude="grid"></div>
       </div>
 
       <div class="interlude-copy">
         <blockquote class="interlude-quote">
-          <p class="interlude-line">
-            {
-              words.map((word) => (
-                <span class="interlude-word" data-interlude="word">
-                  {word}
-                </span>
-              ))
-            }
-          </p>
+          {
+            quoteLines.map((line, lineIdx) => (
+              <p class="interlude-line" data-interlude="line">
+                {
+                  line.split(/\s+/).map((word, wordIdx) => (
+                    <>
+                      <span class="interlude-word">{word.split('').map((char) => <span class="interlude-char" data-interlude="char">{char}</span>)}</span>
+                      {wordIdx < line.split(/\s+/).length - 1 && ' '}
+                    </>
+                  ))
+                }
+              </p>
+            ))
+          }
         </blockquote>
       </div>
       <cite class="interlude-attr" data-interlude="attr">{attr}</cite>
@@ -53,29 +72,50 @@ const words = quote.split(/\s+/).filter(Boolean);
     position: relative;
     z-index: 2;
     width: 100%;
-    background: var(--color-surface);
+    background: transparent;
     color: #ffffff;
+    pointer-events: none;
+    margin-top: 0;
+    /* 3× viewport: room for morph + text reveal + empty scroll before services */
+    height: calc(250svh - var(--header-height));
   }
 
   .interlude-stage {
     --interlude-view: calc(100svh - var(--header-height));
     box-sizing: border-box;
-    min-height: var(--interlude-view);
+    height: var(--interlude-view);
     display: grid;
-    place-items: center;
-    padding: var(--section-gap) var(--content-inline);
+    place-items: start center;
+    padding: calc(var(--section-gap) / 2) var(--content-inline) calc(var(--section-gap) / 2);
+    pointer-events: none;
+    position: sticky;
+    top: var(--header-height);
   }
 
   .interlude-frame {
     position: relative;
-    width: 100%;
-    height: calc(var(--interlude-view) - (2 * var(--section-gap)));
-    max-height: calc(var(--interlude-view) - (2 * var(--section-gap)));
+    width: 120px;
+    height: 120px;
     display: grid;
     place-items: center;
     overflow: hidden;
-    border-radius: var(--radius-media);
-    background: #0a1630;
+    border-radius: 50%;
+    /* No transform offset here: GSAP overwrites inline transforms.
+       The stage pins the circle's top at hero.bottom − 60px, so the
+       circle's center lands exactly on the hero/interlude boundary. */
+    transform-origin: center center;
+    pointer-events: auto;
+
+    /* Palette cycling colors */
+    --wave-col-1: var(--color-blue);
+    --wave-col-2: var(--color-violet);
+    --wave-col-3: #eab308; /* Vibrant Yellow/Amber */
+
+    --bg-col-1: var(--color-blue-tint);
+    --bg-col-2: #c8c4ee;
+    --bg-col-3: var(--color-yellow);
+
+    animation: interludeBgCycle 20s infinite linear;
   }
 
   .interlude-bg {
@@ -86,58 +126,152 @@ const words = quote.split(/\s+/).filter(Boolean);
     border-radius: inherit;
   }
 
-  .interlude-bg-layer {
+  .interlude-waves-container {
     position: absolute;
-    inset: -10% 0 0 0;
+    inset: 0;
+    overflow: hidden;
     will-change: transform;
     transform-origin: center center;
   }
 
-  .interlude-img {
-    width: 100%;
-    height: 120%;
-    object-fit: cover;
-    object-position: center;
+  .interlude-waves {
+    position: absolute;
+    bottom: -15%;
+    left: 0;
+    width: 200%;
+    height: 100%;
     display: block;
-    filter: brightness(0.85);
-    will-change: transform;
+  }
+
+  .wave {
+    animation-name: waveFillCycle;
+    animation-duration: 20s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    fill: var(--wave-col-1);
+    opacity: 0.4;
+    transform-origin: center bottom;
+    transform-box: fill-box;
+    will-change: transform, fill;
+  }
+
+  .wave-1 {
+    --ty: 0%;
+    animation-name: waveMoveReverse, waveFillCycle;
+    animation-duration: 9s, 20s;
+    animation-timing-function: ease-in-out, linear;
+    animation-iteration-count: infinite, infinite;
+  }
+
+  .wave-2 {
+    --ty: 2.5%;
+    animation-name: waveMove, waveFillCycle;
+    animation-duration: 12s, 20s;
+    animation-timing-function: ease-in-out, linear;
+    animation-iteration-count: infinite, infinite;
+  }
+
+  .wave-3 {
+    --ty: 5%;
+    animation-name: waveMoveReverse, waveFillCycle;
+    animation-duration: 15s, 20s;
+    animation-timing-function: ease-in-out, linear;
+    animation-iteration-count: infinite, infinite;
+  }
+
+  .wave-4 {
+    --ty: 7.5%;
+    animation-name: waveMove, waveFillCycle;
+    animation-duration: 10s, 20s;
+    animation-timing-function: ease-in-out, linear;
+    animation-iteration-count: infinite, infinite;
+  }
+
+  @keyframes interludeBgCycle {
+    0%, 15%, 100% {
+      background-color: var(--bg-col-1);
+    }
+    20%, 40%, 70%, 90% {
+      background-color: var(--bg-col-2);
+    }
+    45%, 65% {
+      background-color: var(--bg-col-3);
+    }
+  }
+
+  @keyframes waveFillCycle {
+    0%, 15%, 100% {
+      fill: var(--wave-col-1);
+    }
+    20%, 40%, 70%, 90% {
+      fill: var(--wave-col-2);
+    }
+    45%, 65% {
+      fill: var(--wave-col-3);
+    }
+  }
+
+  @keyframes waveMoveReverse {
+    0% {
+      transform: translate3d(-50%, var(--ty), 0);
+    }
+    50% {
+      transform: translate3d(0, var(--ty), 0);
+    }
+    100% {
+      transform: translate3d(-50%, var(--ty), 0);
+    }
+  }
+
+  @keyframes waveMove {
+    0% {
+      transform: translate3d(0, var(--ty), 0);
+    }
+    50% {
+      transform: translate3d(-50%, var(--ty), 0);
+    }
+    100% {
+      transform: translate3d(0, var(--ty), 0);
+    }
   }
 
   .interlude-vignette {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, transparent 0%, rgba(10, 22, 48, 0.4) 100%);
+    background: radial-gradient(circle at center, transparent 40%, rgba(255, 255, 255, 0.2) 100%);
     pointer-events: none;
     z-index: 1;
     border-radius: inherit;
   }
 
-  .interlude-grid {
+  .interlude-copy {
+    /* Absolutely positioned inside the circle frame: it must NOT
+       contribute to layout size, otherwise the quote text inflates
+       .interlude-stage to hundreds of px instead of the 20vh view.
+       During the morph the frame grows 120px -> 100%, and this
+       container (inset: 0) grows with it, revealing the quote. */
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-    background-size: 80px 80px;
-    pointer-events: none;
-    z-index: 2;
-    border-radius: inherit;
-  }
-
-  .interlude-copy {
-    position: relative;
     z-index: 3;
-    width: min(100%, 48rem);
-    padding: clamp(1.25rem, 3vw, 2rem);
-    text-align: center;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 0.35em;
-    color: #ffffff;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    text-align: center;
+    color: var(--color-text-primary);
+    opacity: 0;
+    overflow: hidden;
+    box-sizing: border-box;
   }
 
   .interlude-quote {
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15em;
   }
 
   .interlude-line {
@@ -148,26 +282,18 @@ const words = quote.split(/\s+/).filter(Boolean);
     line-height: 1.2;
     letter-spacing: -0.01em;
     text-wrap: balance;
-    color: #ffffff;
-    text-shadow: 0 1px 18px rgba(0, 0, 0, 0.35);
+    color: var(--color-text-primary);
   }
 
   .interlude-word {
     display: inline-block;
-    margin-inline: 0.18em;
-    color: #ffffff;
-    opacity: 0;
-    filter: blur(8px);
-    transform: scale(0.6);
+    white-space: nowrap;
+  }
+
+  .interlude-char {
+    display: inline-block;
+    color: var(--color-text-primary);
     will-change: transform, opacity, filter;
-  }
-
-  .interlude-word:first-child {
-    margin-inline-start: 0;
-  }
-
-  .interlude-word:last-child {
-    margin-inline-end: 0;
   }
 
   .interlude-attr {
@@ -181,26 +307,44 @@ const words = quote.split(/\s+/).filter(Boolean);
     font-style: normal;
     font-weight: 400;
     letter-spacing: 0.02em;
-    color: rgba(255, 255, 255, 0.72);
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+    color: var(--color-text-secondary);
     opacity: 0;
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .interlude {
+      margin-top: 0 !important;
+      background: var(--color-surface) !important;
+      pointer-events: auto !important;
+    }
+
     .interlude-stage {
       min-height: 0;
+      padding-block: 0 var(--section-gap);
+      pointer-events: auto !important;
     }
 
     .interlude-frame {
-      height: auto;
-      max-height: none;
+      width: 100% !important;
+      height: auto !important;
+      max-height: none !important;
       aspect-ratio: 16 / 9;
+      border-radius: var(--radius-media) !important;
+      transform: none !important;
     }
 
-    .interlude-bg-layer,
+    .interlude-bg {
+      transform: none !important;
+      scale: 1 !important;
+    }
+
+    .interlude-copy {
+      opacity: 1 !important;
+    }
+
+    .interlude-waves-container,
     .interlude-word,
     .interlude-line,
-    .interlude-grid,
     .interlude-attr {
       transform: none !important;
       opacity: 1 !important;
