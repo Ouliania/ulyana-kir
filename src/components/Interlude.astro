@@ -55,12 +55,15 @@ const words = quote.split(/\s+/).filter(Boolean);
     color: #ffffff;
     margin-top: 0;
     pointer-events: none;
+    /* Pull the interlude up so the circle peeks into the hero's first screen */
+    margin-block-start: calc(-1 * var(--interlude-circle-offset));
   }
 
   .interlude-stage {
     --interlude-view: calc(100svh - var(--header-height));
+    --interlude-circle-offset: 120px;
     box-sizing: border-box;
-    min-height: 0;
+    min-height: var(--interlude-view);
     display: grid;
     place-items: center;
     padding: 0;

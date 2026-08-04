@@ -45,14 +45,13 @@ export function initInterlude(root: ParentNode = document): void {
   gsap.set(chars, { opacity: 0, y: 20, filter: 'blur(10px)' });
   if (attr) gsap.set(attr, { opacity: 0, y: 8 });
 
-  // Scroll-pinned timeline that morphs the circle and reveals text
+  // Scroll-scrubbed timeline that morphs the circle into a card.
+  // No pin: pinning inside .hero (overflow:hidden) blows up its height.
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: section,
-      start: 'top 85%',
-      end: '+=120%',
-      pin: true,
-      pinSpacing: true,
+      start: 'top 90%',
+      end: 'bottom 30%',
       scrub: 0.6,
       invalidateOnRefresh: true,
     },
@@ -109,9 +108,6 @@ export function initInterlude(root: ParentNode = document): void {
   if (attr) {
     tl.to(attr, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' }, '-=0.2');
   }
-
-  // Buffer at the end of pin
-  tl.to({}, { duration: 0.3 });
 
   // Parallax scroll-linked effects for background waves
   gsap.fromTo(
