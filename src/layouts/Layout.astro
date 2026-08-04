@@ -102,7 +102,9 @@ const finalSchema = schema || defaultSchema;
     <slot />
     <script>
       import { initMagicSurfaces } from '../scripts/magic-surface';
+      import { initHeadingReveal } from '../scripts/heading-reveal';
       initMagicSurfaces();
+      initHeadingReveal();
     </script>
   </body>
 </html>

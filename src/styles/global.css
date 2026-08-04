@@ -249,6 +249,13 @@
     line-height: 1.05;
   }
 
+  /* Letter-reveal spans (heading-reveal.ts) — inline-block, no extra gap */
+  .hr-letter {
+    display: inline-block;
+    white-space: pre;
+    will-change: transform, opacity, filter;
+  }
+
   header, .main-header {
     border-bottom: none;
     box-shadow: none;

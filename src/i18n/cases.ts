@@ -4,15 +4,15 @@ import type { Locale } from './ui';
 export const caseCopy = {
   ru: {
     progolos: {
-      tag: 'Увеличение конверсии',
+      tag: 'Копирайтинг / Увеличение конверсии',
       project:
-        'UX и копирайтинг для лендинга студии вокала Progolos под рекламу',
+        'Увеличение конверсии сайта студии вокала «Progolos»',
       problem:
-        'Сайт не закрывал главные страхи новичков («нет слуха», «уже поздно учиться», «стесняюсь»), а структура не имела промежуточных целевых действий для «холодного» трафика',
+        'Сайт не закрывал главные страхи новичков («нет слуха», «уже поздно учиться», «стесняюсь»), а структура не имела промежуточных целевых действий для «холодного» трафика.',
       solution: [
-        'Провела анализ конкурентов и психологических барьеров целевой аудитории',
-        'Пересобрала путь клиента (CJM) и создала новую структуру с пошаговой проработкой возражений и страхов',
-        'Ввела легкие промежуточные целевые шаги (микроконверсии) для вовлечения людей, не готовых сразу купить курс',
+        'Провела анализ конкурентов и психологических барьеров целевой аудитории.',
+        'Пересобрала путь клиента (CJM) и создала новую структуру с пошаговой проработкой возражений и страхов.',
+        'Внедрила легкие промежуточные целевые шаги (микроконверсии) для вовлечения людей, не готовых сразу купить курс.',
       ],
       /** Big A-style figures — only when real numbers exist */
       metrics: [
@@ -81,15 +81,15 @@ export const caseCopy = {
   },
   en: {
     progolos: {
-      tag: 'Conversion boost',
+      tag: 'Copywriting / Conversion Boost / UX Strategy',
       project:
-        'UX and copy for the Progolos vocal studio landing page built for performance ads',
+        'Website Conversion Optimization for "Progolos" Vocal Studio',
       problem:
-        'The site did not address beginners’ main fears (“no ear for music”, “too late to learn”, “I’m shy”), and the structure had no intermediate actions for cold traffic',
+        'The website failed to address core beginner anxieties ("I have no pitch," "it\'s too late to learn," "I\'m shy"), offering no soft entry points (micro-conversions) for cold ad traffic.',
       solution: [
-        'Analyzed competitors and the audience’s psychological barriers',
-        'Rebuilt the customer journey (CJM) and a new structure that works objections and fears step by step',
-        'Added light intermediate goals (micro-conversions) for people not ready to buy a course yet',
+        'Conducted a thorough competitor analysis and mapped out the target audience’s psychological barriers.',
+        'Redesigned the Customer Journey Map (CJM) and created a new page structure addressing objections and fears step by step.',
+        'Introduced low-friction intermediate CTAs (micro-conversions) to engage leads not yet ready for an immediate purchase.',
       ],
       metrics: [
         { value: '4×', label: 'site-to-lead conversion grew' },

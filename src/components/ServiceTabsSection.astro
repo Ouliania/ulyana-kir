@@ -2133,6 +2133,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
       });
       cards.forEach((c, i) => c.classList.toggle('active', i === idx));
       vizs.forEach((v, i) => v.classList.toggle('active', i === idx));
+      window.dispatchEvent(new CustomEvent('st:tabchange'));
     };
 
     // Always paint first tab immediately (HTML may already have .active)

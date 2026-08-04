@@ -49,10 +49,10 @@ export const ui = {
     projectContext: 'Project Context',
     problem: 'Problem',
     problemWas: 'Problem (Was)',
-    theBarrier: 'The Barrier',
+    theBarrier: 'The Problem',
     solution: 'Solution',
-    solutionDone: 'Solution (What was done)',
-    theIntervention: 'What was done',
+    solutionDone: 'Solution',
+    theIntervention: 'Solution',
     result: 'Result',
     stack: 'Stack',
     caseFor: 'for',
@@ -69,7 +69,7 @@ export const ui = {
     heroSupport:
       'I help businesses stand out from competitors and boost conversions. I map out clear user journeys, craft persuasive copy, and build websites with clean code or page builders',
     interludeQuote:
-      'Design is not just what it looks like and feels like. Design is how it works',
+      'Design is not just what it looks like and feels like.\u2028Design is how it works',
     interludeAttr: 'Steve Jobs',
     whatIDo: 'What I do',
     whatIDoLead:
@@ -263,10 +263,10 @@ export const ui = {
     projectContext: 'Контекст проекта',
     problem: 'Проблема',
     problemWas: 'Проблема (Было)',
-    theBarrier: 'Барьер',
+    theBarrier: 'Проблема',
     solution: 'Решение',
-    solutionDone: 'Решение (Что сделано)',
-    theIntervention: 'Что сделано',
+    solutionDone: 'Решение',
+    theIntervention: 'Решение',
     result: 'Результат',
     stack: 'Стек',
     caseFor: 'для',
@@ -283,7 +283,7 @@ export const ui = {
     heroSupport:
       'Помогаю отстроиться от конкурентов и поднять конверсию. Выстраиваю понятный путь клиента, пишу тексты и собираю сайт на коде или конструкторе',
     interludeQuote:
-      'Дизайн — это не только внешний вид и ощущения. Дизайн — это то, как это работает',
+      'Дизайн — это не только внешний вид и ощущения.\u2028Дизайн — это то, как это работает',
     interludeAttr: 'Стив Джобс',
     whatIDo: 'Что я делаю',
     whatIDoLead:
