@@ -27,7 +27,7 @@ export const cases: CaseStudy[] = [
     slug: 'progolos',
     projectName: 'Progolos · Vladivostok',
     url: 'https://progolos.pro/vladivostok',
-    role: ['Structure', 'Copy'],
+    role: ['UX Strategy', 'Copywriting'],
     tint: 'blue',
     video: '/videos/progolos.mp4',
     featured: true,
@@ -36,7 +36,7 @@ export const cases: CaseStudy[] = [
     slug: 'grom-bike',
     projectName: 'Grom.bike',
     url: 'https://grom.bike/',
-    role: ['Copy', 'Structure'],
+    role: ['UX Strategy', 'Copywriting'],
     tint: 'yellow',
     stack: {
       en: 'Yandex Kit',
@@ -49,7 +49,7 @@ export const cases: CaseStudy[] = [
     slug: 'creator',
     projectName: 'Creator',
     url: 'https://creator.ulyanaweb.ru/',
-    role: ['Custom Code', 'UX/UI', 'Personal Brand'],
+    role: ['UX/UI Design', 'Custom Code', 'Personal Brand'],
     tint: 'violet',
     stack: {
       en: 'React + Node.js',
@@ -61,7 +61,7 @@ export const cases: CaseStudy[] = [
   {
     slug: 'interval-lingo',
     projectName: 'IntervalLingo',
-    role: ['Telegram Mini App', 'React'],
+    role: ['Product Design', 'React Development'],
     tint: 'shell',
     stack: {
       en: 'React · Telegram Mini App',
@@ -75,7 +75,7 @@ export const cases: CaseStudy[] = [
     slug: 'aliya-wooden',
     projectName: 'Wooden Chalets · Aliya',
     url: '/cases/wooden-room/',
-    role: ['layout', 'booking UX'],
+    role: ['Layout', 'Booking UX'],
     tint: 'teal',
     stack: {
       en: 'Clean code',

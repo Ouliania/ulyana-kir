@@ -59,14 +59,9 @@ function siteHost(url: string): string {
             <div class="csk-grid">
               {/* Copy first — matches services text-left / viz-right */}
               <div class="csk-copy">
-                {/* Service + role tags — own block, ⊥ mixed with title */}
+                {/* Service category only — own block, tags moved under link */}
                 <div class="csk-meta">
                   <p class="csk-service">{copy.tag}</p>
-                  <div class="csk-chips">
-                    {item.role.map((role) => (
-                      <span class="csk-chip">{role}</span>
-                    ))}
-                  </div>
                 </div>
 
                 {/* Title + live link — tight inner stack */}
@@ -89,6 +84,12 @@ function siteHost(url: string): string {
                   )}
                 </div>
 
+                <div class="csk-chips">
+                  {item.role.map((role) => (
+                    <span class="csk-chip">{role}</span>
+                  ))}
+                </div>
+
                 <div class="csk-fields">
                   <div class="csk-field">
                     <p class="csk-label">{t(locale, 'theBarrier')}</p>
@@ -104,8 +105,8 @@ function siteHost(url: string): string {
                   </div>
                 </div>
 
-                {/* Portrait: Result under copy — frees visual for larger phone */}
-                {isPortrait && copy.metrics.length > 0 && (
+                {/* Result under copy — unconditional for all cases */}
+                {copy.metrics.length > 0 && (
                   <div class="csk-proof-block">
                     <p class="csk-result-label">{t(locale, 'result')}</p>
                     <div class="csk-proof">
@@ -118,7 +119,7 @@ function siteHost(url: string): string {
                     </div>
                   </div>
                 )}
-                {isPortrait && copy.metrics.length === 0 && copy.result.length > 0 && (
+                {copy.metrics.length === 0 && copy.result.length > 0 && (
                   <div class="csk-result-prose">
                     <p class="csk-result-label">{t(locale, 'result')}</p>
                     {copy.result.map((line) => (
@@ -145,30 +146,6 @@ function siteHost(url: string): string {
                     <div class="csk-video-ph">{t(locale, 'videoSoon')}</div>
                   )}
                 </div>
-
-                {/* Landscape: Result under media */}
-                {!isPortrait && copy.metrics.length > 0 && (
-                  <div class="csk-proof-block">
-                    <p class="csk-result-label">{t(locale, 'result')}</p>
-                    <div class="csk-proof">
-                      {copy.metrics.map((m) => (
-                        <div class="csk-proof-item">
-                          <p class="csk-proof-value">{m.value}</p>
-                          <p class="csk-proof-desc">{m.label}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {!isPortrait && copy.metrics.length === 0 && copy.result.length > 0 && (
-                  <div class="csk-result-prose">
-                    <p class="csk-result-label">{t(locale, 'result')}</p>
-                    {copy.result.map((line) => (
-                      <p class="csk-text csk-text--result">{line}</p>
-                    ))}
-                  </div>
-                )}
 
                 {showCaseDeepLink && (
                   <div class="csk-cta-row">
@@ -350,12 +327,12 @@ function siteHost(url: string): string {
   }
 
   .csk-copy > .csk-proof-block {
-    margin-block-start: 1.15rem;
-    max-inline-size: 31.25rem;
+    margin-block-start: 1.75rem;
+    max-inline-size: none;
   }
 
   .csk-copy > .csk-result-prose {
-    margin-block-start: 1.15rem;
+    margin-block-start: 1.75rem;
     max-inline-size: none;
   }
 
@@ -455,7 +432,7 @@ function siteHost(url: string): string {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.4rem;
-    margin-block-end: 1rem;
+    margin-block-end: 1.15rem;
   }
 
   .csk-service {
@@ -483,20 +460,22 @@ function siteHost(url: string): string {
   .csk-chips {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 0.5rem;
     flex-shrink: 0;
+    margin-block-end: 2.25rem;
   }
 
   .csk-chip {
-    padding: 0.125rem 0.5rem;
-    background: transparent;
-    color: var(--color-blue);
-    font-size: 0.7rem;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-    border-radius: var(--radius-default);
-    border: 1px solid var(--color-blue);
+    padding: 0.25rem 0.6rem !important;
+    background: rgba(255, 255, 255, 0.75) !important;
+    color: var(--color-text-secondary) !important;
+    font-size: 0.72rem !important;
+    font-weight: 400 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    border-radius: var(--radius-default) !important;
+    border: 1px solid color-mix(in srgb, var(--color-text-primary) 8%, transparent) !important;
   }
 
   .csk-live {
@@ -508,16 +487,26 @@ function siteHost(url: string): string {
 
   .csk-fields {
     display: grid;
-    gap: 0.9rem;
-    max-inline-size: 31.25rem; /* 500px */
+    gap: 1.5rem;
+    max-inline-size: none;
+    margin-block-end: 2.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .csk-fields {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
   }
 
   .csk-label {
     font-family: var(--font-body);
     font-size: 0.95rem;
     color: var(--color-text-muted);
-    font-weight: 400;
-    margin: 0 0 0.3rem;
+    font-weight: 400 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    margin: 0 0 0.35rem;
   }
 
   .csk-label--done {
@@ -527,7 +516,7 @@ function siteHost(url: string): string {
   .csk-text {
     font-family: var(--font-body);
     font-size: 0.98rem;
-    line-height: 1.2;
+    line-height: 1.35;
     color: var(--color-text-secondary);
     margin: 0;
   }
@@ -570,12 +559,12 @@ function siteHost(url: string): string {
 
   .csk-result-label {
     font-family: var(--font-body);
-    font-size: 1rem;
-    letter-spacing: 0;
-    text-transform: none;
+    font-size: 0.95rem;
     color: var(--color-blue);
-    font-weight: 400;
-    margin: 0;
+    font-weight: 400 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    margin: 0 0 0.35rem;
   }
 
   .csk-proof-block,
@@ -583,11 +572,11 @@ function siteHost(url: string): string {
     box-sizing: border-box;
     width: 100%;
     max-inline-size: none;
-    padding: 1.1rem 1.25rem;
-    border-radius: var(--radius-media);
-    /* Blue plaque keeps tint; others → soft near-white */
-    background: var(--csk-result-bg, var(--color-blue-tint));
+    padding: 1.25rem 0 0;
+    background: transparent;
     border: none;
+    border-top: 1px solid color-mix(in srgb, var(--color-text-primary) 12%, transparent);
+    border-radius: 0;
   }
 
   .csk-proof-block {
