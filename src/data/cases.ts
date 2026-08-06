@@ -24,6 +24,19 @@ export interface CaseStudy {
 
 export const cases: CaseStudy[] = [
   {
+    slug: 'techexpert',
+    projectName: 'Техэксперт',
+    url: 'https://techexpert-kodex.tilda.ws/',
+    role: ['UX Strategy', 'B2B Copywriting', '#Tilda', '#CustomCode'],
+    tint: 'shell',
+    stack: {
+      en: 'Tilda + Custom Code',
+      ru: 'Tilda + Custom Code',
+    },
+    video: '/videos/techexpert.mp4',
+    featured: true,
+  },
+  {
     slug: 'progolos',
     projectName: 'Progolos · Vladivostok',
     url: 'https://progolos.pro/vladivostok',
@@ -36,7 +49,7 @@ export const cases: CaseStudy[] = [
     slug: 'grom-bike',
     projectName: 'Grom.bike',
     url: 'https://grom.bike/',
-    role: ['UX Strategy', 'Copywriting'],
+    role: ['UX Strategy', 'Copywriting', 'Design'],
     tint: 'yellow',
     stack: {
       en: 'Yandex Kit',
@@ -49,7 +62,7 @@ export const cases: CaseStudy[] = [
     slug: 'creator',
     projectName: 'Creator',
     url: 'https://creator.ulyanaweb.ru/',
-    role: ['UX/UI Design', 'Custom Code', 'Personal Brand'],
+    role: ['UX Strategy', 'Copywriting', '#CustomCoded'],
     tint: 'violet',
     stack: {
       en: 'React + Node.js',
@@ -61,7 +74,15 @@ export const cases: CaseStudy[] = [
   {
     slug: 'interval-lingo',
     projectName: 'IntervalLingo',
-    role: ['Product Design', 'React Development'],
+    url: 'https://t.me/Interval_eng_bot',
+    role: [
+      'Product Design',
+      'Product Management',
+      'UX/UI',
+      'React',
+      'Vite',
+      '#TelegramMiniApp',
+    ],
     tint: 'shell',
     stack: {
       en: 'React · Telegram Mini App',
