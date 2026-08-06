@@ -4,15 +4,15 @@ import type { Locale } from './ui';
 export const caseCopy = {
   ru: {
     progolos: {
-      tag: 'Копирайтинг / Увеличение конверсии',
+      tag: 'Увеличение конверсии',
       project:
         'Увеличение конверсии сайта студии вокала «Progolos»',
       problem:
-        'Сайт не закрывал главные страхи новичков («нет слуха», «уже поздно учиться», «стесняюсь»), а структура не имела промежуточных целевых действий для «холодного» трафика.',
+        'Сайт не закрывал страхи новичков, а структура не имела промежуточных действий для холодного трафика.',
       solution: [
-        'Провела анализ конкурентов и психологических барьеров целевой аудитории.',
-        'Пересобрала путь клиента (CJM) и создала новую структуру с пошаговой проработкой возражений и страхов.',
-        'Внедрила легкие промежуточные целевые шаги (микроконверсии) для вовлечения людей, не готовых сразу купить курс.',
+        'Анализ психологических барьеров аудитории',
+        'Карта пути клиента (CJM) с пошаговой отработкой страхов',
+        'Внедрение микроконверсий для вовлечения сомнений',
       ],
       /** Big A-style figures — only when real numbers exist */
       metrics: [
@@ -26,46 +26,46 @@ export const caseCopy = {
       project:
         'UX-реорганизация и копирайтинг для интернет-магазина велосипедов',
       problem:
-        'Клиент переходил с маркетплейса на собственный сайт (платформа Яндекс.Кит). Сайт выглядел как сухой каталог характеристик без прогрева, отработки возражений и логики продаж. Платформа имела жесткие ограничения (нельзя добавлять произвольные блоки и форматировать текст)',
+        'Сухой каталог с характеристиками вместо ответов на задачи покупателя. Ограничения платформы и страхи онлайн-заказа.',
       solution: [
-        'Перестроила логику каталога: перевела навигацию с технических характеристик на задачи пользователя («для города», «для прогулок», «для высоких нагрузок»)',
-        'Обошла ограничения платформы: разработала визуальные баннеры-смыслы (графические блоки), чтобы обойти технический лимит конструктора и донести до клиента офферы и преимущества',
-        'Разделила сценарии (CJM): для иногородних — закрыла страхи онлайн-покупки (сложность сборки, доставка, целостность); для местных — настроила воронку с зазывом в офлайн-шоурум на бесплатный тест-драйв',
+        'Навигация каталога по целям (город, прогулки, нагрузки)',
+        'Графические баннеры-смыслы в обход рамок конструктора',
+        'Две воронки: онлайн-покупка с гарантией / тест-драйв в шоуруме',
       ],
       metrics: [] as { value: string; label: string }[],
       result: [
-        'Сформирован удобный онлайн-каталог с понятной навигацией по целям покупки и бесшовным сценарием заказа как для онлайн-клиентов, так и для посетителей офлайн-магазина',
+        'Понятный онлайн-магазин под задачи клиента и бесшовный зазыв в офлайн',
       ],
     },
     creator: {
-      tag: 'Сайт-портфолио',
+      tag: 'Сайт с проработкой смыслов и дизайна',
       project: 'Сайт-портфолио для контент-мейкера',
       problem:
-        'Стандартные конструкторы и шаблоны не передавали индивидуальность автора и не позволяли реализовать сложную интерактивную графику. Требовалось создать современный сайт-витрину, который закрывает две задачи: выстраивает уровень доверия и ведет клиента по четкой воронке к заявке',
+        'Стандартные шаблоны не передавали статус и креативность автора, ограничивая интерактив.',
       solution: [
-        'Разработка на чистом коде: реализовала проект на стеке React + Node.js с индивидуальной версткой без конструкторов',
-        'Креативный интерактив: запрограммировала интерактивный заглавный блок с отслеживанием положения курсора (JS/Canvas animation) для вовлечения пользователя с первых секунд',
-        'Конверсионная структура: спроектировала понятный путь клиента от первого впечатления через портфолио и прайс-лист к форме обратной связи',
+        'Кастомная сборка на стеке React + Node.js без конструкторов',
+        'Интерактивная JS-анимация с трекингом курсора на первом экране',
+        'Прозрачная воронка: портфолио → прайс-лист → форма заявки',
       ],
       metrics: [] as { value: string; label: string }[],
       result: [
-        'Имиджевый, высокоскоростной сайт с интерактивом, который через понятную структуру отвечает на самые важные вопросы клиента перед заявкой и вызывает доверие',
+        'Имиджевый технологичный сайт, превращающий просмотры в доверие и заказы',
       ],
     },
     'interval-lingo': {
-      tag: 'Продуктовый дизайн',
+      tag: 'Telegram Mini App',
       project:
         'Telegram Mini App для изучения английских слов и фраз в контексте',
       problem:
-        'Большинство приложений (Quizlet, Anki) используют механическое заучивание изолированных слов по карточкам (Flashcards). Это создает «иллюзию знания»: человек помнит перевод слова на карточке, но не может использовать его в реальной речи и контексте',
+        'Приложения с карточками (Flashcards) заставляют заучивать изолированные слова, которые люди не могут применить в речи.',
       solution: [
-        'Отказалась от заучивания отдельных слов в пользу освоения готовых устойчивых фраз и смысловых контекстов через написание слов',
-        'Спроектировала удобное добавление слов и фраз — в том числе с AI-генерацией в контексте предложения — плюс интервальное повторение',
-        'Спроектировала интерфейс и с помощью вайбкодинга с базой данных через сервер запустила приложение',
+        'Переход от зубрежки слов к освоению речевых паттернов и контекста',
+        'Проектирование сфокусированного UI-интерфейса без лишнего шума',
+        'Полный цикл сборки и запуска Mini App в Telegram',
       ],
       metrics: [] as { value: string; label: string }[],
       result: [
-        'Работающий MVP, где пользователь заучивает не абстрактные слова, а готовые паттерны речи через написание их в контексте — с лёгким AI-пополнением словаря под интерес пользователя',
+        'Работающее продуктовое MVP с высокой скоростью освоения живых фраз',
       ],
     },
     'aliya-wooden': {
@@ -81,15 +81,15 @@ export const caseCopy = {
   },
   en: {
     progolos: {
-      tag: 'Copywriting / Conversion Boost / UX Strategy',
+      tag: 'Conversion boost',
       project:
         'Website Conversion Optimization for "Progolos" Vocal Studio',
       problem:
-        'The website failed to address core beginner anxieties ("I have no pitch," "it\'s too late to learn," "I\'m shy"), offering no soft entry points (micro-conversions) for cold ad traffic.',
+        'The site did not address beginners’ main fears, and the structure had no intermediate actions for cold traffic.',
       solution: [
-        'Conducted a thorough competitor analysis and mapped out the target audience’s psychological barriers.',
-        'Redesigned the Customer Journey Map (CJM) and created a new page structure addressing objections and fears step by step.',
-        'Introduced low-friction intermediate CTAs (micro-conversions) to engage leads not yet ready for an immediate purchase.',
+        'Audience psychological barrier analysis',
+        'Step-by-step objection-handling CJM',
+        'Micro-conversion triggers addition',
       ],
       metrics: [
         { value: '4×', label: 'site-to-lead conversion grew' },
@@ -101,46 +101,46 @@ export const caseCopy = {
       tag: 'Online store',
       project: 'UX reorganization and copy for a bicycle online store',
       problem:
-        'The client was moving from a marketplace to their own site (Yandex Kit). The site read as a dry specs catalog — no warmup, objection handling, or sales logic. The platform had hard limits (no custom blocks, limited text formatting)',
+        'A dry tech-spec catalog with no task-based logic, strict CMS limits, and online purchase anxieties.',
       solution: [
-        'Restructured the catalog: shifted navigation from technical specs to user jobs (“for the city”, “for leisure rides”, “for heavy loads”)',
-        'Worked around platform limits: designed meaning-led visual banners (graphic blocks) to carry offers and benefits past the builder’s constraints',
-        'Split journeys (CJM): for out-of-town buyers — closed online-purchase fears (assembly, delivery, integrity); for locals — a funnel that invites a free in-store test ride',
+        'Intent-based catalog structure (commuting, weekend rides)',
+        'Custom visual narrative banners bypassing CMS limits',
+        'Dual funnel: online shipping guarantees / showroom test drive',
       ],
       metrics: [] as { value: string; label: string }[],
       result: [
-        'A clear online catalog navigated by purchase goals, with a seamless order path for both online buyers and offline store visitors',
+        'User-friendly e-commerce journey driving both online sales and store visits',
       ],
     },
     creator: {
-      tag: 'Portfolio site',
+      tag: 'Site with deep strategy & design',
       project: 'Portfolio site for a content creator',
       problem:
-        'Standard builders and templates could not carry the author’s individuality or support complex interactive graphics. The brief was a modern showcase site that does two jobs: builds trust and walks the client through a clear funnel to an inquiry',
+        'Generic templates failed to showcase creator identity or support custom interactive graphics.',
       solution: [
-        'Custom code: built the project on React + Node.js with bespoke layout — no page builders',
-        'Creative interaction: programmed an interactive hero that tracks cursor position (JS/Canvas animation) to engage from the first seconds',
-        'Conversion structure: designed a clear path from first impression through portfolio and pricing to the contact form',
+        'Custom code engineering using React & Node.js',
+        'Interactive hero section with cursor-tracking JS animation',
+        'Streamlined flow: showcase → pricing → direct inquiry',
       ],
       metrics: [] as { value: string; label: string }[],
       result: [
-        'An image-led, fast site with interaction — a clear structure that answers the client’s main questions before inquiry and builds trust',
+        'High-speed, immersive brand platform that builds instant authority',
       ],
     },
     'interval-lingo': {
-      tag: 'Product design',
+      tag: 'Telegram Mini App',
       project:
         'Telegram Mini App for learning English words and phrases in context',
       problem:
-        'Most apps (Quizlet, Anki) rely on mechanical memorization of isolated words on flashcards. That creates an “illusion of knowing”: people recall the translation on the card but cannot use the word in real speech and context',
+        'Traditional flashcard apps force isolated word memorization, leading to zero real-world speaking skills.',
       solution: [
-        'Dropped isolated-word drills in favor of ready-made collocations and meaning contexts learned by writing the words',
-        'Designed easy add-word / add-phrase flows — including AI generation inside a sentence — plus spaced repetition',
-        'Designed the interface and shipped the app with vibe coding against a server-backed database',
+        'Context-driven learning model instead of standalone vocabulary',
+        'Distraction-free, zero-friction Telegram Mini App UI',
+        'Full-stack development and deployment from scratch',
       ],
       metrics: [] as { value: string; label: string }[],
       result: [
-        'A working MVP where users learn speech patterns, not abstract words — by writing them in context, with light AI vocabulary growth tailored to their interests',
+        'Fully functional EdTech MVP focused on immediate phrase application',
       ],
     },
     'aliya-wooden': {
