@@ -14,8 +14,8 @@ const n = cases.length;
 const pad = (i: number) => String(i + 1).padStart(2, '0');
 /** Case write-ups deferred — hide deep-link until pages ready */
 const showCaseDeepLink = false;
-/** Sticky overlap only for short stacks (home ≤4; long archive stays static) */
-const stickyStack = n > 0 && n <= 4;
+/** Sticky overlap only for short stacks (home ≤5; long archive stays static) */
+const stickyStack = n > 0 && n <= 5;
 
 function siteHost(url: string): string {
   try {
@@ -50,18 +50,17 @@ function siteHost(url: string): string {
               isPortrait && 'csk-plaque--portrait',
             ]}
           >
-            <p class="csk-index" aria-hidden="true">
-              <span class="csk-index-cur">{pad(i)}</span>
-              <span class="csk-index-sep">/</span>
-              <span>{pad(n - 1)}</span>
-            </p>
-
             <div class="csk-grid">
               {/* Copy first — matches services text-left / viz-right */}
               <div class="csk-copy">
-                {/* Service category only — own block, tags moved under link */}
+                <!-- Service category only — own block, tags moved under link -->
                 <div class="csk-meta">
                   <p class="csk-service">{copy.tag}</p>
+                  <p class="csk-index" aria-hidden="true">
+                    <span class="csk-index-cur">{pad(i)}</span>
+                    <span class="csk-index-sep">/</span>
+                    <span>{pad(n - 1)}</span>
+                  </p>
                 </div>
 
                 {/* Title + live link — tight inner stack */}
@@ -185,6 +184,11 @@ function siteHost(url: string): string {
     --csk-tint-1: #c8c4ee;
     --csk-tint-2: var(--color-lime);
     --csk-tint-3: var(--color-yellow);
+    /* Saturated accent per plaque — same hue family, higher intensity */
+    --csk-accent-0: var(--color-blue);
+    --csk-accent-1: var(--color-violet);
+    --csk-accent-2: #4caf50;
+    --csk-accent-3: #c9a227;
     display: flex;
     flex-direction: column;
     gap: clamp(1.5rem, 3vw, 2.25rem);
@@ -202,6 +206,7 @@ function siteHost(url: string): string {
   /* Plaque bg = tint as-is (already pastel wash). ⊥ 55% mix that washed new lime/yellow back to “old” */
   .csk-plaque {
     --csk-tint: var(--csk-tint-0);
+    --csk-accent: var(--csk-accent-0);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -213,10 +218,10 @@ function siteHost(url: string): string {
     box-shadow: none;
   }
 
-  .csk-plaque--0 { --csk-tint: var(--csk-tint-0); }
-  .csk-plaque--1 { --csk-tint: var(--csk-tint-1); --csk-result-bg: var(--color-surface); }
-  .csk-plaque--2 { --csk-tint: var(--csk-tint-2); --csk-result-bg: var(--color-surface); }
-  .csk-plaque--3 { --csk-tint: var(--csk-tint-3); --csk-result-bg: var(--color-surface); }
+  .csk-plaque--0 { --csk-tint: var(--csk-tint-0); --csk-accent: var(--csk-accent-0); }
+  .csk-plaque--1 { --csk-tint: var(--csk-tint-1); --csk-accent: var(--csk-accent-1); --csk-result-bg: var(--color-surface); }
+  .csk-plaque--2 { --csk-tint: var(--csk-tint-2); --csk-accent: var(--csk-accent-2); --csk-result-bg: var(--color-surface); }
+  .csk-plaque--3 { --csk-tint: var(--csk-tint-3); --csk-accent: var(--csk-accent-3); --csk-result-bg: var(--color-surface); }
 
   @media (min-width: 900px) {
     /*
@@ -277,17 +282,18 @@ function siteHost(url: string): string {
   }
 
   .csk-index {
-    margin: 0 0 1rem;
+    margin: 0;
     flex-shrink: 0;
     font-size: 0.75rem;
     font-weight: 500;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.02em;
     color: #9ca3af;
+    text-align: right;
   }
 
   .csk-index-cur {
-    color: var(--color-blue);
+    color: var(--csk-accent);
   }
 
   .csk-index-sep {
@@ -327,12 +333,12 @@ function siteHost(url: string): string {
   }
 
   .csk-copy > .csk-proof-block {
-    margin-block-start: 1.75rem;
+    margin-block-start: 0;
     max-inline-size: none;
   }
 
   .csk-copy > .csk-result-prose {
-    margin-block-start: 1.75rem;
+    margin-block-start: 0;
     max-inline-size: none;
   }
 
@@ -391,9 +397,10 @@ function siteHost(url: string): string {
     }
 
     .csk--sticky .csk-plaque--portrait .csk-media--portrait {
-      max-block-size: calc(var(--csk-frame-h) - 3.5rem);
+      flex: 1 0 0;
+      max-block-size: none;
       width: auto;
-      height: min(36rem, calc(var(--csk-frame-h) - 3.5rem));
+      height: auto;
       max-inline-size: min(20rem, 88%);
       aspect-ratio: 9 / 19.5;
     }
@@ -423,7 +430,7 @@ function siteHost(url: string): string {
     justify-content: space-between;
     gap: 0.75rem 1rem;
     width: 100%;
-    margin-block-end: 1.35rem;
+    margin-block-end: 0.5rem;
   }
 
   /* Title + link — tight inner; then smaller step to Barrier */
@@ -437,19 +444,19 @@ function siteHost(url: string): string {
 
   .csk-service {
     font-family: var(--font-heading);
-    font-size: 1.0625rem;
+    font-size: 0.9375rem;
     font-weight: 400;
     font-style: italic;
     letter-spacing: -0.01em;
     line-height: 1.3;
-    color: var(--color-blue);
+    color: var(--color-text-muted);
     margin: 0;
     min-width: 0;
   }
 
   .csk-project {
     font-family: var(--font-heading);
-    font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.85rem);
+    font-size: clamp(1.55rem, 1.2rem + 1.1vw, 2.15rem);
     font-weight: 500;
     line-height: 1.25;
     letter-spacing: -0.02em;
@@ -469,18 +476,18 @@ function siteHost(url: string): string {
   .csk-chip {
     padding: 0.25rem 0.6rem !important;
     background: rgba(255, 255, 255, 0.75) !important;
-    color: var(--color-text-secondary) !important;
+    color: var(--csk-accent) !important;
     font-size: 0.72rem !important;
     font-weight: 400 !important;
     text-transform: none !important;
     letter-spacing: normal !important;
     border-radius: var(--radius-default) !important;
-    border: 1px solid color-mix(in srgb, var(--color-text-primary) 8%, transparent) !important;
+    border: none !important;
   }
 
   .csk-live {
     font-size: 0.9rem;
-    color: var(--color-blue);
+    color: var(--csk-accent);
     text-decoration: underline;
     text-underline-offset: 0.15em;
   }
@@ -502,15 +509,16 @@ function siteHost(url: string): string {
   .csk-label {
     font-family: var(--font-body);
     font-size: 0.95rem;
-    color: var(--color-text-muted);
-    font-weight: 400 !important;
+    color: var(--csk-accent);
+    font-weight: 500 !important;
     text-transform: none !important;
     letter-spacing: normal !important;
     margin: 0 0 0.35rem;
   }
 
   .csk-label--done {
-    color: var(--color-blue);
+    color: var(--csk-accent);
+    font-weight: 500 !important;
   }
 
   .csk-text {
@@ -550,17 +558,17 @@ function siteHost(url: string): string {
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: var(--color-blue);
+    background: var(--csk-accent);
     box-shadow:
-      6px 0 0 var(--color-blue),
-      12px 0 0 var(--color-blue);
+      6px 0 0 var(--csk-accent),
+      12px 0 0 var(--csk-accent);
     transform: scale(0.55);
   }
 
   .csk-result-label {
     font-family: var(--font-body);
     font-size: 0.95rem;
-    color: var(--color-blue);
+    color: var(--csk-accent);
     font-weight: 400 !important;
     text-transform: none !important;
     letter-spacing: normal !important;
@@ -572,10 +580,10 @@ function siteHost(url: string): string {
     box-sizing: border-box;
     width: 100%;
     max-inline-size: none;
-    padding: 1.25rem 0 0;
+    padding: 0.625rem 0 0;
     background: transparent;
     border: none;
-    border-top: 1px solid color-mix(in srgb, var(--color-text-primary) 12%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--csk-tint) 88%, var(--color-text-primary));
     border-radius: 0;
   }
 
@@ -583,7 +591,7 @@ function siteHost(url: string): string {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.65rem;
+    gap: 0.325rem;
   }
 
   .csk-proof {
@@ -608,7 +616,7 @@ function siteHost(url: string): string {
     line-height: 1;
     letter-spacing: -0.02em;
     margin: 0;
-    color: var(--color-blue);
+    color: var(--csk-accent);
   }
 
   .csk-proof-desc {

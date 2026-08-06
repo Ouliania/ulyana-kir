@@ -3,6 +3,21 @@ import type { Locale } from './ui';
 /** Case body copy — author RU first, then sync EN (SPEC V20) */
 export const caseCopy = {
   ru: {
+    techexpert: {
+      tag: 'Создание сайта',
+      project: 'Сайт для дистрибьютора ИС «Техэксперт»',
+      problem:
+        'Устаревший сайт не передавал статус официального дистрибьютора. Описание сервиса строилось на сухих функциях, а не на понятных выгодах для бизнеса.',
+      solution: [
+        'Анализ B2B-аудитории и перенос фокуса с сухих характеристик на язык выгод',
+        'Проектирование CJM с микрошагами до заявки для холодных клиентов',
+        'Сборка на Tilda с кастомным кодом: чертежная сетка, интерактивная карта и анимации',
+      ],
+      metrics: [] as { value: string; label: string }[],
+      result: [
+        'Имиджевый B2B-инструмент, который формирует доверие к компании и закрывает ключевые возражения до контакта с отделом продаж.',
+      ],
+    },
     progolos: {
       tag: 'Увеличение конверсии',
       project:
@@ -23,49 +38,47 @@ export const caseCopy = {
     },
     'grom-bike': {
       tag: 'Интернет-магазин',
-      project:
-        'UX-реорганизация и копирайтинг для интернет-магазина велосипедов',
+      project: 'Разработка сценария клиента до заявки',
       problem:
-        'Сухой каталог с характеристиками вместо ответов на задачи покупателя. Ограничения платформы и страхи онлайн-заказа.',
+        'Клиент переходил с маркетплейса на свой сайт Yandex.Kit. На сайте был каталог без ответов на задачи и страхи покупателей.',
       solution: [
         'Навигация каталога по целям (город, прогулки, нагрузки)',
-        'Графические баннеры-смыслы в обход рамок конструктора',
-        'Две воронки: онлайн-покупка с гарантией / тест-драйв в шоуруме',
+        'Созданы баннеры-смыслы в обход ограничений конструктора',
+        'Две воронки с отработкой страхов, мешающих заявкам',
       ],
       metrics: [] as { value: string; label: string }[],
       result: [
-        'Понятный онлайн-магазин под задачи клиента и бесшовный зазыв в офлайн',
+        'Независимость от маркетплейсов: автономный сайт, доводящий онлайн- и офлайн-клиентов до заявки через закрытие страхов.',
       ],
     },
     creator: {
-      tag: 'Сайт с проработкой смыслов и дизайна',
-      project: 'Сайт-портфолио для контент-мейкера',
+      tag: 'Создание сайта',
+      project: 'Создание сайта на коде',
       problem:
-        'Стандартные шаблоны не передавали статус и креативность автора, ограничивая интерактив.',
+        'Экспертиза и кейсы рассеяны по соцсетям и дискам, не раскрывая подход и глубину работы. Отсутствовала единая точка касания с потенциальными клиентами.',
       solution: [
-        'Кастомная сборка на стеке React + Node.js без конструкторов',
-        'Интерактивная JS-анимация с трекингом курсора на первом экране',
-        'Прозрачная воронка: портфолио → прайс-лист → форма заявки',
+        'Спроектировала концепцию, структуру страницы, тексты и упаковку кейсов',
+        'Сверстала сайт на коде (React + Node.js) с динамическими анимациями',
+        'Выстроила понятный путь клиента: от знакомства с подходом до изучения работ и отправки заявки',
       ],
       metrics: [] as { value: string; label: string }[],
       result: [
-        'Имиджевый технологичный сайт, превращающий просмотры в доверие и заказы',
+        'Единый хаб личного бренда, который экономит время на квалификации клиентов и повышает конверсию в сделку за счет прозрачности.',
       ],
     },
     'interval-lingo': {
-      tag: 'Telegram Mini App',
-      project:
-        'Telegram Mini App для изучения английских слов и фраз в контексте',
+      tag: 'Создание MVP',
+      project: 'Создание Telegram Mini App для изучения английского',
       problem:
-        'Приложения с карточками (Flashcards) заставляют заучивать изолированные слова, которые люди не могут применить в речи.',
+        'Стандартные сервисы с карточками (Flashcards) заставляют заучивать слова в изоляции, из-за чего люди не понимают, как применять их в реальной речи.',
       solution: [
-        'Переход от зубрежки слов к освоению речевых паттернов и контекста',
-        'Проектирование сфокусированного UI-интерфейса без лишнего шума',
-        'Полный цикл сборки и запуска Mini App в Telegram',
+        'Исследована проблема (Problem-Solution Fit) и спроектирована концепция изучения слов в контексте',
+        'Проработан простой сценарий пользователя (CJM) и интерфейс приложения',
+        'Выполнен полный цикл сборки и запуска Mini App в Telegram с подключением базы данных',
       ],
       metrics: [] as { value: string; label: string }[],
       result: [
-        'Работающее продуктовое MVP с высокой скоростью освоения живых фраз',
+        'Готовое продуктовое MVP с системой интервальных повторений, обучающее использовать живые фразы в контексте.',
       ],
     },
     'aliya-wooden': {
@@ -80,6 +93,21 @@ export const caseCopy = {
     },
   },
   en: {
+    techexpert: {
+      tag: 'Website Development',
+      project: '"Tech-Expert" Distributor Website',
+      problem:
+        'An outdated site failed to reflect official distributor status, listing dry tech specs instead of clear business value.',
+      solution: [
+        'B2B audience analysis and reframing tech features into tangible client benefits',
+        'Customer journey design featuring friction-free micro-conversions',
+        'Tilda development with custom code: blueprint grid background, interactive map, and dynamic animations',
+      ],
+      metrics: [] as { value: string; label: string }[],
+      result: [
+        'High-trust B2B platform that builds brand authority and addresses buyer objections before the first sales touchpoint.',
+      ],
+    },
     progolos: {
       tag: 'Conversion boost',
       project:
@@ -98,49 +126,48 @@ export const caseCopy = {
       result: [] as string[],
     },
     'grom-bike': {
-      tag: 'Online store',
-      project: 'UX reorganization and copy for a bicycle online store',
+      tag: 'E-commerce Development',
+      project: 'Customer Journey Optimization for a Bike E-commerce Store',
       problem:
-        'A dry tech-spec catalog with no task-based logic, strict CMS limits, and online purchase anxieties.',
+        'Transitioning from marketplaces to their own Yandex.Kit site, the catalog failed to address buyers’ goals and online purchase fears.',
       solution: [
-        'Intent-based catalog structure (commuting, weekend rides)',
-        'Custom visual narrative banners bypassing CMS limits',
-        'Dual funnel: online shipping guarantees / showroom test drive',
+        'Intent-based catalog navigation (commuting, weekend rides, heavy loads)',
+        'Custom visual narrative banners bypassing CMS limitations',
+        'Dual sales funnels handling core conversion objections',
       ],
       metrics: [] as { value: string; label: string }[],
       result: [
-        'User-friendly e-commerce journey driving both online sales and store visits',
+        'Marketplace independence: a standalone site driving both online and offline leads by proactively addressing buyer objections.',
       ],
     },
     creator: {
-      tag: 'Site with deep strategy & design',
-      project: 'Portfolio site for a content creator',
+      tag: 'Website Development',
+      project: 'Custom-Coded Website Development',
       problem:
-        'Generic templates failed to showcase creator identity or support custom interactive graphics.',
+        'Case studies and expertise were scattered across social platforms and drives, failing to convey methodology and depth. The creator lacked a unified touchpoint for potential clients.',
       solution: [
-        'Custom code engineering using React & Node.js',
-        'Interactive hero section with cursor-tracking JS animation',
-        'Streamlined flow: showcase → pricing → direct inquiry',
+        'Designed the site concept, layout, copywriting, and case study packaging',
+        'Coded the site using React + Node.js with dynamic animations',
+        'Built a clear customer journey: from understanding the workflow to reviewing cases and submitting a request',
       ],
       metrics: [] as { value: string; label: string }[],
       result: [
-        'High-speed, immersive brand platform that builds instant authority',
+        'A single personal brand hub that saves time on client qualification and boosts deal conversion through process transparency.',
       ],
     },
     'interval-lingo': {
-      tag: 'Telegram Mini App',
-      project:
-        'Telegram Mini App for learning English words and phrases in context',
+      tag: 'MVP Development',
+      project: 'Telegram Mini App for Contextual English Learning',
       problem:
-        'Traditional flashcard apps force isolated word memorization, leading to zero real-world speaking skills.',
+        'Traditional flashcard apps force isolated vocabulary memorization, leaving learners unable to use words in real-world conversations.',
       solution: [
-        'Context-driven learning model instead of standalone vocabulary',
-        'Distraction-free, zero-friction Telegram Mini App UI',
-        'Full-stack development and deployment from scratch',
+        'Conducted user problem research (Problem-Solution Fit) to design a context-first learning concept',
+        'Mapped out a friction-free user journey (CJM) and clean UI/UX layout',
+        'Built and deployed a full-stack Telegram Mini App integrated with a custom database',
       ],
       metrics: [] as { value: string; label: string }[],
       result: [
-        'Fully functional EdTech MVP focused on immediate phrase application',
+        'A launch-ready EdTech MVP featuring spaced repetition for learning practical phrases in context.',
       ],
     },
     'aliya-wooden': {
