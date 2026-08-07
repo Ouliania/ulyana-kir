@@ -196,6 +196,20 @@ function siteHost(url: string): string {
     background: transparent;
   }
 
+  /* Mobile: plaque spans full white-shell width, tighter internal padding */
+  @media (max-width: 899px) {
+    .csk {
+      --csk-pad: 0;
+    }
+
+    .csk-plaque {
+      padding: clamp(1.25rem, 3vw, 1.75rem);
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+    }
+  }
+
   .csk-panel {
     max-inline-size: 1400px;
     margin-inline: auto;
