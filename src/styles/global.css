@@ -327,11 +327,13 @@
 
   @media (max-width: 720px) {
     :root {
-      --page-shell-inset: 0.75rem;
+      --page-shell-inset: 0.4rem;
+      --content-inline: 1rem;
+      --section-gap: 2rem;
     }
 
     .page-shell {
-      --page-shell-radius: 0.875rem;
+      --page-shell-radius: 0.625rem;
     }
   }
 }
