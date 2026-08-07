@@ -733,6 +733,13 @@ const iconPaths: Record<BulletIcon, string[]> = {
     min-height: 0;
   }
 
+  @media (max-width: 899px) {
+    .st-body {
+      flex: 0 0 auto;
+      overflow: visible;
+    }
+  }
+
   @media (min-width: 900px) {
     .st-body {
       flex-direction: row;
@@ -790,6 +797,12 @@ const iconPaths: Record<BulletIcon, string[]> = {
       box-sizing: border-box;
       overflow: visible;
       z-index: 1;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .st-right {
+      display: none;
     }
   }
 
