@@ -95,7 +95,7 @@ export const caseCopy = {
   en: {
     techexpert: {
       tag: 'Website Development',
-      project: '"Tech-Expert" Distributor Website',
+      project: '"Techexpert" Distributor Website',
       problem:
         'An outdated site failed to reflect official distributor status, listing dry tech specs instead of clear business value.',
       solution: [
