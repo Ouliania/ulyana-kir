@@ -722,6 +722,17 @@ const iconPaths: Record<BulletIcon, string[]> = {
     background: color-mix(in srgb, var(--st-tint) 55%, var(--color-surface));
   }
 
+  .st-body {
+    --st-pad-block-start: clamp(2rem, 4vw, 2.75rem);
+    --st-pad-block-end: clamp(4rem, 8vw, 5.5rem);
+    --st-pad-inline: var(--content-inline);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
+
   @media (min-width: 900px) {
     .st-body {
       flex-direction: row;
@@ -734,24 +745,6 @@ const iconPaths: Record<BulletIcon, string[]> = {
       box-sizing: border-box;
       position: relative;
       z-index: 2;
-      flex-direction: column;
-      align-items: stretch;
-    }
-  }
-  .st-body {
-    --st-pad-block-start: clamp(2rem, 4vw, 2.75rem);
-    --st-pad-block-end: clamp(4rem, 8vw, 5.5rem);
-    --st-pad-inline: var(--content-inline);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: visible;
-    min-height: 0;
-  }
-
-  @media (min-width: 900px) {
-    .st-body {
-      overflow: hidden;
     }
   }
 
