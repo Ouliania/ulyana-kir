@@ -595,7 +595,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
     padding: 2rem 0;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 899px) {
     .st-stage {
       padding: 0;
     }
@@ -652,7 +652,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
 
   .st-tabs::-webkit-scrollbar { display: none; }
 
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     .st-tabs {
       justify-content: stretch;
       align-items: stretch;
@@ -666,7 +666,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
     }
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     .st-tab {
       flex: 1;
       flex-shrink: 1;
@@ -677,6 +677,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
   .st-tab {
     flex-shrink: 0;
     white-space: nowrap;
+    min-width: fit-content;
     appearance: none;
     background: color-mix(in srgb, var(--color-text-primary) 3.5%, var(--color-surface));
     border: 1px solid transparent;
@@ -720,18 +721,6 @@ const iconPaths: Record<BulletIcon, string[]> = {
     background: color-mix(in srgb, var(--st-tint) 55%, var(--color-surface));
   }
 
-  /* Body grid — shared pads so left copy + right viz bottom align */
-  .st-body {
-    --st-pad-block-start: clamp(2rem, 4vw, 2.75rem);
-    --st-pad-block-end: clamp(4rem, 8vw, 5.5rem);
-    --st-pad-inline: var(--content-inline);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-height: 0;
-  }
-
   @media (min-width: 900px) {
     .st-body {
       flex-direction: row;
@@ -744,12 +733,31 @@ const iconPaths: Record<BulletIcon, string[]> = {
       box-sizing: border-box;
       position: relative;
       z-index: 2;
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+  .st-body {
+    --st-pad-block-start: clamp(2rem, 4vw, 2.75rem);
+    --st-pad-block-end: clamp(4rem, 8vw, 5.5rem);
+    --st-pad-inline: var(--content-inline);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    min-height: 0;
+  }
+
+  @media (min-width: 900px) {
+    .st-body {
+      overflow: hidden;
     }
   }
 
   .st-left {
     padding: 2rem 1.5rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
     position: relative;
     min-height: 0;
@@ -1106,7 +1114,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
     align-items: center;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 899px) {
     .st-viz { display: none; }
   }
 
