@@ -870,11 +870,15 @@ const iconPaths: Record<BulletIcon, string[]> = {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
-      margin-bottom: 3rem;
+      margin-bottom: 0;
       max-width: none;
       scroll-margin-top: calc(var(--header-height) + 4.5rem);
+      padding-block-end: 3rem;
     }
-    .st-card + .st-card { margin-top: 2rem; }
+    .st-card + .st-card {
+      padding-block-start: 3rem;
+      border-top: 1px solid var(--color-border);
+    }
   }
 
   .st-headline {
