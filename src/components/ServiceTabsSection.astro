@@ -565,7 +565,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
     width: 100%;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     /* 4 tabs at 1 rail-unit each + the last tab gets 1.5 units — a fast/hard
        scroll flick that comfortably carries someone through 1 unit (tab1→2,
        2→3) needs noticeably more distance to also clear tab4, so it can't
@@ -581,7 +581,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
     display: none;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     .st-rails { display: flex; flex-direction: column; }
   }
 
@@ -595,7 +595,13 @@ const iconPaths: Record<BulletIcon, string[]> = {
     padding: 2rem 0;
   }
 
-  @media (min-width: 768px) {
+  @media (max-width: 899px) {
+    .st-stage {
+      padding: 0;
+    }
+  }
+
+  @media (min-width: 900px) {
     .st-stage {
       position: sticky;
       top: var(--header-height);
@@ -628,30 +634,50 @@ const iconPaths: Record<BulletIcon, string[]> = {
   }
 
   .st-tabs {
-    display: none;
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem var(--content-inline);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-shrink: 0;
+    position: sticky;
+    top: var(--header-height);
+    z-index: 10;
+    background: var(--color-surface);
+    box-sizing: border-box;
   }
 
-  @media (min-width: 768px) {
+  .st-tabs::-webkit-scrollbar { display: none; }
+
+  @media (min-width: 900px) {
     .st-tabs {
-      display: flex;
       justify-content: stretch;
       align-items: stretch;
       gap: 0.75rem;
-      width: 100%;
-      max-inline-size: none;
-      margin-inline: 0;
       padding: 1.25rem var(--content-inline) 1.275rem;
-      flex-shrink: 0;
-      border-bottom: none;
+      overflow-x: visible;
       position: relative;
+      top: auto;
       z-index: 2;
       background: transparent;
-      box-sizing: border-box;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .st-tab {
+      flex: 1;
+      flex-shrink: 1;
+      white-space: normal;
     }
   }
 
   .st-tab {
-    flex: 1;
+    flex-shrink: 0;
+    white-space: nowrap;
+    min-width: fit-content;
     appearance: none;
     background: color-mix(in srgb, var(--color-text-primary) 3.5%, var(--color-surface));
     border: 1px solid transparent;
@@ -695,23 +721,10 @@ const iconPaths: Record<BulletIcon, string[]> = {
     background: color-mix(in srgb, var(--st-tint) 55%, var(--color-surface));
   }
 
-  /* Body grid — shared pads so left copy + right viz bottom align */
-  .st-body {
-    --st-pad-block-start: clamp(2rem, 4vw, 2.75rem);
-    --st-pad-block-end: clamp(4rem, 8vw, 5.5rem);
-    --st-pad-inline: var(--content-inline);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    min-height: 0;
-  }
-
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     .st-body {
       flex-direction: row;
       padding-block-start: 0;
-      /* allow tab1 square to bleed left without clipping */
       overflow: visible;
     }
 
@@ -720,18 +733,37 @@ const iconPaths: Record<BulletIcon, string[]> = {
       box-sizing: border-box;
       position: relative;
       z-index: 2;
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+  .st-body {
+    --st-pad-block-start: clamp(2rem, 4vw, 2.75rem);
+    --st-pad-block-end: clamp(4rem, 8vw, 5.5rem);
+    --st-pad-inline: var(--content-inline);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    min-height: 0;
+  }
+
+  @media (min-width: 900px) {
+    .st-body {
+      overflow: hidden;
     }
   }
 
   .st-left {
     padding: 2rem 1.5rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
     position: relative;
     min-height: 0;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     .st-left {
       width: 50%;
       flex: 0 0 50%;
@@ -754,7 +786,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
     min-height: 300px;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     .st-right {
       width: 50%;
       min-height: 0;
@@ -814,7 +846,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
     color: #fff;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     .st-card {
       position: relative;
       display: flex;
@@ -839,13 +871,14 @@ const iconPaths: Record<BulletIcon, string[]> = {
     }
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 899px) {
     .st-card {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
       margin-bottom: 3rem;
       max-width: none;
+      scroll-margin-top: calc(var(--header-height) + 4.5rem);
     }
     .st-card + .st-card { margin-top: 2rem; }
   }
@@ -1081,7 +1114,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
     align-items: center;
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 899px) {
     .st-viz { display: none; }
   }
 
@@ -2119,7 +2152,7 @@ const iconPaths: Record<BulletIcon, string[]> = {
     if (!tabs.length || !cards.length) return;
     stReady = true;
 
-    const isDesktop = () => window.innerWidth >= 768;
+    const isDesktop = () => window.innerWidth >= 900;
     let activeIdx = -1;
 
     const setActive = (idx: number) => {
@@ -2144,6 +2177,8 @@ const iconPaths: Record<BulletIcon, string[]> = {
         setActive(i);
         if (isDesktop() && rails[i]) {
           rails[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else if (!isDesktop()) {
+          cards[i]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
     });

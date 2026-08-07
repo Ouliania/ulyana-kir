@@ -15,16 +15,24 @@ function escapeHtml(value: string) {
     .replaceAll('"', '&quot;');
 }
 
-// Join with no whitespace — spaces between <span>s were blowing letter gaps apart
-const lettersHtml = [...text]
-  .map((letter) => {
-    const ch = letter === ' ' ? '&nbsp;' : escapeHtml(letter);
-    return `<span class="kinetic-letter" aria-hidden="true">${ch}</span>`;
+// Split by words, wrap each word in .kinetic-word with white-space: nowrap
+// Per-letter spans stay inside → words never break across lines
+const wordsHtml = text
+  .replace(/\s+/g, ' ')
+  .split(' ')
+  .map((word: string) => {
+    const letters = [...word]
+      .map((ch: string) => {
+        const escaped = escapeHtml(ch);
+        return `<span class="kinetic-letter" aria-hidden="true">${escaped}</span>`;
+      })
+      .join('');
+    return `<span class="kinetic-word">${letters}</span>`;
   })
-  .join('');
+  .join(' ');
 ---
 
-<Tag class:list={['kinetic', className]} aria-label={text} set:html={lettersHtml} />
+<Tag class:list={['kinetic', className]} aria-label={text} set:html={wordsHtml} />
 
 <style is:global>
   .kinetic {
@@ -35,10 +43,15 @@ const lettersHtml = [...text]
     flex-wrap: wrap;
     justify-content: center;
     align-items: baseline;
-    gap: 0;
+    gap: 0 0.25em;
     letter-spacing: 0;
     font-weight: 500;
     line-height: 1.15;
+  }
+
+  .kinetic-word {
+    display: inline-flex;
+    white-space: nowrap;
   }
 
   .kinetic-letter {
