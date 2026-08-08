@@ -443,4 +443,28 @@ const methods = [
       padding-inline: 0.75rem;
     }
   }
+
+  /* Mobile: stack form vertically, button full-width */
+  @media (max-width: 720px) {
+    .hero-form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-form-grid .btn {
+      grid-column: 1;
+      grid-row: auto;
+      width: 100%;
+      min-width: 0;
+      justify-content: center;
+      white-space: normal;
+    }
+
+    .hero-input {
+      min-width: 0;
+    }
+
+    .hero-methods {
+      min-width: 0;
+    }
+  }
 </style>
