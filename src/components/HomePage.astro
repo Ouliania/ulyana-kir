@@ -110,8 +110,8 @@ const methods = [
     </section>
 
     <section id="discuss" class="section-block cta-band">
-      <div class="cta-layout" data-animate="reveal">
-        <div class="cta-inner">
+      <div class="cta-layout">
+        <div class="cta-inner" data-animate="stagger">
           <h2 class="type-band">{t(locale, 'ctaTitle')}</h2>
           <p class="type-lead">{t(locale, 'ctaLead')}</p>
           <div class="cta-actions">
@@ -129,9 +129,7 @@ const methods = [
 
   <script is:inline set:html={`window.__TELEGRAM_BOT_TOKEN__ = ${JSON.stringify(botToken || null)};window.__TELEGRAM_CHAT_ID__ = ${JSON.stringify(chatId || null)};`}></script>
   <script>
-    import { initBrandMotion } from '../scripts/motion';
     import { initInterlude } from '../scripts/interlude';
-    import { initMagicSurfaces } from '../scripts/magic-surface';
     import { initWorkFlowBeams } from '../scripts/animated-beam';
     import { initHeroForm } from '../scripts/hero-form';
     import { initLandingAssemble } from '../scripts/landing-assemble';
@@ -139,9 +137,7 @@ const methods = [
     import { initConvAssemble } from '../scripts/conv-assemble';
     import { initStoreAssemble } from '../scripts/store-assemble';
     import { initCtaSiteToy } from '../scripts/cta-site-toy';
-    initBrandMotion();
     initInterlude();
-    initMagicSurfaces();
     initWorkFlowBeams();
     initHeroForm();
     initLandingAssemble();

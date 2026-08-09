@@ -234,6 +234,65 @@
     overflow-x: hidden;
   }
 
+  /* ── Scroll-driven reveal (нативные CSS-анимации, без JS) ── */
+  @supports (animation-timeline: view()) {
+    /* Классы для точечного использования в разметке */
+    .reveal {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 38%;
+    }
+    .reveal-fade {
+      animation: reveal-fade linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 38%;
+    }
+    .reveal-scale {
+      animation: reveal-scale linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 38%;
+    }
+
+    /* Автоприменение к контенту — управляется GSAP (motion.ts),
+       который кроссбраузерно анимирует появившиеся элементы.
+       Классы .reveal/.reveal-fade/.reveal-scale доступны для
+       точечного ручного использования как прогрессивное улучшение. */
+
+    /* Зоны со своими анимациями — не трогаем */
+    main .csk-panel *,
+    main .st-card *,
+    main .st-viz *,
+    main .prose *,
+    main .interlude *,
+    main .flow-nodes *,
+    main .flow-browser *,
+    main .flow-hub * {
+      animation: none !important;
+      animation-timeline: auto !important;
+    }
+
+    /* Мягкая, успокаивающая скорость */
+    @keyframes reveal-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes reveal-fade {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes reveal-scale {
+      from { opacity: 0; transform: scale(0.96); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+  }
+
+  /* Fallback для reduced-motion: все reveal-классы отключаются */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-fade, .reveal-scale {
+      animation: none !important;
+    }
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
     font-weight: 500;

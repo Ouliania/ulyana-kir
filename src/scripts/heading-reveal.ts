@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
  */
 export function initHeadingReveal(root: ParentNode = document): void {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const headings = root.querySelectorAll<HTMLElement>('h1, h2, h3');
+  const headings = root.querySelectorAll<HTMLElement>('h1, h2');
 
   // Recalc ScrollTrigger positions when service tabs switch
   window.addEventListener('st:tabchange', () => {
@@ -23,8 +23,25 @@ export function initHeadingReveal(root: ParentNode = document): void {
   for (const heading of headings) {
     if (heading.dataset.headingReveal === 'done') continue;
 
+    // Headings inside prose or with explicit opt-out → simple fade-up, no per-letter split
+    if (heading.closest('.prose') || heading.closest('[data-heading-skip]')) {
+      heading.dataset.headingReveal = 'done';
+      if (reduce) {
+        gsap.set(heading, { clearProps: 'transform,opacity' });
+        continue;
+      }
+      gsap.from(heading, {
+        opacity: 0,
+        y: 28,
+        duration: 0.75,
+        ease: 'power2.out',
+        scrollTrigger: { trigger: heading, start: 'top 92%', toggleActions: 'play none none none' },
+        clearProps: 'transform,opacity',
+      });
+      continue;
+    }
+
     const tag = heading.tagName.toLowerCase();
-    const isH3 = tag === 'h3';
 
     /* ── KineticText headings (already have .kinetic-letter spans) ── */
     const kineticLetters = heading.querySelectorAll<HTMLElement>('.kinetic-letter');
@@ -43,30 +60,6 @@ export function initHeadingReveal(root: ParentNode = document): void {
         duration: 0.7,
         ease: 'power2.out',
         scrollTrigger: { trigger: heading, start: 'top 85%', end: 'top 40%', scrub: false },
-      });
-      continue;
-    }
-
-    /* ── H3 — whole-block (no letter split) ── */
-    if (isH3) {
-      // Skip only if it has semantic inline formatting (links, emphasis)
-      if (heading.querySelector('a, em, strong, img, svg')) continue;
-      const text = heading.textContent ?? '';
-      if (!text.trim()) continue;
-
-      heading.dataset.headingReveal = 'done';
-      if (reduce) {
-        gsap.set(heading, { clearProps: 'all', opacity: 1 });
-        continue;
-      }
-      gsap.from(heading, {
-        opacity: 0,
-        y: 16,
-        filter: 'blur(8px)',
-        duration: 0.7,
-        ease: 'power2.out',
-        scrollTrigger: { trigger: heading, start: 'top 85%', toggleActions: 'play none none none' },
-        clearProps: 'opacity,transform,filter',
       });
       continue;
     }
