@@ -9,7 +9,7 @@ import KineticText from '../components/KineticText.astro';
 import Interlude from '../components/Interlude.astro';
 import ServiceTabsSection from '../components/ServiceTabsSection.astro';
 import WorkFlow from '../components/WorkFlow.astro';
-import CtaSiteToy from '../components/CtaSiteToy.astro';
+import CtaCharacter from '../components/CtaCharacter.astro';
 import { cases } from '../data/cases';
 import { t, type Locale } from '../i18n/ui';
 
@@ -21,7 +21,6 @@ const locale: Locale = Astro.props.locale ?? 'en';
 const featured = cases.filter((c) => c.featured);
 const caseBase = locale === 'ru' ? '/ru/cases/' : '/cases/';
 const casesIndexHref = caseBase;
-const contactsHref = locale === 'ru' ? '/ru/contacts/' : '/contacts/';
 
 const title =
   locale === 'ru'
@@ -110,16 +109,22 @@ const methods = [
     </section>
 
     <section id="discuss" class="section-block cta-band">
-      <div class="cta-layout">
-        <div class="cta-inner" data-animate="stagger">
-          <h2 class="type-band">{t(locale, 'ctaTitle')}</h2>
-          <p class="type-lead">{t(locale, 'ctaLead')}</p>
-          <div class="cta-actions">
-            <InteractiveHoverButton href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" label={t(locale, 'discuss')} />
-            <a href={contactsHref} class="btn btn-secondary">{t(locale, 'allContacts')}</a>
-          </div>
+      <h2 class="cta-heading type-display" data-heading-skip data-animate="reveal">{t(locale, 'ctaHeading')}</h2>
+      <div class="cta-hero">
+        <!-- Left: doubt button — red side, flat mouth -->
+        <div class="cta-side cta-side--left" data-animate="reveal">
+          <button type="button" class="btn btn-secondary cta-doubt-btn" data-cta-doubt>
+            {t(locale, 'ctaDoubtBtn')}
+          </button>
         </div>
-        <CtaSiteToy locale={locale} />
+
+        <!-- Center: character -->
+        <CtaCharacter />
+
+        <!-- Right: discuss button — green side, big smile -->
+        <div class="cta-side cta-side--right" data-animate="reveal">
+          <InteractiveHoverButton label={t(locale, 'discuss')} />
+        </div>
       </div>
     </section>
   </main>
@@ -136,7 +141,8 @@ const methods = [
     import { initDeepAssemble } from '../scripts/deep-assemble';
     import { initConvAssemble } from '../scripts/conv-assemble';
     import { initStoreAssemble } from '../scripts/store-assemble';
-    import { initCtaSiteToy } from '../scripts/cta-site-toy';
+    import { initCtaDoubt } from '../scripts/cta-doubt';
+    import { initCtaCharacterMood } from '../scripts/cta-character-mood';
     initInterlude();
     initWorkFlowBeams();
     initHeroForm();
@@ -144,7 +150,8 @@ const methods = [
     initDeepAssemble();
     initConvAssemble();
     initStoreAssemble();
-    initCtaSiteToy();
+    initCtaDoubt();
+    initCtaCharacterMood();
   </script>
 </Layout>
 
@@ -381,48 +388,82 @@ const methods = [
   }
 
   .cta-band {
-    background: var(--color-blue-tint);
+    background: transparent;
   }
 
-  .cta-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: clamp(1.5rem, 3vw, 2.75rem);
-    align-items: center;
-  }
-
-  @media (min-width: 900px) {
-    .cta-layout {
-      grid-template-columns: minmax(0, 1fr) minmax(28rem, 34rem);
-      gap: clamp(1.75rem, 3vw, 2.75rem);
-      align-items: center;
-    }
-  }
-
-  .cta-band .type-lead {
-    margin-block: 0.35rem 0;
-    margin-inline: auto;
+  .cta-heading {
     text-align: center;
+    max-width: 800px;
+    margin-inline: auto;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--color-text-secondary);
   }
 
-  .cta-inner {
+  /* CTA hero: character + two sides */
+  .cta-hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    max-width: 1100px;
+    margin-inline: auto;
+  }
+
+  .cta-side {
+    flex: 0 0 auto;
+    max-width: 280px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 0.75rem;
     text-align: center;
-    gap: 0.75rem;
   }
 
-  .cta-inner .type-band {
+  .cta-side-label {
+    font-size: 0.92rem;
+    color: var(--color-text-secondary, #555);
     text-wrap: balance;
+    line-height: 1.45;
   }
 
-  .cta-actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-block-start: 1rem;
+  .cta-doubt-btn {
+    font-size: 0.88rem;
+    opacity: 0.8;
+  }
+
+  .cta-doubt-btn:hover {
+    opacity: 1;
+  }
+
+  .cta-side--right {
+    margin-inline-start: clamp(1rem, 3vw, 2rem);
+  }
+
+  @media (max-width: 699px) {
+    .cta-hero {
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .cta-side {
+      max-width: 100%;
+    }
+
+    .cta-side--right {
+      order: 1;
+      margin-inline-start: 0;
+    }
+
+    .cta-char {
+      order: 2;
+    }
+
+    .cta-side--left {
+      order: 3;
+    }
   }
 
   /* Tighten hero typography for very small screens (320-400px) */

@@ -18,14 +18,14 @@ const {
 } = Astro.props;
 
 const Tag = href ? 'a' : 'button';
+const extraAttrs = href
+  ? { href, target, rel }
+  : { type, 'data-contact-popup': '' };
 ---
 
 <Tag
   class:list={['btn', 'btn-primary', className]}
-  href={href}
-  target={target}
-  rel={rel}
-  type={href ? undefined : type}
+  {...extraAttrs}
 >
   {label}
 </Tag>

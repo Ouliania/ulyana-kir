@@ -17,6 +17,18 @@ const cards = [
 ---
 
 <div class="workflow">
+  <div class="flow-cards">
+    {
+      cards.map((card) => (
+        <article class="flow-card" data-magic>
+          <span class="flow-card-step">{card.step}</span>
+          <h3 class="flow-card-title">{t(locale, card.titleKey)}</h3>
+          <p class="flow-card-body">{t(locale, card.bodyKey)}</p>
+        </article>
+      ))
+    }
+  </div>
+
   <div class="flow" data-flow aria-hidden="true">
     <svg class="flow-svg"></svg>
 
@@ -158,18 +170,6 @@ const cards = [
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="flow-cards">
-    {
-      cards.map((card) => (
-        <article class="flow-card" data-magic>
-          <span class="flow-card-step">{card.step}</span>
-          <h3 class="flow-card-title">{t(locale, card.titleKey)}</h3>
-          <p class="flow-card-body">{t(locale, card.bodyKey)}</p>
-        </article>
-      ))
-    }
   </div>
 </div>
 

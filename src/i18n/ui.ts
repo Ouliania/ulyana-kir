@@ -34,8 +34,10 @@ export const ui = {
     flowCard4Body:
       'I set up analytics, basic SEO tags, a sitemap, and a 404 page. I test loading speed, responsiveness, and element logic to ensure a flawless launch.',
     ctaTitle: 'Have a project in mind?',
+    ctaHeading: 'Have a task or website project — let\'s discuss the best way to make it happen',
     ctaLead: 'Tell me the goal — I’ll say what the site actually needs',
     allContacts: 'All contacts',
+    ctaDoubtBtn: "I'm not ready to start my site yet",
     ctaToyAria: 'Optional site structure puzzle',
     ctaToyHint: 'Meanwhile, try assembling a base site structure yourself',
     ctaToyHero: 'First screen',
@@ -248,8 +250,10 @@ export const ui = {
     flowCard4Body:
       'Настраиваю аналитику, SEO-теги, карту сайта и страницу 404. Провожу тесты скорости загрузки и проверяю логику работы всех форм и элементов перед запуском.',
     ctaTitle: 'Есть проект?',
+    ctaHeading: 'Есть задача или проект по сайту — давайте обсудим как лучше это реализовать',
     ctaLead: 'Расскажите цель — скажу, что сайту реально нужно',
     allContacts: 'Все контакты',
+    ctaDoubtBtn: 'Я ещё не готов заняться сайтом',
     ctaToyAria: 'Необязательная сборка структуры сайта',
     ctaToyHint: 'А пока можете сами собрать базовую структуру сайта',
     ctaToyHero: 'Первый экран',
