@@ -36,6 +36,8 @@
 - [Стоимость редизайна сайта и из чего складывается цена](https://ulyanaweb.ru/blog/stoimost-redizajna-sajta-kak-skladyvaetsya-cena/)
 - [Что такое редизайн сайта и когда он реально нужен бизнесу](https://ulyanaweb.ru/blog/chto-takoe-redizajn-sajta/)
 - [Переделать сайт полностью или оптимизировать существующий?](https://ulyanaweb.ru/blog/peredelat-sajt-polnostyu-ili-optimizirovat/)
+- [Почему 90% сайтов теряют клиентов на первой секунде: 5 смысловых ошибок](https://ulyanaweb.ru/blog/smyclovye-oshibki/)
+- [Что такое GEO (ИИ-оптимизация) и как попасть в ответы Gemini, ChatGPT и Claude](https://ulyanaweb.ru/blog/what-is-geo/)
 
 ## Contacts
 - Telegram: [@UlyanaKir](https://t.me/UlyanaKir)

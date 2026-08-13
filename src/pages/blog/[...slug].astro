@@ -21,13 +21,35 @@ const { Content, headings } = await render(entry);
 // filter headings to H2 depth for a clean table of contents
 const tocHeadings = headings.filter(h => h.depth === 2);
 
+const canonicalPostUrl = Astro.site ? new URL(`/blog/${entry.id}/`, Astro.site).toString() : `https://ulyanaweb.ru/blog/${entry.id}/`;
+const imageUrl = Astro.site ? new URL('/og-image.png', Astro.site).toString() : 'https://ulyanaweb.ru/og-image.png';
+
+// Related posts: find posts sharing tags, or take recent ones
+const allPosts = (await getCollection('blog'))
+  .filter(p => !p.data.draft && p.id !== entry.id);
+
+const relatedPosts = allPosts
+  .map(p => {
+    const sharedTags = p.data.tags.filter(t => entry.data.tags.includes(t)).length;
+    return { post: p, score: sharedTags };
+  })
+  .sort((a, b) => b.score - a.score || b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf())
+  .slice(0, 2)
+  .map(item => item.post);
+
 // Specific JSON-LD Schema for BlogPosting (highly optimized for search/AI crawlers)
 const blogSchema = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": entry.data.title,
   "description": entry.data.description,
+  "image": imageUrl,
   "datePublished": entry.data.pubDate.toISOString(),
+  "dateModified": entry.data.pubDate.toISOString(),
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": canonicalPostUrl
+  },
   "author": {
     "@type": "Person",
     "name": "Ульяна Кирпичникова",
@@ -38,7 +60,7 @@ const blogSchema = {
     "name": "Ульяна Кирпичникова",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://ulyanaweb.ru/favicon.png"
+      "url": "https://ulyanaweb.ru/favicon.ico"
     }
   }
 };
@@ -95,6 +117,20 @@ const blogSchema = {
       <div class="prose">
         <Content />
       </div>
+
+      {relatedPosts.length > 0 && (
+        <section class="related-posts">
+          <h3 class="related-title">Читайте также</h3>
+          <div class="related-grid">
+            {relatedPosts.map(rel => (
+              <a href={`/blog/${rel.id}/`} class="related-card">
+                <span class="related-card-title">{rel.data.title}</span>
+                <p class="related-card-desc">{rel.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       <BlogCTA />
     </article>
@@ -351,5 +387,57 @@ const blogSchema = {
   .prose :global(tr:hover td) {
     color: var(--color-text-primary);
     background-color: var(--color-bg-subtle);
+  }
+
+  /* Related Posts Block */
+  .related-posts {
+    margin-block-start: 4rem;
+    margin-block-end: 3rem;
+    padding-block-start: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .related-title {
+    font-size: var(--fs-h3);
+    color: var(--color-text-primary);
+    margin-block-end: 1.5rem;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem;
+    border-radius: var(--radius-default);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg-subtle);
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+
+  .related-card:hover {
+    border-color: var(--color-text-primary);
+    transform: translateY(-2px);
+  }
+
+  .related-card-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    line-height: 1.35;
+  }
+
+  .related-card-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
   }
 </style>
