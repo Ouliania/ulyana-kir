@@ -16,6 +16,7 @@ const isHome =
 const contactsHref = locale === 'ru' ? '/ru/contacts/' : '/contacts/';
 const codeHref = locale === 'ru' ? '/ru/code/' : '/code/';
 const privacyHref = locale === 'ru' ? '/ru/privacy-policy/' : '/privacy-policy/';
+const blogHref = '/blog/';
 ---
 
 <footer class="site-footer">
@@ -27,6 +28,7 @@ const privacyHref = locale === 'ru' ? '/ru/privacy-policy/' : '/privacy-policy/'
     <nav class="footer-nav" aria-label="Footer">
       <a href={isHome ? '#cases' : `${homePath}#cases`}>{t(locale, 'navCases')}</a>
       <a href={isHome ? '#reviews' : `${homePath}#reviews`}>{t(locale, 'navApproach')}</a>
+      <a href={blogHref}>{t(locale, 'blog')}</a>
       <a href={contactsHref}>{t(locale, 'navContacts')}</a>
       <a href={codeHref}>{t(locale, 'codeSites')}</a>
       <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer">Telegram</a>
