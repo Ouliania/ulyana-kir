@@ -3,6 +3,7 @@ title: "Что такое GEO (ИИ-оптимизация) и как попас
 pubDate: 2026-08-13
 description: "Подробный разбор Generative Engine Optimization (GEO): чем оптимизация под нейросети отличается от классического SEO и как подготовить ваш сайт в 2026 году."
 tags: ["Оптимизация", "Маркетинг", "Аналитика"]
+image: "/images/seo_vs_geo.png"
 draft: false
 ---
 
@@ -18,12 +19,46 @@ draft: false
 
 Классическое SEO нацелено на ранжирование страницы по ключевым словам в списке выдачи. GEO нацелено на то, чтобы **ваш сайт попал в нейросетевой ответ как надежный источник или прямое решение задачи пользователя**.
 
-| Параметр | Классическое SEO | ИИ-оптимизация (GEO) |
-|---|---|---|
-| **Цель** | Попасть в топ-10 синих ссылок | Стать источником ответа в саммари нейросети |
-| **Формат контента** | Тексты под ключевые слова и LSI | Структурированные факты, таблицы, списки, прямой ответ |
-| **Оценка сайта** | Ссылки, ключи, поведенческие факторы | E-E-A-T, авторитетность, чистота кода, цитируемость |
-| **Стек сайта** | Любой (даже тяжелый CMS) | Быстрый, чистый HTML/Markdown без мусорного JS |
+<figure style="margin-block: 2rem; text-align: center;">
+  <img src="/images/seo_vs_geo.png" alt="Инфографика сравнения Классического SEO и ИИ-оптимизации GEO" style="max-width: 100%; height: auto; border-radius: var(--radius-default); border: 1px solid var(--color-border);" loading="lazy" />
+  <figcaption style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: 0.75rem;">Инфографика: Ключевые различия между классическим поисковым продвижением и GEO-оптимизацией</figcaption>
+</figure>
+
+### Сравнительная таблица: Классическое SEO vs GEO
+
+<div class="table-container" style="overflow-x: auto; margin-block: 1.5rem;">
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr style="border-bottom: 2px solid var(--color-text-primary);">
+        <th style="padding: 0.75rem 1rem; text-align: left; width: 24%;">Параметр</th>
+        <th style="padding: 0.75rem 1rem; text-align: left; width: 38%; background: var(--color-bg-subtle);">Классическое SEO</th>
+        <th style="padding: 0.75rem 1rem; text-align: left; width: 38%; background: var(--color-blue-tint, #E6F4FE);">ИИ-оптимизация (GEO)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom: 1px solid var(--color-border);">
+        <td style="padding: 1rem; font-weight: 600;">Цель</td>
+        <td style="padding: 1rem; color: var(--color-text-secondary);">Попасть в топ-10 синих ссылок</td>
+        <td style="padding: 1rem;">Стать источником ответа в <strong>саммари нейросети</strong></td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--color-border);">
+        <td style="padding: 1rem; font-weight: 600;">Формат контента</td>
+        <td style="padding: 1rem; color: var(--color-text-secondary);">Тексты под ключевые слова и LSI</td>
+        <td style="padding: 1rem;"><strong>Структурированные факты</strong>, таблицы, списки, прямой ответ</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--color-border);">
+        <td style="padding: 1rem; font-weight: 600;">Оценка сайта</td>
+        <td style="padding: 1rem; color: var(--color-text-secondary);">Ссылки, ключи, поведенческие факторы</td>
+        <td style="padding: 1rem;"><strong>E-E-A-T</strong>, авторитетность, чистота кода, цитируемость</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--color-border);">
+        <td style="padding: 1rem; font-weight: 600;">Стек сайта</td>
+        <td style="padding: 1rem; color: var(--color-text-secondary);">Любой (даже тяжелый CMS)</td>
+        <td style="padding: 1rem;">Быстрый, чистый HTML/Markdown <strong>без мусорного JS</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 ---
 
