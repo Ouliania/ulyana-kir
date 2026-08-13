@@ -15,11 +15,21 @@ interface Props {
 const locale: Locale = Astro.props.locale ?? 'en';
 const caseBase = locale === 'ru' ? '/ru/cases/' : '/cases/';
 const title =
-  locale === 'ru' ? 'Кейсы — Ulyana Kirp' : 'Cases — Ulyana Kirp';
-const description = t(locale, 'casesArchiveLead');
+  locale === 'ru'
+    ? 'Кейсы по веб-дизайну и разработке — Ульяна Кирпичникова'
+    : 'Web Design & Development Cases — Ulyana Kirpichnikova';
+const description =
+  locale === 'ru'
+    ? 'Портфолио реальных проектов: лендинги, сайты под заявки, Telegram Mini App. Стратегия, тексты, дизайн, код — с реальными результатами.'
+    : 'Portfolio of real projects: landing pages, conversion-driven sites, Telegram Mini Apps. Strategy, copy, design, code — with real results.';
 ---
 
-<Layout title={title} description={description} lang={locale}>
+<Layout
+  title={title}
+  description={description}
+  lang={locale}
+  hreflangAlternates={{ en: 'https://ulyanaweb.ru/cases/', ru: 'https://ulyanaweb.ru/ru/cases/' }}
+>
   <Header locale={locale} />
 
   <PageShell>

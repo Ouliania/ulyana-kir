@@ -1,3 +1,285 @@
 ---
-return Astro.redirect('/contacts/');
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PageShell from '../../components/PageShell.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { t } from '../../i18n/ui';
+
+// RU version of contacts page
+const locale = 'ru';
+
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Контакты — Ульяна Кирпичникова",
+  "description": "Свяжитесь для обсуждения проекта. Telegram, WhatsApp, email — отвечаю в течение дня.",
+  "url": "https://ulyanaweb.ru/ru/contacts",
+  "mainEntity": {
+    "@type": "ProfessionalService",
+    "name": "Ульяна Кирпичникова",
+    "email": "ouliana14@icloud.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "RU"
+    }
+  }
+};
 ---
+
+<Layout 
+  title="Контакты — Ульяна Кирпичникова"
+  description="Свяжитесь для обсуждения проекта по сайту, аудиту или дизайну. Telegram, WhatsApp, email — отвечаю в течение дня."
+  schema={contactSchema}
+  lang={locale}
+>
+  <Header locale={locale} />
+
+  <PageShell>
+  <main class="contacts-main section-padding">
+    <Breadcrumbs locale={locale} items={[{ label: t(locale, 'navContacts') }]} />
+    <div class="container">
+      <div class="contacts-header">
+        <h1 class="contacts-title">Напишите мне</h1>
+        <p class="contacts-subtitle">Отвечаю в течение дня. Обсудим ваш проект, ответим на вопросы и подберём оптимальное решение.</p>
+      </div>
+
+      <div class="grid-2 contacts-grid">
+        {/* Left Column: Real Contact Links */}
+        <div class="contacts-info">
+          <div class="info-block">
+            <h3 class="info-label">Связаться в мессенджерах</h3>
+
+            <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" class="contact-link telegram">
+              <div>
+                <span class="link-title">Telegram личный</span>
+                <span class="link-val">@UlyanaKir</span>
+                <span class="link-desc">Быстрые ответы в течение дня</span>
+              </div>
+            </a>
+
+            <a href="https://t.me/UlyanaKirp" target="_blank" rel="noopener noreferrer" class="contact-link telegram-work">
+              <div>
+                <span class="link-title">Telegram рабочий</span>
+                <span class="link-val">@UlyanaKirp</span>
+                <span class="link-desc">Для рабочих вопросов и проектов</span>
+              </div>
+            </a>
+
+            <a href="https://wa.me/UlyanaKirp" target="_blank" rel="noopener noreferrer" class="contact-link whatsapp">
+              <div>
+                <span class="link-title">WhatsApp</span>
+                <span class="link-val">@UlyanaKirp</span>
+                <span class="link-desc">Для обсуждения проектов</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="info-block">
+            <h3 class="info-label">Почта</h3>
+            <a href="mailto:ouliana14@icloud.com" class="contact-link email">
+              <div>
+                <span class="link-title">Email</span>
+                <span class="link-val">ouliana14@icloud.com</span>
+                <span class="link-desc">Старый добрый способ</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        {/* Right Column: Schedule */}
+        <div class="contacts-form-container info-block">
+          <h3 class="info-label">График и ответы</h3>
+          <div class="glass-card info-card">
+            <div class="info-split-grid">
+              <div class="info-split-item">
+                <h3 class="info-card-title flex-align">
+                  Время работы
+                </h3>
+                <div class="hours-list">
+                  <div class="hours-row">
+                    <span>Пн — Пт</span>
+                    <strong>10:00 — 19:00</strong>
+                  </div>
+                  <div class="hours-row output-disabled">
+                    <span>Сб — Вс</span>
+                    <span class="text-muted">Выходной</span>
+                  </div>
+                </div>
+                <p class="info-small">Но на сообщения отвечаю в течение дня — иногда и вечером.</p>
+              </div>
+
+              <div class="info-split-item">
+                <h3 class="info-card-title flex-align">
+                  Быстрый ответ
+                </h3>
+                <p class="info-card-desc">Обычно отвечаю в течение 2-4 часов. Если не ответила сразу — значит занята проектами, но точно увижу ваше сообщение.</p>
+                <div class="status-online">
+                  <span>Сейчас на связи</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+  </PageShell>
+</Layout>
+
+<style>
+  .contacts-main {
+    padding-block-start: clamp(2rem, 4vw, 3rem);
+    min-block-size: 80vh;
+  }
+
+  .contacts-header {
+    max-inline-size: 600px;
+    margin-block-end: 4rem;
+  }
+
+  .contacts-title {
+    font-size: var(--fs-h1);
+    margin-block-end: 1rem;
+    color: var(--color-text-primary);
+  }
+
+  .contacts-subtitle {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .contacts-grid {
+    gap: 4rem;
+    align-items: flex-start;
+  }
+
+  .contacts-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .info-label {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--color-text-muted);
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    border-radius: var(--radius-default);
+    border: 1px solid var(--color-border);
+    transition: border-color 0.15s ease, background-color 0.15s;
+  }
+
+  .contact-link:hover {
+    border-color: var(--color-text-primary);
+    background-color: var(--color-bg-subtle);
+  }
+
+  .link-title {
+    display: block;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .link-val {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin-block-start: 0.15rem;
+  }
+
+  .link-desc {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-block-start: 0.1rem;
+  }
+
+  .info-card {
+    background: transparent;
+    border-color: var(--color-border);
+    border-radius: var(--radius-default) !important;
+    box-shadow: none !important;
+  }
+
+  .info-split-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .info-card-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-block-end: 1rem;
+  }
+
+  .flex-align {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .hours-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-block-end: 1rem;
+  }
+
+  .hours-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+  }
+
+  .hours-row.output-disabled {
+    color: var(--color-text-muted);
+  }
+
+  .info-small {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+  }
+
+  .info-card-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-block-end: 1.5rem;
+  }
+
+  .status-online {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+</style>

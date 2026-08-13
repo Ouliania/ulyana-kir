@@ -24,9 +24,12 @@ const casesIndexHref = caseBase;
 
 const title =
   locale === 'ru'
-    ? 'Ulyana Kirp — Сайты для бизнеса'
-    : 'Ulyana Kirp — Websites for business goals';
-const description = t(locale, 'heroSupport');
+    ? 'Ульяна Кирпичникова — Разработка сайтов для бизнеса'
+    : 'Ulyana Kirpichnikova — Web Designer & Website Developer';
+const description =
+  locale === 'ru'
+    ? 'Разрабатываю сайты, которые приносят заявки — понятная структура, убеждающие тексты, быстрый код. Работаю удалённо с любым бизнесом.'
+    : 'I design and build websites that generate leads — clear structure, persuasive copy, fast code. Based in Southeast Asia, working globally.';
 
 const botToken = import.meta.env.PUBLIC_TELEGRAM_BOT_TOKEN || '';
 const chatId = import.meta.env.PUBLIC_TELEGRAM_CHAT_ID || '';
@@ -40,7 +43,12 @@ const methods = [
 ];
 ---
 
-<Layout title={title} description={description} lang={locale}>
+<Layout
+  title={title}
+  description={description}
+  lang={locale}
+  hreflangAlternates={{ en: 'https://ulyanaweb.ru/', ru: 'https://ulyanaweb.ru/ru/' }}
+>
   <Header locale={locale} />
 
   <PageShell>

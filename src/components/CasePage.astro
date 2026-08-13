@@ -19,11 +19,16 @@ const copy = caseLocalized(item, locale);
 const homeCases = locale === 'ru' ? '/ru/#cases' : '/#cases';
 const casesIndex = locale === 'ru' ? '/ru/cases/' : '/cases/';
 const serviceTitle = copy.tag;
+const projectLabel = item.projectName;
+// Description: first solution item (positive frame); fallback to problem
+const metaDesc = Array.isArray(copy.solution) && copy.solution.length > 0
+  ? copy.solution[0]
+  : copy.problem;
 ---
 
 <Layout
-  title={`${serviceTitle} — Case | Ulyana Kirp`}
-  description={copy.problem}
+  title={`${projectLabel}: ${serviceTitle} — Ulyana Kirpichnikova`}
+  description={metaDesc}
   lang={locale}
 >
   <Header locale={locale} />

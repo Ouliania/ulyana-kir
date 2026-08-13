@@ -155,6 +155,16 @@ export const ui = {
     svcShopInc3: 'Mobile-first UX and performance optimization',
     svcShopInc4: 'Admin panel: orders, inventory, customers',
     svcShopCTA: 'Ready to launch your store?',
+    svcFastMeta:
+      'Get a focused, fast-loading landing page built in 1 day on clean code — no page builders, no bloat. Ready to run ads the same week.',
+    svcDeepMeta:
+      'A conversion-driven website built on strategy and positioning research. Clear customer journey, persuasive copy, and clean code.',
+    svcConvMeta:
+      'I find where your site loses customers and fix it — UX audit, copy edits, layout improvements, measurable conversion uplift.',
+    svcAuditMeta:
+      'Full-picture audit: site usability, lead handling, communication gaps, follow-up missing links. I look beyond the website itself.',
+    svcShopMeta:
+      'I build online stores with clean product layouts, working cart, and a checkout flow that drives sales — on code or a modern stack.',
     codeTypesTitle: 'Types of code sites',
     codeLandingTypeLabel: 'Landing with strategy',
     codeLandingTypeTimeline: '3–7 days',
@@ -371,6 +381,16 @@ export const ui = {
     svcShopInc3: 'Mobile-first UX и оптимизация производительности',
     svcShopInc4: 'Админ-панель: заказы, остатки, клиенты',
     svcShopCTA: 'Готовы запустить магазин?',
+    svcFastMeta:
+      'Лендинг за 1 день на чистом коде без конструкторов. Быстрый, адаптивный, готовый к рекламе — с нуля до публикации за один рабочий день.',
+    svcDeepMeta:
+      'Сайт с глубокой проработкой смыслов, позиционирования и пути клиента. Ведёт от первого экрана до заявки — без лишних слов.',
+    svcConvMeta:
+      'Нахожу, где сайт теряет клиентов, и исправляю — аудит UX, правки текстов и структуры, измеримый рост конверсии.',
+    svcAuditMeta:
+      'Комплексный аудит: сайт, обработка заявок, коммуникация, провалы в воронке. Смотрю на всю систему, не только на сайт.',
+    svcShopMeta:
+      'Разрабатываю интернет-магазины с понятными карточками товаров, корзиной и оформлением заказа, которые продают.',
     codeTypesTitle: 'Типы сайтов на коде',
     codeLandingTypeLabel: 'Лендинг с проработкой',
     codeLandingTypeTimeline: '3–7 дней',

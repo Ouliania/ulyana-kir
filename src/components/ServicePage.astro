@@ -14,14 +14,19 @@ interface Props {
   locale: Locale;
   titleKey: string;
   subKey: string;
+  metaKey?: string;
   forWhom: string[];
   includes: string[];
   ctaKey: string;
 }
 
-const { locale, titleKey, subKey, forWhom, includes, ctaKey } = Astro.props;
-const title = t(locale, titleKey as any);
-const description = t(locale, subKey as any);
+const { locale, titleKey, subKey, metaKey, forWhom, includes, ctaKey } = Astro.props;
+const pageTitle = t(locale, titleKey as any);
+// SEO description: dedicated metaKey if provided, else sub fallback
+const description = metaKey ? t(locale, metaKey as any) : t(locale, subKey as any);
+// Title with brand for search results
+const brandSuffix = locale === 'ru' ? '— Ульяна Кирпичникова' : '— Ulyana Kirpichnikova';
+const title = `${pageTitle} ${brandSuffix}`;
 ---
 
 <Layout title={title} description={description} lang={locale}>
@@ -33,7 +38,7 @@ const description = t(locale, subKey as any);
       locale={locale}
       items={[
         { label: t(locale, 'services'), href: locale === 'ru' ? '/ru/#services' : '/#services' },
-        { label: title },
+        { label: pageTitle },
       ]}
     />
     <section class="section-padding svc-hero">

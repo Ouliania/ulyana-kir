@@ -6,16 +6,19 @@ import PageShell from '../components/PageShell.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { t } from '../i18n/ui';
 
+// EN version of contacts page
+const locale = 'en';
+
 const contactSchema = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
-  "name": "Контакты — UlyanaWeb",
-  "description": "Свяжитесь со мной для обсуждения текстов для сайта, аудита или разработки. Telegram, MAX, email — отвечаю в течение дня.",
+  "name": "Contact Ulyana Kirpichnikova",
+  "description": "Get in touch to discuss your website, audit, or design project. Telegram, WhatsApp, email — I reply within the day.",
   "url": "https://ulyanaweb.ru/contacts",
   "mainEntity": {
     "@type": "ProfessionalService",
-    "name": "Ульяна Кирпичникова",
-    "email": "hello@ulyanaweb.ru",
+    "name": "Ulyana Kirpichnikova",
+    "email": "ouliana14@icloud.com",
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "RU"
@@ -25,101 +28,94 @@ const contactSchema = {
 ---
 
 <Layout 
-  title="Контакты UlyanaWeb — напишите мне" 
-  description="Свяжитесь со мной для обсуждения текстов для сайта, аудита или разработки. Telegram, MAX, email — отвечаю в течение дня."
+  title="Contact Ulyana Kirpichnikova — Let's Discuss Your Project"
+  description="Get in touch to discuss your website, audit, or design project. Telegram, WhatsApp, email — I reply within the day."
   schema={contactSchema}
+  lang={locale}
 >
-  <Header />
+  <Header locale={locale} />
 
   <PageShell>
   <main class="contacts-main section-padding">
-    <Breadcrumbs locale="ru" items={[{ label: t('ru', 'navContacts') }]} />
+    <Breadcrumbs locale={locale} items={[{ label: t(locale, 'navContacts') }]} />
     <div class="container">
       <div class="contacts-header">
-        <h1 class="contacts-title">Напишите мне</h1>
-        <p class="contacts-subtitle">Отвечаю в течение дня. Обсудим ваш проект, ответим на вопросы и подберём оптимальное решение.</p>
+        <h1 class="contacts-title">Get in touch</h1>
+        <p class="contacts-subtitle">I reply within the day. Let's discuss your project, answer your questions, and find the best solution together.</p>
       </div>
 
       <div class="grid-2 contacts-grid">
         {/* Left Column: Real Contact Links */}
         <div class="contacts-info">
           <div class="info-block">
-            <h3 class="info-label">Связаться в мессенджерах</h3>
-            
-            <a href="https://t.me/ulyana_audit_bot?start=contacts" target="_blank" rel="noopener noreferrer" class="contact-link telegram-bot">
-              <div>
-                <span class="link-title">Бриф-бот в Telegram</span>
-                <span class="link-val">@ulyana_audit_bot</span>
-                <span class="link-desc">Пройти быстрый опрос для аудита сайта (2 минуты)</span>
-              </div>
-            </a>
+            <h3 class="info-label">Messengers</h3>
 
             <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" class="contact-link telegram">
               <div>
-                <span class="link-title">Telegram личный</span>
+                <span class="link-title">Telegram</span>
                 <span class="link-val">@UlyanaKir</span>
-                <span class="link-desc">Быстрые ответы в течение дня</span>
+                <span class="link-desc">Quick replies throughout the day</span>
               </div>
             </a>
 
-            <a href="https://t.me/UlyanaKirp" target="_blank" rel="noopener noreferrer" class="contact-link telegram-work">
+            <a href="https://wa.me/UlyanaKirp" target="_blank" rel="noopener noreferrer" class="contact-link whatsapp">
               <div>
-                <span class="link-title">Telegram рабочий</span>
+                <span class="link-title">WhatsApp</span>
                 <span class="link-val">@UlyanaKirp</span>
-                <span class="link-desc">Для рабочих вопросов и проектов</span>
+                <span class="link-desc">For project discussions</span>
               </div>
             </a>
-            
-            <a href="https://max.ru/u/f9LHodD0cOLCXFM9Kzh5qOUKG0jKRddL_nyz-hvcqunCjSOxGQnZLpE72cg" target="_blank" rel="noopener noreferrer" class="contact-link max-messenger">
+
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" class="contact-link facebook">
               <div>
-                <span class="link-title">MAX Мессенджер</span>
-                <span class="link-val">Открыть чат</span>
-                <span class="link-desc">Если что-то пошло не так</span>
+                <span class="link-title">Facebook</span>
+                <span class="link-val">Open profile</span>
+                <span class="link-desc">If something didn't work above</span>
               </div>
             </a>
           </div>
 
           <div class="info-block">
-            <h3 class="info-label">Почта</h3>
-            <a href="mailto:hello@ulyanaweb.ru" class="contact-link email">
+            <h3 class="info-label">Email</h3>
+            <a href="mailto:ouliana14@icloud.com" class="contact-link email">
               <div>
                 <span class="link-title">Email</span>
-                <span class="link-val">hello@ulyanaweb.ru</span>
-                <span class="link-desc">Старый добрый способ</span>
+                <span class="link-val">ouliana14@icloud.com</span>
+                <span class="link-desc">The classic way</span>
               </div>
             </a>
           </div>
         </div>
 
-        {/* Right Column: Info details and brief form */}
+        {/* Right Column: Schedule */}
         <div class="contacts-form-container info-block">
-          <h3 class="info-label">График и ответы</h3>
+          <h3 class="info-label">Schedule & response time</h3>
           <div class="glass-card info-card">
             <div class="info-split-grid">
               <div class="info-split-item">
                 <h3 class="info-card-title flex-align">
-                  Время работы
+                  Working hours
                 </h3>
                 <div class="hours-list">
                   <div class="hours-row">
-                    <span>Пн — Пт</span>
+                    <span>Mon — Fri</span>
                     <strong>10:00 — 19:00</strong>
                   </div>
                   <div class="hours-row output-disabled">
-                    <span>Сб — Вс</span>
-                    <span class="text-muted">Выходной</span>
+                    <span>Sat — Sun</span>
+                    <span class="text-muted">Day off</span>
                   </div>
                 </div>
-                <p class="info-small">Но на сообщения отвечаю в течение дня — иногда и вечером.</p>
+                <p class="info-small">But I do reply to messages throughout the day — sometimes evenings too.</p>
               </div>
 
               <div class="info-split-item">
                 <h3 class="info-card-title flex-align">
-                  Быстрый ответ
+                  Response time
                 </h3>
-                <p class="info-card-desc">Обычно отвечаю в течение 2-4 часов. Если не ответила сразу — значит занята проектами, но точно увижу ваше сообщение.</p>
+                <p class="info-card-desc">Usually within 2–4 hours. If I don't reply immediately — I'm working on a project, but I will see your message.</p>
                 <div class="status-online">
-                  <span>Сейчас на связи</span>
+                  <span>Currently available</span>
                 </div>
               </div>
             </div>
@@ -194,17 +190,6 @@ const contactSchema = {
   .contact-link:hover {
     border-color: var(--color-text-primary);
     background-color: var(--color-bg-subtle);
-  }
-
-  .contact-link.telegram-bot {
-    border-color: var(--color-border);
-    background-color: transparent;
-  }
-
-  .contact-link.telegram-bot:hover {
-    background-color: var(--color-accent);
-    color: #1a1a1a;
-    border-color: var(--color-accent);
   }
 
   .link-icon {
@@ -320,27 +305,3 @@ const contactSchema = {
     50% { opacity: 0.4; }
   }
 </style>
-
-<script>
-  const handleBriefForm = () => {
-    const form = document.getElementById('briefForm') as HTMLFormElement;
-    const status = document.getElementById('briefFormStatus');
-    
-    if (form && status) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        status.textContent = "Отправка...";
-        status.className = "form-status";
-        
-        setTimeout(() => {
-          status.textContent = "Спасибо! Ваша заявка успешно отправлена. Я свяжусь с вами в ближайшее время.";
-          status.className = "form-status success";
-          form.reset();
-        }, 1200);
-      });
-    }
-  };
-
-  document.addEventListener('DOMContentLoaded', handleBriefForm);
-</script>

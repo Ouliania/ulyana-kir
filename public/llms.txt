@@ -1,17 +1,61 @@
+# Ulyana Kirpichnikova — Website Designer & Developer
+
+> Ulyana Kirpichnikova (ulyanaweb.ru) is a web designer and developer specializing in conversion-focused websites, UX strategy, and copywriting for business owners and founders.
+
+## Core Services
+- **Conversion-driven websites**: Strategy, positioning research, persuasive copy, and clean code — built to generate leads.
+- **Landing pages in 1 day**: Focused landing page on clean code (Astro/HTML), ready to run ads the same week.
+- **Conversion boost for existing sites**: UX audit, copy and structure improvements — measurable uplift without a full redesign.
+- **Online stores**: Custom e-commerce with product catalog, cart, checkout, and admin panel.
+- **System audit**: Full-funnel review — site, lead handling, communication gaps, follow-up failures.
+
+## Portfolio (Selected Cases)
+- [Техэксперт (TechExpert)](https://ulyanaweb.ru/cases/techexpert) — B2B website for IS distributor: UX strategy, copywriting, Tilda + custom code.
+- [Progolos · Vladivostok](https://ulyanaweb.ru/cases/progolos) — Vocal studio: conversion grew 4×, CPA dropped 68%.
+- [Grom.bike](https://ulyanaweb.ru/cases/grom-bike) — Motorcycle brand: full redesign — UX, copy, design (Yandex Kit).
+- [Creator](https://ulyanaweb.ru/cases/creator) — Custom web app on React + Node.js: UX strategy, copywriting.
+- [IntervalLingo](https://ulyanaweb.ru/cases/interval-lingo) — Telegram Mini App: product design, spaced repetition language learning.
+
+## Site Map for AI
+- [Home (EN)](https://ulyanaweb.ru/) — Value proposition, services, case studies, approach, CTA.
+- [Home (RU)](https://ulyanaweb.ru/ru/) — Russian-language version of the main page.
+- [Cases (EN)](https://ulyanaweb.ru/cases/) — Full portfolio.
+- [Cases (RU)](https://ulyanaweb.ru/ru/cases/) — Portfolio in Russian.
+- [Blog](https://ulyanaweb.ru/blog/) — Articles on web design, UX, conversions, copywriting, and AI search optimization.
+- [Site in 1 Day](https://ulyanaweb.ru/services/fast-landing/) — Fast landing page service.
+- [Conversion-driven site](https://ulyanaweb.ru/services/deep-site/) — Full strategy + design + code service.
+- [Conversion boost](https://ulyanaweb.ru/services/conversion/) — Existing site optimization.
+- [Online store](https://ulyanaweb.ru/services/ecommerce/) — E-commerce development.
+- [System audit](https://ulyanaweb.ru/services/system-audit/) — Full funnel audit service.
+- [Contacts (EN)](https://ulyanaweb.ru/contacts/) — How to reach out.
+- [Contacts (RU)](https://ulyanaweb.ru/ru/contacts/) — Контакты.
+
+## Blog Articles (Published)
+- [Боли клиентов на сайте — когда это работает, а когда отпугивает](https://ulyanaweb.ru/blog/boli-na-lendinge/)
+- [Красивый сайт, который не продает: разбор сайта недвижимости в Таиланде](https://ulyanaweb.ru/blog/razbor-sayt-nedvizhimost-tailand/)
+- [Стоимость редизайна сайта и из чего складывается цена](https://ulyanaweb.ru/blog/stoimost-redizajna-sajta-kak-skladyvaetsya-cena/)
+- [Что такое редизайн сайта и когда он реально нужен бизнесу](https://ulyanaweb.ru/blog/chto-takoe-redizajn-sajta/)
+- [Переделать сайт полностью или оптимизировать существующий?](https://ulyanaweb.ru/blog/peredelat-sajt-polnostyu-ili-optimizirovat/)
+
+## Contacts
+- Telegram: [@UlyanaKir](https://t.me/UlyanaKir)
+- WhatsApp: @UlyanaKirp
+- Email: ouliana14@icloud.com
+
+---
+
 # Ульяна Кирпичникова — Разработка сайтов для бизнеса
 
-> Ульяна Кирпичникова (ulyanaweb.ru) — эксперт по разработке и пересборке продающих сайтов, смысловому аудиту структуры, копирайтингу и запуску веб-проектов под ключ.
+> Ульяна Кирпичникова (ulyanaweb.ru) — веб-дизайнер и разработчик, специализируется на конверсионных сайтах, UX-стратегии и копирайтинге для владельцев бизнеса.
 
 ## Основная специализация
-- **Увеличение заявок с сайта**: Выявление смысловых и логических ошибок конверсии, оптимизация пути пользователя.
-- **Подготовка посадочных страниц к рекламе**: Создание конвертящих лендингов под Яндекс Директ и таргетинг.
-- **Смысловой копирайтинг и структура**: Проектирование логики продаж, написание текстов, разработка интерактивных макетов (от 80 000 ₽).
-- **Полная разработка под ключ (Astro/HTML)**: Весь цикл от интервью до адаптивного дизайна, верстки и запуска (от 150 000 ₽).
-
-## Карта сайта для ИИ
-- [Главная страница](https://ulyanaweb.ru/) — Ценностное предложение, услуги, интерактивные Apollo-style табы, манифест доверия и цены.
-- [Блог](https://ulyanaweb.ru/blog) — Статьи о маркетинге, UX/UI дизайне, конверсиях, веб-аналитике и ИИ-оптимизации.
+- **Конверсионные сайты**: Стратегия, исследование позиционирования, убеждающие тексты и чистый код.
+- **Лендинг за 1 день**: Сфокусированный лендинг на чистом коде, готов к рекламе с первого дня.
+- **Увеличение конверсии**: Аудит UX, правки текстов и структуры — измеримый рост без полного редизайна.
+- **Интернет-магазины**: Кастомный e-commerce с каталогом, корзиной, оформлением заказа и админкой.
+- **Системный аудит**: Анализ всей воронки — сайт, обработка заявок, коммуникация, повторные касания.
 
 ## Контакты
-- Telegram: [https://t.me/ulyanaweb](https://t.me/ulyanaweb)
-- Email: kirpichnikova.uliana@gmail.com
+- Telegram: [@UlyanaKir](https://t.me/UlyanaKir)
+- WhatsApp: @UlyanaKirp
+- Email: ouliana14@icloud.com
