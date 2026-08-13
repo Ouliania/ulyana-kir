@@ -100,70 +100,22 @@ const cards = [
             </div>
             <div class="browser-url-stack" aria-hidden="true">
               <span class="browser-url">your-business.com</span>
-              <span class="browser-url">studio.site</span>
-              <span class="browser-url">clinic.online</span>
-              <span class="browser-url">brand.store</span>
             </div>
           </div>
           <div class="browser-viewport">
-            <div class="site-slide site-slide--blue">
-              <div class="site-scroll">
-                <div class="s-bar"></div>
-                <div class="s-hero"></div>
-                <div class="s-line"></div>
-                <div class="s-line s-line--short"></div>
-                <div class="s-btn"></div>
-                <div class="s-row"><i></i><i></i></div>
-                <div class="s-band"></div>
-                <div class="s-row"><i></i><i></i><i></i></div>
-                <div class="s-hero s-hero--soft"></div>
-                <div class="s-line"></div>
-                <div class="s-row"><i></i><i></i></div>
-              </div>
-            </div>
-            <div class="site-slide site-slide--violet">
-              <div class="site-scroll">
-                <div class="s-bar"></div>
-                <div class="s-hero"></div>
-                <div class="s-line"></div>
-                <div class="s-line s-line--short"></div>
-                <div class="s-btn"></div>
-                <div class="s-row"><i></i><i></i></div>
-                <div class="s-band"></div>
-                <div class="s-row"><i></i><i></i><i></i></div>
-                <div class="s-hero s-hero--soft"></div>
-                <div class="s-line"></div>
-                <div class="s-row"><i></i><i></i></div>
-              </div>
-            </div>
-            <div class="site-slide site-slide--lime">
-              <div class="site-scroll">
-                <div class="s-bar"></div>
-                <div class="s-hero"></div>
-                <div class="s-line"></div>
-                <div class="s-line s-line--short"></div>
-                <div class="s-btn"></div>
-                <div class="s-row"><i></i><i></i></div>
-                <div class="s-band"></div>
-                <div class="s-row"><i></i><i></i><i></i></div>
-                <div class="s-hero s-hero--soft"></div>
-                <div class="s-line"></div>
-                <div class="s-row"><i></i><i></i></div>
-              </div>
-            </div>
-            <div class="site-slide site-slide--yellow">
-              <div class="site-scroll">
-                <div class="s-bar"></div>
-                <div class="s-hero"></div>
-                <div class="s-line"></div>
-                <div class="s-line s-line--short"></div>
-                <div class="s-btn"></div>
-                <div class="s-row"><i></i><i></i></div>
-                <div class="s-band"></div>
-                <div class="s-row"><i></i><i></i><i></i></div>
-                <div class="s-hero s-hero--soft"></div>
-                <div class="s-line"></div>
-                <div class="s-row"><i></i><i></i></div>
+            <div class="wf-scene" data-workflow-assemble aria-hidden="true">
+              <div class="wf-fly wf-fly--hero" data-wf-fly="hero"></div>
+              <div class="wf-fly wf-fly--lines" data-wf-fly="lines"><span></span><span></span></div>
+              <div class="wf-fly wf-fly--cta" data-wf-fly="cta"></div>
+              <div class="wf-fly wf-fly--mid" data-wf-fly="mid"><span></span><span></span><span></span></div>
+              <div class="wf-fly wf-fly--foot" data-wf-fly="foot"><span></span><span></span></div>
+
+              <div class="wf-body">
+                <div class="wf-slot wf-slot--hero" data-wf-slot="hero"></div>
+                <div class="wf-slot wf-slot--lines" data-wf-slot="lines"><span></span><span></span></div>
+                <div class="wf-slot wf-slot--cta" data-wf-slot="cta"></div>
+                <div class="wf-slot wf-slot--mid" data-wf-slot="mid"><span></span><span></span><span></span></div>
+                <div class="wf-slot wf-slot--foot" data-wf-slot="foot"><span></span><span></span></div>
               </div>
             </div>
           </div>
@@ -262,12 +214,8 @@ const cards = [
     pointer-events: none;
   }
 
-  /* —— Mac browser (brand tokens only) —— */
+  /* —— Mac browser —— */
   .flow-browser {
-    --site-ink: color-mix(in srgb, var(--color-blue) 28%, white);
-    --site-soft: var(--color-blue-tint);
-    --site-accent: var(--color-blue);
-    --site-page: var(--color-surface);
     width: 100%;
     max-width: 360px;
     border-radius: 12px;
@@ -317,148 +265,206 @@ const cards = [
     border: 1px solid var(--color-border);
     border-radius: 5px;
     letter-spacing: 0.01em;
-    opacity: 0;
-    animation: url-cycle 16s steps(1, end) infinite;
-  }
-
-  .browser-url:nth-child(1) { animation-delay: 0s; }
-  .browser-url:nth-child(2) { animation-delay: -4s; }
-  .browser-url:nth-child(3) { animation-delay: -8s; }
-  .browser-url:nth-child(4) { animation-delay: -12s; }
-
-  @keyframes url-cycle {
-    0%, 24.9% { opacity: 1; }
-    25%, 100% { opacity: 0; }
   }
 
   .browser-viewport {
     height: 210px;
     overflow: hidden;
     position: relative;
-    background: var(--site-page);
+    background: #f7f8fa;
   }
 
-  .site-slide {
+  /* —— Site assemble scene (parts fly into browser) —— */
+  .wf-scene {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .wf-body {
     position: absolute;
     inset: 0;
-    opacity: 0;
-    animation: site-cycle 16s steps(1, end) infinite;
-  }
-
-  .site-slide:nth-child(1) { animation-delay: 0s; }
-  .site-slide:nth-child(2) { animation-delay: -4s; }
-  .site-slide:nth-child(3) { animation-delay: -8s; }
-  .site-slide:nth-child(4) { animation-delay: -12s; }
-
-  @keyframes site-cycle {
-    0%, 24.9% { opacity: 1; z-index: 1; }
-    25%, 100% { opacity: 0; z-index: 0; }
-  }
-
-  .site-slide--blue {
-    --site-ink: color-mix(in srgb, var(--color-blue) 30%, white);
-    --site-soft: var(--color-blue-tint);
-    --site-accent: var(--color-blue);
-    --site-page: color-mix(in srgb, var(--color-blue-tint) 45%, white);
-  }
-
-  .site-slide--violet {
-    --site-ink: color-mix(in srgb, var(--color-violet) 28%, white);
-    --site-soft: color-mix(in srgb, var(--color-violet) 12%, white);
-    --site-accent: var(--color-violet);
-    --site-page: color-mix(in srgb, var(--color-violet) 7%, white);
-  }
-
-  .site-slide--lime {
-    --site-ink: color-mix(in srgb, #0c972f 24%, white);
-    --site-soft: var(--color-lime);
-    --site-accent: #0c972f;
-    --site-page: color-mix(in srgb, var(--color-lime) 40%, white);
-  }
-
-  .site-slide--yellow {
-    --site-ink: color-mix(in srgb, var(--color-text-primary) 16%, var(--color-yellow));
-    --site-soft: var(--color-yellow);
-    --site-accent: var(--color-text-primary);
-    --site-page: color-mix(in srgb, var(--color-yellow) 42%, white);
-  }
-
-  .site-scroll {
     display: flex;
     flex-direction: column;
-    gap: 0.55rem;
-    padding: 0.75rem 0.7rem 2rem;
-    min-height: 150%;
-    animation: site-scroll 4s ease-in-out infinite;
+    gap: 0.34rem;
+    padding: 0.6rem 0.55rem 0.65rem;
+    background: #f7f8fa;
   }
 
-  @keyframes site-scroll {
-    0%, 18% { transform: translateY(0); }
-    50%, 68% { transform: translateY(-38%); }
-    100% { transform: translateY(0); }
+  .wf-slot {
+    opacity: 0;
+    transform-origin: center center;
+    flex-shrink: 0;
   }
 
-  .s-bar {
-    height: 0.55rem;
-    width: 28%;
-    border-radius: 2px;
-    background: var(--site-accent);
-  }
-
-  .s-hero {
-    height: 3.4rem;
+  .wf-slot--hero {
+    height: 2.2rem;
     border-radius: 6px;
-    background: linear-gradient(160deg, var(--site-soft), var(--color-surface) 55%, var(--site-ink));
-    border: 1px solid color-mix(in srgb, var(--site-ink) 55%, white);
+    background: linear-gradient(155deg, var(--color-blue-tint) 0%, #fff 48%, color-mix(in srgb, var(--color-blue-soft) 55%, #fff) 100%);
+    border: 1px solid color-mix(in srgb, var(--color-blue) 22%, #e2e2e2);
   }
 
-  .s-hero--soft {
-    height: 2.4rem;
-    opacity: 0.85;
+  .wf-slot--lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
   }
 
-  .s-line {
-    height: 0.4rem;
-    width: 72%;
-    border-radius: 2px;
-    background: var(--site-ink);
-  }
-
-  .s-line--short {
-    width: 44%;
-    opacity: 0.7;
-  }
-
-  .s-btn {
-    width: 32%;
-    height: 0.7rem;
-    border-radius: 3px;
-    background: var(--site-accent);
-  }
-
-  .s-row {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.4rem;
-  }
-
-  .s-row:has(i:nth-child(3)) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .s-row i {
+  .wf-slot--lines span {
     display: block;
-    height: 2rem;
-    border-radius: 5px;
-    background: var(--color-surface);
-    border: 1px solid color-mix(in srgb, var(--site-ink) 65%, white);
+    height: 0.3rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--color-text-primary) 18%, #fff);
   }
 
-  .s-band {
-    height: 1.25rem;
+  .wf-slot--lines span:first-child { width: 72%; }
+  .wf-slot--lines span:last-child { width: 48%; }
+
+  .wf-slot--cta {
+    width: 34%;
+    height: 0.62rem;
+    border-radius: 4px;
+    background: var(--color-blue);
+    margin-block: 0.05rem 0.1rem;
+  }
+
+  .wf-slot--mid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.28rem;
+  }
+
+  .wf-slot--mid span {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
     border-radius: 5px;
-    background: var(--site-soft);
-    border: 1px solid color-mix(in srgb, var(--site-ink) 50%, white);
+    border: 1px solid color-mix(in srgb, var(--color-blue) 18%, #e2e2e2);
+    background: linear-gradient(160deg, var(--color-blue-tint) 0%, color-mix(in srgb, var(--color-blue-soft) 35%, #fff) 100%);
+  }
+
+  .wf-slot--foot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.26rem;
+    margin-block-start: 0.3rem;
+  }
+
+  .wf-slot--foot span:first-child {
+    display: block;
+    width: 56%;
+    height: 0.4rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--color-text-primary) 28%, #fff);
+  }
+
+  .wf-slot--foot span:last-child {
+    display: block;
+    width: 30%;
+    height: 0.52rem;
+    border-radius: 4px;
+    background: var(--color-blue);
+  }
+
+  .wf-fly {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+
+  .wf-fly--hero {
+    width: 4.6rem;
+    height: 2.6rem;
+    border-radius: 6px;
+    top: 6%;
+    right: 3%;
+    background: linear-gradient(155deg, var(--color-blue-tint) 0%, #fff 48%, color-mix(in srgb, var(--color-blue-soft) 55%, #fff) 100%);
+    border: 1px solid color-mix(in srgb, var(--color-blue) 28%, #e2e2e2);
+    box-shadow: 0 10px 24px -16px rgba(2, 116, 222, 0.55);
+  }
+
+  .wf-fly--lines {
+    display: flex;
+    flex-direction: column;
+    gap: 0.24rem;
+    top: 34%;
+    left: 2%;
+    width: 3.6rem;
+  }
+
+  .wf-fly--lines span {
+    display: block;
+    height: 0.28rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--color-text-primary) 22%, #fff);
+  }
+
+  .wf-fly--lines span:first-child { width: 100%; }
+  .wf-fly--lines span:last-child { width: 70%; }
+
+  .wf-fly--cta {
+    width: 2.6rem;
+    height: 0.62rem;
+    border-radius: 4px;
+    background: var(--color-blue);
+    top: 50%;
+    right: 4%;
+    box-shadow: 0 8px 18px -10px rgba(2, 116, 222, 0.6);
+  }
+
+  .wf-fly--mid {
+    display: flex;
+    gap: 0.2rem;
+    bottom: 26%;
+    left: 1%;
+  }
+
+  .wf-fly--mid span {
+    display: block;
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: 4px;
+    border: 1px solid color-mix(in srgb, var(--color-blue) 22%, #e2e2e2);
+    background: linear-gradient(160deg, var(--color-blue-tint) 0%, color-mix(in srgb, var(--color-blue-soft) 40%, #fff) 100%);
+    box-shadow: 0 8px 18px -14px rgba(2, 116, 222, 0.4);
+  }
+
+  .wf-fly--foot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    bottom: 4%;
+    right: 8%;
+    width: 3.4rem;
+  }
+
+  .wf-fly--foot span:first-child {
+    display: block;
+    width: 70%;
+    height: 0.26rem;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--color-text-primary) 28%, #fff);
+  }
+
+  .wf-fly--foot span:last-child {
+    display: block;
+    width: 50%;
+    height: 0.42rem;
+    border-radius: 3px;
+    background: var(--color-blue);
+  }
+
+  .wf-scene.is-assembled .wf-slot {
+    opacity: 1;
+  }
+
+  .wf-scene.is-assembled .wf-fly {
+    opacity: 0;
+    visibility: hidden;
   }
 
   .flow-cards {
@@ -576,17 +582,6 @@ const cards = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .site-scroll,
-    .site-slide,
-    .browser-url {
-      animation: none;
-    }
-
-    .site-slide:first-child,
-    .browser-url:first-child {
-      opacity: 1;
-    }
-
     .flow-card {
       transition: none;
     }
