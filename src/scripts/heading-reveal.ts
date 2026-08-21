@@ -23,8 +23,11 @@ export function initHeadingReveal(root: ParentNode = document): void {
   for (const heading of headings) {
     if (heading.dataset.headingReveal === 'done') continue;
 
-    // Headings inside prose or with explicit opt-out → simple fade-up, no per-letter split
-    if (heading.closest('.prose') || heading.closest('[data-heading-skip]')) {
+    // Only apply per-letter split text animation to main landing page Hero H1
+    const isMainHeroH1 = heading.matches('h1.hero-title[data-animate="hero"]') || heading.closest('.hero-section h1[data-animate="hero"]');
+
+    // Headings inside prose, explicit opt-out, or any non-main-hero heading → simple fade-up, no per-letter split
+    if (!isMainHeroH1 || heading.closest('.prose') || heading.closest('[data-heading-skip]')) {
       heading.dataset.headingReveal = 'done';
       if (reduce) {
         gsap.set(heading, { clearProps: 'transform,opacity' });
@@ -32,10 +35,10 @@ export function initHeadingReveal(root: ParentNode = document): void {
       }
       gsap.from(heading, {
         opacity: 0,
-        y: 28,
-        duration: 0.75,
+        y: 20,
+        duration: 0.6,
         ease: 'power2.out',
-        scrollTrigger: { trigger: heading, start: 'top 92%', toggleActions: 'play none none none' },
+        scrollTrigger: { trigger: heading, start: 'top 90%', toggleActions: 'play none none none' },
         clearProps: 'transform,opacity',
       });
       continue;

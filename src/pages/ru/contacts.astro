@@ -13,12 +13,17 @@ const contactSchema = {
   "@context": "https://schema.org",
   "@type": "ContactPage",
   "name": "Контакты — Ульяна Кирпичникова",
-  "description": "Свяжитесь для обсуждения проекта. Telegram, WhatsApp, email — отвечаю в течение дня.",
+  "description": "Свяжитесь для обсуждения проекта: Telegram, WhatsApp, MAX или забронируйте встречу в календаре.",
   "url": "https://ulyanaweb.ru/ru/contacts",
   "mainEntity": {
     "@type": "ProfessionalService",
     "name": "Ульяна Кирпичникова",
-    "email": "ouliana14@icloud.com",
+    "sameAs": [
+      "https://t.me/UlyanaKir",
+      "https://wa.me/UlyanaKirp",
+      "https://max.ru/u/f9LHodD0cOLCXFM9Kzh5qOUKG0jKRddL_nyz-hvcqunCjSOxGQnZLpE72cg",
+      "https://zcal.co/uliana/website-ru"
+    ],
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "RU"
@@ -28,8 +33,8 @@ const contactSchema = {
 ---
 
 <Layout 
-  title="Контакты — Ульяна Кирпичникова"
-  description="Свяжитесь для обсуждения проекта по сайту, аудиту или дизайну. Telegram, WhatsApp, email — отвечаю в течение дня."
+  title="Давайте общаться — Ульяна Кирпичникова"
+  description="Обсудим ваш проект, я отвечу на вопросы и разберемся, что со всем этим делать!"
   schema={contactSchema}
   lang={locale}
 >
@@ -40,87 +45,86 @@ const contactSchema = {
     <Breadcrumbs locale={locale} items={[{ label: t(locale, 'navContacts') }]} />
     <div class="container">
       <div class="contacts-header">
-        <h1 class="contacts-title">Напишите мне</h1>
-        <p class="contacts-subtitle">Отвечаю в течение дня. Обсудим ваш проект, ответим на вопросы и подберём оптимальное решение.</p>
+        <h1 class="contacts-title">Давайте общаться</h1>
+        <p class="contacts-subtitle">Обсудим ваш проект, я отвечу на вопросы и разберемся, что со всем этим делать!</p>
       </div>
 
-      <div class="grid-2 contacts-grid">
-        {/* Left Column: Real Contact Links */}
-        <div class="contacts-info">
-          <div class="info-block">
-            <h3 class="info-label">Связаться в мессенджерах</h3>
+      <div class="contacts-vertical-flow">
+        {/* Top Section: Direct Messengers */}
+        <section class="info-block messengers-section">
+          <h3 class="info-label">Напишите мне в мессенджеры</h3>
 
+          <div class="contacts-cards-grid">
             <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" class="contact-link telegram">
-              <div>
-                <span class="link-title">Telegram личный</span>
+              <div class="link-icon telegram-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </div>
+              <div class="link-content">
+                <span class="link-title">Telegram</span>
                 <span class="link-val">@UlyanaKir</span>
                 <span class="link-desc">Быстрые ответы в течение дня</span>
               </div>
-            </a>
-
-            <a href="https://t.me/UlyanaKirp" target="_blank" rel="noopener noreferrer" class="contact-link telegram-work">
-              <div>
-                <span class="link-title">Telegram рабочий</span>
-                <span class="link-val">@UlyanaKirp</span>
-                <span class="link-desc">Для рабочих вопросов и проектов</span>
+              <div class="link-arrow" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
               </div>
             </a>
 
             <a href="https://wa.me/UlyanaKirp" target="_blank" rel="noopener noreferrer" class="contact-link whatsapp">
-              <div>
+              <div class="link-icon whatsapp-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                </svg>
+              </div>
+              <div class="link-content">
                 <span class="link-title">WhatsApp</span>
                 <span class="link-val">@UlyanaKirp</span>
                 <span class="link-desc">Для обсуждения проектов</span>
               </div>
-            </a>
-          </div>
-
-          <div class="info-block">
-            <h3 class="info-label">Почта</h3>
-            <a href="mailto:ouliana14@icloud.com" class="contact-link email">
-              <div>
-                <span class="link-title">Email</span>
-                <span class="link-val">ouliana14@icloud.com</span>
-                <span class="link-desc">Старый добрый способ</span>
+              <div class="link-arrow" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
               </div>
             </a>
-          </div>
-        </div>
 
-        {/* Right Column: Schedule */}
-        <div class="contacts-form-container info-block">
-          <h3 class="info-label">График и ответы</h3>
-          <div class="glass-card info-card">
-            <div class="info-split-grid">
-              <div class="info-split-item">
-                <h3 class="info-card-title flex-align">
-                  Время работы
-                </h3>
-                <div class="hours-list">
-                  <div class="hours-row">
-                    <span>Пн — Пт</span>
-                    <strong>10:00 — 19:00</strong>
-                  </div>
-                  <div class="hours-row output-disabled">
-                    <span>Сб — Вс</span>
-                    <span class="text-muted">Выходной</span>
-                  </div>
-                </div>
-                <p class="info-small">Но на сообщения отвечаю в течение дня — иногда и вечером.</p>
+            <a href="https://max.ru/u/f9LHodD0cOLCXFM9Kzh5qOUKG0jKRddL_nyz-hvcqunCjSOxGQnZLpE72cg" target="_blank" rel="noopener noreferrer" class="contact-link max-messenger">
+              <div class="link-icon max-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
               </div>
-
-              <div class="info-split-item">
-                <h3 class="info-card-title flex-align">
-                  Быстрый ответ
-                </h3>
-                <p class="info-card-desc">Обычно отвечаю в течение 2-4 часов. Если не ответила сразу — значит занята проектами, но точно увижу ваше сообщение.</p>
-                <div class="status-online">
-                  <span>Сейчас на связи</span>
-                </div>
+              <div class="link-content">
+                <span class="link-title">MAX</span>
+                <span class="link-val">@UlyanaKir</span>
+                <span class="link-desc">Мессенджер MAX</span>
               </div>
-            </div>
+              <div class="link-arrow" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </div>
+            </a>
           </div>
-        </div>
+        </section>
+
+        {/* Bottom Full-Width Section: Calendar Booking */}
+        <section class="info-block booking-section">
+          <h3 class="info-label">или забронируйте встречу в календаре</h3>
+
+          <div class="zcal-container">
+            <script type="text/javascript" async src="https://static.zcal.co/embed/v1/embed.js"></script>
+            <div class="zcal-inline-widget"><a href="https://zcal.co/i/6wD3OZPR"></a></div>
+          </div>
+        </section>
+      </div>
       </div>
     </div>
   </main>
@@ -136,28 +140,24 @@ const contactSchema = {
   }
 
   .contacts-header {
-    max-inline-size: 600px;
-    margin-block-end: 4rem;
+    max-inline-size: 640px;
+    margin-block-start: 1.5rem;
+    margin-block-end: 2.5rem;
   }
 
   .contacts-title {
     font-size: var(--fs-h1);
-    margin-block-end: 1rem;
+    margin-block-end: 0.75rem;
     color: var(--color-text-primary);
   }
 
   .contacts-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     line-height: 1.6;
     color: var(--color-text-secondary);
   }
 
-  .contacts-grid {
-    gap: 4rem;
-    align-items: flex-start;
-  }
-
-  .contacts-info {
+  .contacts-vertical-flow {
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
@@ -171,115 +171,158 @@ const contactSchema = {
 
   .info-label {
     font-family: var(--font-heading);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--color-text-muted);
+    font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+    font-weight: 400;
+    color: var(--color-blue);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .booking-header-block {
+    margin-block-end: 1rem;
+  }
+
+  .booking-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-blue);
+    margin-block-end: 0.75rem;
+  }
+
+  .card-title-icon {
+    color: var(--color-blue);
+  }
+
+  .booking-heading {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 2vw, 1.6rem);
+    line-height: 1.35;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-block-end: 0.5rem;
+    text-wrap: balance;
+  }
+
+  .booking-desc {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  .zcal-container {
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    max-height: 560px;
+    height: 560px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .zcal-container iframe {
+    border: none !important;
+    width: 100% !important;
+    max-height: 560px !important;
+    height: 560px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .contacts-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
   }
 
   .contact-link {
     display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    padding: 1.25rem;
-    border-radius: var(--radius-default);
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 140px;
+    padding: 1.5rem;
+    background: var(--color-surface);
     border: 1px solid var(--color-border);
-    transition: border-color 0.15s ease, background-color 0.15s;
+    border-radius: var(--radius-card);
+    position: relative;
+    transition: 
+      transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
   }
 
   .contact-link:hover {
-    border-color: var(--color-text-primary);
-    background-color: var(--color-bg-subtle);
+    transform: translateY(-3px);
+    border-color: var(--color-blue);
+    box-shadow: 0 12px 28px -10px color-mix(in srgb, var(--color-blue) 18%, transparent);
+  }
+
+  .link-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--color-blue-tint);
+    color: var(--color-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-block-end: 1rem;
+    transition: transform 0.2s ease;
+  }
+
+  .contact-link:hover .link-icon {
+    transform: scale(1.06);
+  }
+
+  .link-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
   }
 
   .link-title {
-    display: block;
-    font-size: 1.15rem;
-    font-weight: 500;
+    font-size: 1.1rem;
+    font-weight: 600;
     color: var(--color-text-primary);
   }
 
   .link-val {
-    display: block;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 500;
-    color: var(--color-text-secondary);
-    margin-block-start: 0.15rem;
+    color: var(--color-blue);
   }
 
   .link-desc {
-    display: block;
     font-size: 0.8rem;
     color: var(--color-text-muted);
-    margin-block-start: 0.1rem;
+    margin-block-start: 0.25rem;
+    line-height: 1.35;
   }
 
-  .info-card {
-    background: transparent;
-    border-color: var(--color-border);
-    border-radius: var(--radius-default) !important;
-    box-shadow: none !important;
-  }
-
-  .info-split-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-  }
-
-  .info-card-title {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    margin-block-end: 1rem;
-  }
-
-  .flex-align {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .hours-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-block-end: 1rem;
-  }
-
-  .hours-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.95rem;
-  }
-
-  .hours-row.output-disabled {
+  .link-arrow {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
     color: var(--color-text-muted);
+    opacity: 0.5;
+    transition: transform 0.2s ease, opacity 0.2s ease, color 0.2s ease;
   }
 
-  .info-small {
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
+  .contact-link:hover .link-arrow {
+    opacity: 1;
+    color: var(--color-blue);
+    transform: translate(2px, -2px);
   }
 
-  .info-card-desc {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: var(--color-text-secondary);
-    margin-block-end: 1.5rem;
-  }
-
-  .status-online {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-    font-weight: 500;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+  @media (max-width: 900px) {
+    .contacts-cards-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
