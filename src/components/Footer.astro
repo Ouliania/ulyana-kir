@@ -20,34 +20,99 @@ const blogHref = '/blog/';
 ---
 
 <footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <Wordmark href={homePath} />
-      <p>{t(locale, 'footerTagline')}</p>
-    </div>
-    <nav class="footer-nav" aria-label="Footer">
-      <a href={isHome ? '#cases' : `${homePath}#cases`}>{t(locale, 'navCases')}</a>
-      <a href={isHome ? '#reviews' : `${homePath}#reviews`}>{t(locale, 'navApproach')}</a>
-      <a href={blogHref}>{t(locale, 'blog')}</a>
-      <a href={contactsHref}>{t(locale, 'navContacts')}</a>
-      <a href={codeHref}>{t(locale, 'codeSites')}</a>
-      <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer">Telegram</a>
-    </nav>
+  <div class="footer-waves" aria-hidden="true">
+    <svg class="footer-waves-svg" viewBox="0 0 1080 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="fwave fwave-1" d="M0,360 C360,260 720,460 1080,360 C1440,260 1800,460 2160,360 L2160,400 L0,400 Z"></path>
+      <path class="fwave fwave-2" d="M0,260 C360,160 720,360 1080,260 C1440,160 1800,360 2160,260 L2160,400 L0,400 Z"></path>
+      <path class="fwave fwave-3" d="M0,160 C360,60 720,260 1080,160 C1440,60 1800,260 2160,160 L2160,400 L0,400 Z"></path>
+    </svg>
   </div>
-  <div class="footer-bottom">
-    <p>© {year} Ulyana Kirpichnikova</p>
-    <a href={privacyHref}>{t(locale, 'privacy')}</a>
+  <div class="footer-content">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <Wordmark href={homePath} />
+        <p>{t(locale, 'footerTagline')}</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href={isHome ? '#cases' : `${homePath}#cases`}>{t(locale, 'navCases')}</a>
+        <a href={isHome ? '#reviews' : `${homePath}#reviews`}>{t(locale, 'navApproach')}</a>
+        <a href={blogHref}>{t(locale, 'blog')}</a>
+        <a href={contactsHref}>{t(locale, 'navContacts')}</a>
+        <a href={codeHref}>{t(locale, 'codeSites')}</a>
+        <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer">Telegram</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p>© {year} Ulyana Kirpichnikova</p>
+      <a href={privacyHref}>{t(locale, 'privacy')}</a>
+    </div>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    border-top: 1px solid var(--color-border);
+    position: relative;
     background: transparent;
-    /* Match .section-block horizontal edge (no .container 1200 cap) */
-    padding-block: 3.5rem 2rem;
-    padding-inline: var(--content-inline);
+    color: #ffffff;
     margin-block-start: 0;
+  }
+
+  /* Three waves as their own in-flow block ABOVE the solid-blue footer.
+     No absolute overlap onto the CTA section above — the waves occupy
+     their own vertical space. pointer-events: none keeps links clickable. */
+  .footer-waves {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .footer-waves-svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    display: block;
+  }
+
+  .fwave {
+    fill: var(--color-blue);
+    transform-origin: center bottom;
+    transform-box: fill-box;
+    will-change: transform;
+  }
+
+  /* Three crests, 100 units apart, all fill = Interlude's blue wave color.
+     Semi-transparent layers stack into a gradient: lighter at the top,
+     denser toward the solid-blue footer below. Bottom wave is nearly
+     opaque so it melts into the footer without a hard seam.
+     Same periods (9/12/15s) and horizontal loop as Interlude. */
+  .fwave-1 { opacity: 0.9;  animation: footerWaveReverse 9s ease-in-out infinite; }
+  .fwave-2 { opacity: 0.55; animation: footerWave 12s ease-in-out infinite; }
+  .fwave-3 { opacity: 0.3;  animation: footerWaveReverse 15s ease-in-out infinite; }
+
+  @keyframes footerWaveReverse {
+    0%   { transform: translate3d(-50%, 0, 0); }
+    50%  { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+  }
+
+  @keyframes footerWave {
+    0%   { transform: translate3d(0, 0, 0); }
+    50%  { transform: translate3d(-50%, 0, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+  }
+
+  /* Solid-blue footer content sits below the waves, in normal flow. */
+  .footer-content {
+    position: relative;
+    z-index: 1;
+    background: var(--color-blue);
+    padding-block: 0.9375rem 0.9375rem;
+    padding-inline: var(--content-inline);
   }
 
   .footer-inner {
@@ -55,7 +120,7 @@ const blogHref = '/blog/';
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 2rem;
-    margin-block-end: 2.5rem;
+    margin-block-end: 2rem;
     max-inline-size: none;
   }
 
@@ -68,7 +133,7 @@ const blogHref = '/blog/';
 
   .footer-brand p {
     font-size: var(--fs-small);
-    color: var(--color-text-muted);
+    color: rgba(255, 255, 255, 0.85);
   }
 
   .footer-nav {
@@ -79,13 +144,13 @@ const blogHref = '/blog/';
   }
 
   .footer-nav a {
-    color: var(--color-text-secondary);
+    color: rgba(255, 255, 255, 0.92);
     font-size: var(--fs-small);
     transition: color 0.15s ease;
   }
 
   .footer-nav a:hover {
-    color: var(--color-blue);
+    color: #ffffff;
   }
 
   .footer-bottom {
@@ -93,19 +158,35 @@ const blogHref = '/blog/';
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 0.75rem;
-    padding-block-start: 1.5rem;
-    border-top: 1px solid var(--color-border);
+    padding-block-start: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
     font-size: 0.85rem;
-    color: var(--color-text-muted);
+    color: rgba(255, 255, 255, 0.7);
   }
 
   .footer-bottom a {
-    color: var(--color-text-muted);
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
 
   .footer-bottom a:hover {
-    color: var(--color-text-primary);
+    color: #ffffff;
+  }
+
+  /* Wordmark inside the blue footer: invert the blue chip so it stays legible */
+  .site-footer .wordmark-first {
+    background: #ffffff;
+    color: var(--color-blue);
+  }
+
+  .site-footer .wordmark-last {
+    color: #ffffff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fwave {
+      animation: none;
+    }
   }
 </style>

@@ -263,7 +263,7 @@
     main .st-card *,
     main .st-viz *,
     main .prose *,
-    main .interlude *,
+    main .interlude *:not(.wave),
     main .flow-nodes *,
     main .flow-browser *,
     main .flow-hub * {
