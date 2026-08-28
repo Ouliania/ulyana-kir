@@ -87,10 +87,10 @@ const blogHref = '/blog/';
 
   /* Three crests, 100 units apart, all fill = Interlude's blue wave color.
      Semi-transparent layers stack into a gradient: lighter at the top,
-     denser toward the solid-blue footer below. Bottom wave is nearly
-     opaque so it melts into the footer without a hard seam.
+     denser toward the solid-blue footer below. Bottom wave is fully opaque
+     so it melts into the footer without a hard seam.
      Same periods (9/12/15s) and horizontal loop as Interlude. */
-  .fwave-1 { opacity: 0.9;  animation: footerWaveReverse 9s ease-in-out infinite; }
+  .fwave-1 { opacity: 1;   animation: footerWaveReverse 9s ease-in-out infinite; }
   .fwave-2 { opacity: 0.55; animation: footerWave 12s ease-in-out infinite; }
   .fwave-3 { opacity: 0.3;  animation: footerWaveReverse 15s ease-in-out infinite; }
 
