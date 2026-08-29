@@ -32,6 +32,8 @@ const description =
 
 const botToken = import.meta.env.PUBLIC_TELEGRAM_BOT_TOKEN || '';
 const chatId = import.meta.env.PUBLIC_TELEGRAM_CHAT_ID || '';
+const leadsBotToken = import.meta.env.PUBLIC_LEADS_BOT_TOKEN || '';
+const leadsChatId = import.meta.env.PUBLIC_LEADS_CHAT_ID || '';
 
 const methods = [
   { value: 'telegram', label: 'Telegram' },
@@ -119,14 +121,14 @@ const methods = [
       <div class="cta-card">
         <h2 class="cta-heading type-display" data-heading-skip data-animate="reveal">{t(locale, 'ctaHeading')}</h2>
         <div class="cta-hero">
-          <!-- Left: doubt button — red side, flat mouth -->
+          <!-- Left: free express-audit (opens popup → leads bot) -->
           <div class="cta-side cta-side--left" data-animate="reveal">
-            <button type="button" class="btn btn-secondary cta-doubt-btn" data-cta-doubt>
-              {t(locale, 'ctaDoubtBtn')}
+            <button type="button" class="btn btn-secondary cta-audit-btn" data-express-audit>
+              {t(locale, 'expressAuditBtn')}
             </button>
           </div>
 
-          <!-- Right: discuss button — green side, big smile -->
+          <!-- Right: discuss button -->
           <div class="cta-side cta-side--right" data-animate="reveal">
             <InteractiveHoverButton label={t(locale, 'discuss')} />
           </div>
@@ -138,7 +140,7 @@ const methods = [
   <Footer locale={locale} />
   </PageShell>
 
-  <script is:inline set:html={`window.__TELEGRAM_BOT_TOKEN__ = ${JSON.stringify(botToken || null)};window.__TELEGRAM_CHAT_ID__ = ${JSON.stringify(chatId || null)};`}></script>
+  <script is:inline set:html={`window.__TELEGRAM_BOT_TOKEN__ = ${JSON.stringify(botToken || null)};window.__TELEGRAM_CHAT_ID__ = ${JSON.stringify(chatId || null)};window.__LEADS_BOT_TOKEN__ = ${JSON.stringify(leadsBotToken || null)};window.__LEADS_CHAT_ID__ = ${JSON.stringify(leadsChatId || null)};`}></script>
   <script>
     import { initInterlude } from '../scripts/interlude';
     import { initWorkFlowBeams } from '../scripts/animated-beam';
@@ -148,7 +150,7 @@ const methods = [
     import { initDeepAssemble } from '../scripts/deep-assemble';
     import { initConvAssemble } from '../scripts/conv-assemble';
     import { initStoreAssemble } from '../scripts/store-assemble';
-    import { initCtaDoubt } from '../scripts/cta-doubt';
+    import { initExpressAudit } from '../scripts/express-audit';
     initInterlude();
     initWorkFlowBeams();
     initHeroForm();
@@ -157,7 +159,7 @@ const methods = [
     initDeepAssemble();
     initConvAssemble();
     initStoreAssemble();
-    initCtaDoubt();
+    initExpressAudit();
   </script>
 </Layout>
 
@@ -516,19 +518,6 @@ const methods = [
     color: #ffffff;
   }
 
-  .cta-doubt-btn {
-    font-size: 0.88rem;
-    opacity: 0.85;
-  }
-
-  .cta-doubt-btn:hover {
-    opacity: 1;
-  }
-
-  .cta-side--right {
-    margin-inline-start: clamp(1rem, 3vw, 2rem);
-  }
-
   @media (max-width: 699px) {
     .cta-hero {
       flex-direction: column;
@@ -541,11 +530,6 @@ const methods = [
 
     .cta-side--right {
       order: 1;
-      margin-inline-start: 0;
-    }
-
-    .cta-side--left {
-      order: 3;
     }
   }
 

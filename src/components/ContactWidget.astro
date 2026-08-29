@@ -1,0 +1,166 @@
+---
+interface Props {
+  lang?: 'en' | 'ru';
+}
+const lang = Astro.props.lang ?? 'en';
+const isRu = lang === 'ru';
+
+// RU → личный Telegram-чат; EN → WhatsApp.
+const chatHref = isRu
+  ? 'https://t.me/UlyanaKir'
+  : 'https://wa.me/UlyanaKirp';
+
+// Предзаполненное сообщение. Для WhatsApp (?text=) подставляется надёжно;
+// для Telegram в личном чате ?text= подхватывается не всеми клиентами —
+// это максимум, что можно сделать без бота.
+const message = isRu
+  ? 'Привет, есть задача по сайту, давайте обсудим'
+  : "Hi, I have a website task, let's discuss";
+
+const bubbleText = isRu
+  ? 'Привет! Думаете над обновлением сайта? Напишите мне напрямую и обсудим задачу за 15 минут.'
+  : "Hi! Thinking about updating your website? Message me directly and let's discuss your task in 15 minutes.";
+
+const writeLabel = isRu ? 'Написать' : 'Write me';
+const ariaLabel = isRu ? 'Написать в Telegram' : 'Chat on WhatsApp';
+---
+
+<div class="contact-widget" data-contact-widget>
+  <!-- Всплывающее облачко -->
+  <div class="cw-bubble" data-cw-bubble aria-hidden="true">
+    <button type="button" class="cw-bubble-close" data-cw-close aria-label={isRu ? 'Закрыть' : 'Close'}>
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M3 3l8 8M11 3L3 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <p class="cw-bubble-text">{bubbleText}</p>
+    <a
+      class="cw-write"
+      href={`${chatHref}?text=${encodeURIComponent(message)}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {writeLabel}
+    </a>
+  </div>
+
+  <!-- Иконка мессенджера (видна всегда) -->
+  <button type="button" class="cw-fab" data-cw-fab aria-label={ariaLabel}>
+    {
+      isRu ? (
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21.5 12a9.5 9.5 0 0 1-14.5 8.4L3 21l.9-3.5A9.5 9.5 0 1 1 21.5 12Z" fill="currentColor"/>
+          <path d="M9 11.5 15.5 8l-2.5 7-1.2-2.6L9 11.5Z" fill="#fff"/>
+        </svg>
+      ) : (
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 2a8 8 0 1 1-4.3 14.8l-.5-.3-2.9.8.8-2.8-.3-.5A8 8 0 0 1 12 4Zm-3.2 3.2c-.2 0-.5 0-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.8 2.1.8 2.6.7 3 .7.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2l-.5-.3-1.7-.8c-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2 0-.4.1-.5l.6-.7c.2-.2.2-.4.3-.6l-.5-1.3c-.1-.3-.4-.4-.6-.4Z"/>
+        </svg>
+      )
+    }
+  </button>
+</div>
+
+<style>
+  .contact-widget {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.75rem;
+    pointer-events: none;
+  }
+
+  .cw-fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    background: var(--color-blue);
+    color: #fff;
+    box-shadow: 0 8px 24px -8px rgba(2, 116, 222, 0.6);
+    transition: transform 0.2s ease;
+    pointer-events: auto;
+  }
+
+  .cw-fab:hover {
+    transform: translateY(-2px);
+  }
+
+  .cw-bubble {
+    position: relative;
+    max-width: 280px;
+    padding: 1rem 1.1rem;
+    background: #fff;
+    color: var(--color-text-primary);
+    border-radius: 14px;
+    box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .cw-bubble.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .cw-bubble-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  .cw-bubble-close:hover {
+    background: var(--color-border);
+  }
+
+  .cw-bubble-text {
+    margin: 0 0 0.75rem;
+    padding-right: 1.25rem;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: var(--color-text-secondary);
+  }
+
+  .cw-write {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 1rem;
+    background: var(--color-blue);
+    color: #fff;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .cw-write:hover {
+    background: var(--color-accent-hover);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cw-fab,
+    .cw-bubble {
+      transition: none;
+    }
+  }
+</style>

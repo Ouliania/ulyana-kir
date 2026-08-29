@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ContactWidget from '../components/ContactWidget.astro';
 
 interface Props {
   title: string;
@@ -110,15 +111,18 @@ const finalSchema = schema || defaultSchema;
   </head>
   <body>
     <slot />
+    <ContactWidget lang={lang} />
     <script>
       import { initMagicSurfaces } from '../scripts/magic-surface';
       import { initHeadingReveal } from '../scripts/heading-reveal';
       import { initBrandMotion } from '../scripts/motion';
       import { initContactPopup } from '../scripts/contact-popup';
+      import { initContactWidget } from '../scripts/contact-widget';
       initMagicSurfaces();
       initHeadingReveal();
       initBrandMotion();
       initContactPopup();
+      initContactWidget();
     </script>
   </body>
 </html>

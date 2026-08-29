@@ -784,8 +784,8 @@
     color: #c0392b;
   }
 
-  /* ── Doubt popup (also in document.body) ── */
-  .dbt-overlay {
+  /* ── Express-audit popup (also in document.body) ── */
+  .ea-overlay {
     position: fixed;
     inset: 0;
     z-index: 9998;
@@ -799,12 +799,12 @@
     transition: opacity 0.25s ease;
   }
 
-  .dbt-overlay.is-open {
+  .ea-overlay.is-open {
     opacity: 1;
     pointer-events: auto;
   }
 
-  .dbt-dialog {
+  .ea-dialog {
     background: var(--color-surface);
     border-radius: var(--radius-media);
     padding: 1.75rem 1.5rem 1.5rem;
@@ -819,11 +819,11 @@
     transition: transform 0.25s ease;
   }
 
-  .dbt-overlay.is-open .dbt-dialog {
+  .ea-overlay.is-open .ea-dialog {
     transform: translateY(0);
   }
 
-  .dbt-close {
+  .ea-close {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
@@ -840,12 +840,12 @@
     transition: background 0.15s, color 0.15s;
   }
 
-  .dbt-close:hover {
+  .ea-close:hover {
     background: var(--color-border);
     color: var(--color-text-primary);
   }
 
-  .dbt-title {
+  .ea-title {
     font-family: var(--font-heading);
     font-size: 1.15rem;
     font-weight: 500;
@@ -855,20 +855,20 @@
     margin: 0;
   }
 
-  .dbt-body {
+  .ea-sub {
     font-size: 0.9rem;
     color: var(--color-text-secondary);
     line-height: 1.5;
     margin: 0;
   }
 
-  .dbt-form {
+  .ea-form {
     display: flex;
     flex-direction: column;
     gap: 0.65rem;
   }
 
-  .dbt-textarea {
+  .ea-input {
     box-sizing: border-box;
     width: 100%;
     padding: 0.7rem 0.8rem;
@@ -877,40 +877,38 @@
     font: inherit;
     font-size: 0.9rem;
     line-height: 1.45;
-    resize: vertical;
-    min-height: 72px;
     background: var(--color-surface);
     color: var(--color-text-primary);
     transition: border-color 0.15s;
   }
 
-  .dbt-textarea:focus {
+  .ea-input:focus {
     outline: none;
     border-color: var(--color-blue);
     box-shadow: 0 0 0 3px var(--color-blue-tint);
   }
 
-  .dbt-textarea::placeholder {
+  .ea-input::placeholder {
     color: var(--color-text-muted);
   }
 
-  .dbt-actions {
+  .ea-actions {
     display: flex;
     gap: 0.55rem;
     flex-wrap: wrap;
   }
 
-  .dbt-status {
+  .ea-status {
     font-size: 0.85rem;
     min-height: 1.35em;
     line-height: 1.4;
   }
 
-  .dbt-status.success {
+  .ea-status.success {
     color: #0d8a2e;
   }
 
-  .dbt-status.error {
+  .ea-status.error {
     color: #c0392b;
   }
 }
