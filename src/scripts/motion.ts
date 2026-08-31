@@ -78,7 +78,11 @@ export function initBrandMotion(root: ParentNode = document): void {
   // Universal content reveal first
   initContentReveal(root);
 
-  const heroItems = root.querySelectorAll<HTMLElement>('[data-animate="hero"]');
+  // Exclude the hero title (contains per-letter .kinetic-letter spans driven by
+  // initHeadingReveal) so its letters aren't double-faded by this container tween.
+  const heroItems = [...root.querySelectorAll<HTMLElement>('[data-animate="hero"]')].filter(
+    (el) => !el.querySelector('.kinetic-letter'),
+  );
   if (heroItems.length) {
     if (reduce) {
       gsap.set(heroItems, { opacity: 1, y: 0 });

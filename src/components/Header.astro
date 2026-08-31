@@ -18,7 +18,7 @@ const isHome =
 const contactsHref = locale === 'ru' ? '/ru/contacts/' : '/contacts/';
 const casesHref = isHome ? '#cases' : `${homePath}#cases`;
 const servicesHref = isHome ? '#services' : `${homePath}#services`;
-const reviewHref = isHome ? '#reviews' : `${homePath}#reviews`;
+const blogHref = locale === 'ru' ? '/ru/blog/' : '/blog/';
 ---
 
 <header class="main-header">
@@ -35,7 +35,7 @@ const reviewHref = isHome ? '#reviews' : `${homePath}#reviews`;
       <div class="nav-links">
         <a href={casesHref} class="nav-link">{t(locale, 'navCases')}</a>
         <a href={servicesHref} class="nav-link">{t(locale, 'navServices')}</a>
-        <a href={reviewHref} class="nav-link">{t(locale, 'navApproach')}</a>
+        <a href={blogHref} class="nav-link">{t(locale, 'navBlog')}</a>
         <a href={contactsHref} class="nav-link">{t(locale, 'navContacts')}</a>
       </div>
       <div class="nav-end">

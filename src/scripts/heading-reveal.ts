@@ -12,6 +12,11 @@ gsap.registerPlugin(ScrollTrigger);
  * keeping their CSS hover effect intact.
  */
 export function initHeadingReveal(root: ParentNode = document): void {
+  // Disable heading reveal animations on all blog listing and article pages
+  if (typeof window !== 'undefined' && window.location.pathname.includes('/blog/')) {
+    return;
+  }
+
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const headings = root.querySelectorAll<HTMLElement>('h1, h2');
 
@@ -25,6 +30,14 @@ export function initHeadingReveal(root: ParentNode = document): void {
 
     // Only apply per-letter split text animation to main landing page Hero H1
     const isMainHeroH1 = heading.matches('h1.hero-title[data-animate="hero"]') || heading.closest('.hero-section h1[data-animate="hero"]');
+
+    // Headings driven by motion.ts ([data-animate]) are left untouched here —
+    // otherwise two competing tweens fight over opacity/transform and the
+    // heading flashes or appears late (e.g. the CTA heading).
+    if (!isMainHeroH1 && heading.hasAttribute('data-animate')) {
+      heading.dataset.headingReveal = 'done';
+      continue;
+    }
 
     // Headings inside prose, explicit opt-out, or any non-main-hero heading → simple fade-up, no per-letter split
     if (!isMainHeroH1 || heading.closest('.prose') || heading.closest('[data-heading-skip]')) {
