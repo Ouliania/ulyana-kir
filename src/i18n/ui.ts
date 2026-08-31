@@ -34,8 +34,8 @@ export const ui = {
     flowCard4Body:
       'I set up analytics, basic SEO tags, a sitemap, and a 404 page. I test loading speed, responsiveness, and element logic to ensure a flawless launch.',
     ctaTitle: 'Have a project in mind?',
-    ctaHeading: 'Have a task or website project — let\'s discuss the best way to make it happen',
-    ctaLead: 'Tell me the goal — I’ll say what the site actually needs',
+    ctaHeading: 'I’ll find why your current site isn’t bringing leads, or design a new one from scratch',
+    ctaLead: 'Let’s discuss it and I’ll propose a strategy for your task — in chat or on an online call',
     expressAuditBtn: 'Get free express-audit',
     expressAuditTitle: 'Free express-audit',
     expressAuditSub: 'Leave your current site address and contact — I’ll send a quick audit',
@@ -268,8 +268,8 @@ export const ui = {
     flowCard4Body:
       'Настраиваю аналитику, SEO-теги, карту сайта и страницу 404. Провожу тесты скорости загрузки и проверяю логику работы всех форм и элементов перед запуском.',
     ctaTitle: 'Есть проект?',
-    ctaHeading: 'Есть задача или проект по сайту — давайте обсудим как лучше это реализовать',
-    ctaLead: 'Расскажите цель — скажу, что сайту реально нужно',
+    ctaHeading: 'Найду, почему ваш текущий сайт не приносит заявки, или спроектирую новый с нуля',
+    ctaLead: 'Давайте обсудим, и я предложу стратегию под вашу задачу — в переписке или онлайн-встрече',
     expressAuditBtn: 'Получить бесплатный аудит',
     expressAuditTitle: 'Бесплатный экспресс-аудит',
     expressAuditSub: 'Оставьте ссылку на сайт и контакт, и я пришлю краткий аудит',
