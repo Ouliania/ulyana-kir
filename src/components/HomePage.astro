@@ -9,6 +9,7 @@ import KineticText from '../components/KineticText.astro';
 import Interlude from '../components/Interlude.astro';
 import ServiceTabsSection from '../components/ServiceTabsSection.astro';
 import WorkFlow from '../components/WorkFlow.astro';
+import FaqSection from '../components/FaqSection.astro';
 import { cases } from '../data/cases';
 import { t, type Locale } from '../i18n/ui';
 
@@ -143,6 +144,8 @@ const methods = [
         </div>
       </div>
     </section>
+
+    <FaqSection locale={locale} />
   </main>
 
   <Footer locale={locale} />
@@ -420,7 +423,8 @@ const methods = [
   }
 
   /* Blue plate — full content width (matches other section blocks),
-     rounded like media cards, white text for contrast. */
+     rounded like media cards, white text for contrast.
+     Background cycles blue → violet → amber (like Interlude, block 2). */
   .cta-card {
     position: relative;
     isolation: isolate;
@@ -429,6 +433,14 @@ const methods = [
     border-radius: var(--radius-media);
     padding: clamp(2.5rem, 5vw, 3.5rem) var(--content-inline);
     background: var(--color-blue);
+    /* Palette cycle (dark tones keep white text legible) */
+    --cta-bg-1: var(--color-blue);
+    --cta-bg-2: var(--color-violet);
+    --cta-bg-3: #d97706; /* amber */
+    --cta-wave-1: var(--color-blue-soft);
+    --cta-wave-2: #a89ef0; /* light violet */
+    --cta-wave-3: #fbbf24; /* light amber */
+    animation: ctaBgCycle 20s linear infinite;
   }
 
   /* Waves: animated crests behind the content (same approach as footer),
@@ -451,15 +463,24 @@ const methods = [
   }
 
   .cwave {
-    fill: var(--color-blue-soft);
+    fill: var(--cta-wave-1);
     transform-origin: center bottom;
     transform-box: fill-box;
-    will-change: transform;
+    will-change: transform, fill;
   }
 
-  .cwave-1 { opacity: 0.5;  animation: ctaWaveReverse 11s ease-in-out infinite; }
-  .cwave-2 { opacity: 0.3;  animation: ctaWave 13s ease-in-out infinite; }
-  .cwave-3 { opacity: 0.18; animation: ctaWaveReverse 15s ease-in-out infinite; }
+  .cwave-1 {
+    opacity: 0.5;
+    animation: ctaWaveReverse 11s ease-in-out infinite, ctaWaveFillCycle 20s linear infinite;
+  }
+  .cwave-2 {
+    opacity: 0.3;
+    animation: ctaWave 13s ease-in-out infinite, ctaWaveFillCycle 20s linear infinite;
+  }
+  .cwave-3 {
+    opacity: 0.18;
+    animation: ctaWaveReverse 15s ease-in-out infinite, ctaWaveFillCycle 20s linear infinite;
+  }
 
   @keyframes ctaWaveReverse {
     0%   { transform: translate3d(-50%, 0, 0); }
@@ -473,6 +494,25 @@ const methods = [
     100% { transform: translate3d(0, 0, 0); }
   }
 
+  /* Background + wave colour cycle — same timing as Interlude. */
+  @keyframes ctaBgCycle {
+    0%, 15%, 100% { background-color: var(--cta-bg-1); }
+    20%, 40%, 70%, 90% { background-color: var(--cta-bg-2); }
+    45%, 65% { background-color: var(--cta-bg-3); }
+  }
+
+  @keyframes ctaWaveFillCycle {
+    0%, 15%, 100% { fill: var(--cta-wave-1); }
+    20%, 40%, 70%, 90% { fill: var(--cta-wave-2); }
+    45%, 65% { fill: var(--cta-wave-3); }
+  }
+
+  @keyframes ctaBtnTextCycle {
+    0%, 15%, 100% { color: var(--cta-bg-1); }
+    20%, 40%, 70%, 90% { color: var(--cta-bg-2); }
+    45%, 65% { color: var(--cta-bg-3); }
+  }
+
   .cta-heading,
   .cta-lead,
   .cta-hero {
@@ -482,7 +522,7 @@ const methods = [
 
   .cta-heading {
     text-align: center;
-    max-width: 800px;
+    max-width: min(900px, 100%);
     margin-inline: auto;
     margin-bottom: clamp(0.9rem, 1.5vw, 1.25rem);
     color: #ffffff;
@@ -531,10 +571,10 @@ const methods = [
      a child component with its own Astro scope. */
   .cta-card :global(.btn-primary) {
     background: #ffffff;
-    color: var(--color-blue);
     border-color: #ffffff;
     position: relative;
     overflow: hidden;
+    animation: ctaBtnTextCycle 20s linear infinite;
   }
 
   .cta-card :global(.btn-primary)::after {
@@ -549,9 +589,8 @@ const methods = [
   }
 
   .cta-card :global(.btn-primary:hover) {
-    background: var(--color-blue-tint);
-    border-color: var(--color-blue-tint);
-    color: var(--color-blue);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
   }
 
   .cta-card :global(.btn-secondary) {
@@ -585,8 +624,14 @@ const methods = [
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .cta-card :global(.btn-primary) {
+      animation: none;
+      color: var(--color-blue);
+    }
     .cta-card :global(.btn-primary)::after,
-    .cta-card :global(.btn-secondary)::after {
+    .cta-card :global(.btn-secondary)::after,
+    .cta-card,
+    .cwave {
       animation: none;
     }
   }

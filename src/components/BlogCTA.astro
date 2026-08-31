@@ -43,15 +43,16 @@ const ctaKeys = {
 const title = overrideTitle || t(locale, ctaKeys.title as any);
 const desc = overrideDesc || t(locale, ctaKeys.desc as any);
 const buttonText = overrideButton || t(locale, ctaKeys.button as any);
-
-const badgeText = locale === 'ru' ? 'Бесплатно • 20 минут в переписке' : 'Free • 20 min in chat';
-const secondBtnText = locale === 'ru' ? 'Написать в Telegram' : 'Message on Telegram';
 ---
 
-<section class="blog-cta-section">
+<section class="blog-cta-section cta-band">
   <div class="blog-cta-card">
-    <div class="cta-header">
-      <span class="cta-badge">{badgeText}</span>
+    <div class="cta-waves" aria-hidden="true">
+      <svg class="cta-waves-svg" viewBox="0 0 1080 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="cwave cwave-1" d="M0,360 C360,260 720,460 1080,360 C1440,260 1800,460 2160,360 L2160,400 L0,400 Z"></path>
+        <path class="cwave cwave-2" d="M0,260 C360,160 720,360 1080,260 C1440,160 1800,360 2160,260 L2160,400 L0,400 Z"></path>
+        <path class="cwave cwave-3" d="M0,160 C360,60 720,260 1080,160 C1440,60 1800,260 2160,160 L2160,400 L0,400 Z"></path>
+      </svg>
     </div>
     <h3 class="cta-title">{title}</h3>
     <p class="cta-text">{desc}</p>
@@ -66,9 +67,6 @@ const secondBtnText = locale === 'ru' ? 'Написать в Telegram' : 'Messag
       >
         {buttonText}
       </button>
-      <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" class="btn btn-secondary cta-btn">
-        {secondBtnText}
-      </a>
     </div>
   </div>
 </section>
@@ -84,62 +82,224 @@ const secondBtnText = locale === 'ru' ? 'Написать в Telegram' : 'Messag
   }
 
   .blog-cta-card {
-    background: var(--color-blue-tint);
-    border: 1px solid var(--color-blue-soft);
-    border-radius: var(--radius-card);
-    padding: 3rem;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: #ffffff;
+    border-radius: var(--radius-media);
+    padding: clamp(2.5rem, 5vw, 3.5rem) var(--content-inline);
+    background: var(--color-blue);
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    align-items: flex-start;
+    gap: 1.25rem;
+    align-items: center;
+    text-align: center;
     width: 100%;
+
+    /* Palette cycle (dark tones keep white text legible) */
+    --cta-bg-1: var(--color-blue);
+    --cta-bg-2: var(--color-violet);
+    --cta-bg-3: #d97706; /* amber */
+    --cta-wave-1: var(--color-blue-soft);
+    --cta-wave-2: #a89ef0; /* light violet */
+    --cta-wave-3: #fbbf24; /* light amber */
+    animation: ctaBgCycle 20s linear infinite;
   }
 
-  @media (max-width: 640px) {
-    .blog-cta-card {
-      padding: 2rem 1.5rem;
-    }
+  /* Waves: animated crests behind the content */
+  .cta-waves {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
   }
 
-  .cta-badge {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #ffffff;
-    background: var(--color-blue);
-    padding: 0.3rem 0.75rem;
-    border-radius: var(--radius-default);
-    display: inline-block;
-    letter-spacing: 0.03em;
+  .cta-waves-svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    display: block;
+  }
+
+  .cwave {
+    fill: var(--cta-wave-1);
+    transform-origin: center bottom;
+    transform-box: fill-box;
+    will-change: transform, fill;
+  }
+
+  .cwave-1 {
+    opacity: 0.5;
+    animation: ctaWaveReverse 11s ease-in-out infinite, ctaWaveFillCycle 20s linear infinite;
+  }
+  .cwave-2 {
+    opacity: 0.3;
+    animation: ctaWave 13s ease-in-out infinite, ctaWaveFillCycle 20s linear infinite;
+  }
+  .cwave-3 {
+    opacity: 0.18;
+    animation: ctaWaveReverse 15s ease-in-out infinite, ctaWaveFillCycle 20s linear infinite;
+  }
+
+  @keyframes ctaWaveReverse {
+    0%   { transform: translate3d(-50%, 0, 0); }
+    50%  { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+  }
+
+  @keyframes ctaWave {
+    0%   { transform: translate3d(0, 0, 0); }
+    50%  { transform: translate3d(-50%, 0, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+  }
+
+  /* Background + wave colour cycle — same timing as Interlude. */
+  @keyframes ctaBgCycle {
+    0%, 15%, 100% { background-color: var(--cta-bg-1); }
+    20%, 40%, 70%, 90% { background-color: var(--cta-bg-2); }
+    45%, 65% { background-color: var(--cta-bg-3); }
+  }
+
+  @keyframes ctaWaveFillCycle {
+    0%, 15%, 100% { fill: var(--cta-wave-1); }
+    20%, 40%, 70%, 90% { fill: var(--cta-wave-2); }
+    45%, 65% { fill: var(--cta-wave-3); }
+  }
+
+  @keyframes ctaBtnTextCycle {
+    0%, 15%, 100% { color: var(--cta-bg-1); }
+    20%, 40%, 70%, 90% { color: var(--cta-bg-2); }
+    45%, 65% { color: var(--cta-bg-3); }
+  }
+
+  .cta-title,
+  .cta-text,
+  .cta-actions {
+    position: relative;
+    z-index: 1;
   }
 
   .cta-title {
-    font-size: 1.5rem;
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 2.2vw, 1.85rem);
     margin: 0;
-    line-height: 1.25;
-    color: var(--color-text-primary);
+    line-height: 1.3;
+    color: #ffffff;
+    max-inline-size: 720px;
+    margin-inline: auto;
   }
 
   .cta-text {
     font-size: var(--fs-body);
-    line-height: 1.65;
-    color: var(--color-text-secondary);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
     margin: 0;
-    max-inline-size: 680px;
+    max-inline-size: 640px;
+    margin-inline: auto;
   }
 
   .cta-actions {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     gap: 1rem;
     margin-block-start: 0.5rem;
   }
 
+  /* Buttons styling matching homepage cta-card primary and secondary */
+  .blog-cta-card .btn-primary {
+    background: #ffffff;
+    border-color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    animation: ctaBtnTextCycle 20s linear infinite;
+  }
+
+  .blog-cta-card .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent 30%, rgba(2, 116, 222, 0.18) 50%, transparent 70%);
+    animation: ctaShimmer 3.2s ease-in-out infinite;
+  }
+
+  .blog-cta-card .btn-primary:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.9);
+  }
+
+  .blog-cta-card .btn-secondary {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.6);
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blog-cta-card .btn-secondary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.25) 50%, transparent 70%);
+    animation: ctaShimmer 3.2s ease-in-out infinite;
+  }
+
+  .blog-cta-card .btn-secondary:hover {
+    border-color: #ffffff;
+    color: #ffffff;
+  }
+
   .cta-btn {
-    text-transform: uppercase;
     font-size: var(--control-font-size);
     padding: var(--control-pad-block) var(--control-pad-inline);
     line-height: var(--control-line-height);
     text-decoration: none;
     cursor: pointer;
+  }
+
+  @keyframes ctaShimmer {
+    0%   { transform: translateX(0); }
+    60%  { transform: translateX(240%); }
+    100% { transform: translateX(240%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-cta-card .btn-primary {
+      animation: none;
+      color: var(--color-blue);
+    }
+    .blog-cta-card .btn-primary::after,
+    .blog-cta-card .btn-secondary::after,
+    .blog-cta-card,
+    .cwave {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .blog-cta-card {
+      padding: 2.5rem 1.5rem;
+    }
+    
+    .cta-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .cta-actions .btn {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
   }
 </style>

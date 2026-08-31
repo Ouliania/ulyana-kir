@@ -1,0 +1,443 @@
+---
+import { type Locale } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+interface FaqItem {
+  q: string;
+  a: string;
+}
+
+const faqData: Record<Locale, FaqItem[]> = {
+  ru: [
+    {
+      q: "А почему вы, а не ИИ?",
+      a: "Вы всегда можете сделать сайт, проработать структуру и визуал с помощью агентов ИИ. Но никто, кроме человека, не может держать в голове систему вашего бизнеса и тонкую логику принятия решений о покупке людьми: что они чувствуют, когда читают текст на вашем сайте или видят его визуальное оформление. ИИ не вытащит из вашей головы реальные смыслы и не спроектирует структуру воронки под поведение ваших клиентов."
+    },
+    {
+      q: "Дорого",
+      a: "Качественный сайт окупает себя, потому что я проектирую воронку и пишу продающие тексты под вашу задачу бизнеса, конкурентов и клиентов. Но если бюджет сейчас ограничен — не нужно влезать в долги. Можно начать с малого: сделать точечный аудит с конкретными правками, провести консультацию по воронке и стратегии на сайте или запустить быстрый сайт на коде. Это принесет первые заявки, с которых вы оплатите масштабный проект."
+    },
+    {
+      q: "Вы копирайтер?",
+      a: "Отчасти, да. Но я работаю больше со структурой и смыслами. Сначала я проектирую логику воронки: решаю, в какой момент закрыть страх клиента, а в какой надо показать кейс. А текст и копирайтинг — это инструмент, которым я эту логику заполняю."
+    },
+    {
+      q: "А если мне не понравится дизайн?",
+      a: "Я не рисую дизайн вслепую. Сначала мы утверждаем концепцию сайта, цвета, шрифты, что должен передавать сайт через визуал. И на основе этого проектируется дизайн. То есть дизайн будет создан не на основе вкусов, а на основе логики, правил и окончательный дизайн для вас не будет сюрпризом, так как мы утвердим и согласуем его заранее."
+    },
+    {
+      q: "Вы работаете с любыми проектами?",
+      a: "Нет. Я не берусь за проекты, если не верю, что мои услуги окупятся. Моя зона силы — это B2B, сложные услуги и продукты с высоким чеком, где клиент принимает решение головой, сравнивает и сомневается."
+    },
+    {
+      q: "Обязательно ли переделывать весь сайт с нуля?",
+      a: "Нет, и часто это ошибка. Если технически сайт работает нормально и не тормозит, не нужно сносить его и тратиться на новый дизайн. Достаточно переписать заголовки, поменять логику блоков и заменить призывы к действию. Это стоит в разы дешевле, делается за неделю и дает результат сразу."
+    },
+    {
+      q: "Какую конверсию вы гарантируете?",
+      a: "Я не гарантирую конкретную конверсию. Если вам гарантируют конверсию в 10% до запуска — вас обманывают. На это влияет слишком много факторов: качество трафика, активность конкурентов, ваш продукт/услуга. Я гарантирую, что уберу все смысловые барьеры, из-за которых люди закрывают ваш сайт прямо сейчас. А дальше мы будем докручивать цифры по аналитике."
+    }
+  ],
+  en: [
+    {
+      q: "Why you and not AI?",
+      a: "You can always build a site, draft structure, and create visuals using AI agents. But no one except a human can hold the full system of your business in mind, nor understand the subtle logic of human purchasing decisions—what they feel when reading copy or seeing site visuals. AI will not extract real meanings from your head and will not design a funnel structure based on your clients' behavior."
+    },
+    {
+      q: "Too expensive",
+      a: "A high-quality website pays for itself because I design the funnel and write copy tailored specifically to your business goals, competitors, and customers. If your budget is tight, there is no need to go into debt. We can start small—with a targeted audit offering concrete recommendations, a funnel and strategy consultation, or a fast-coded website. This will generate your first inquiries, which can fund a larger project later."
+    },
+    {
+      q: "Are you a copywriter?",
+      a: "Partly, yes. But I work more with structure and meaning. First, I design the funnel logic: deciding when to address a client's fear and when to show a case study. Text and copy are just tools I use to fill in that structure."
+    },
+    {
+      q: "What if I don't like the design?",
+      a: "I never design blindly. First, we approve the site concept, colors, typography, and what the site should communicate visually. The design is built based on that concept. This means the design is created based on logic and rules, not subjective tastes, so the final design won't be a surprise since we approve and coordinate it beforehand."
+    },
+    {
+      q: "Do you work with any project?",
+      a: "No. I don't take on projects if I don't believe my services will pay off. My area of strength is B2B, complex services, and high-ticket products where clients make decisions rationally, compare, and hesitate."
+    },
+    {
+      q: "Is it necessary to rebuild the entire site from scratch?",
+      a: "No, and often that's a mistake. If the site works fine technically and doesn't lag, there's no need to scrap it and spend money on a new design. Simply rewriting headers, changing block logic, and updating calls to action is enough. This costs significantly less, takes a week, and yields results immediately."
+    },
+    {
+      q: "What conversion rate do you guarantee?",
+      a: "I don't guarantee a specific conversion rate. If someone guarantees you a 10% conversion before launch, they are lying. Too many factors influence this: traffic quality, competitor activity, your product/service. I guarantee I will remove all semantic barriers that make people close your site right now. After that, we'll optimize the numbers using analytics."
+    }
+  ]
+};
+
+const titleText = locale === 'ru' ? 'Ответы на вопросы' : 'FAQ';
+---
+
+<section id="faq" class="section-block faq-section">
+  <header class="section-head section-head--label">
+    <h2 class="type-label">{titleText}</h2>
+  </header>
+
+  <!-- Desktop Version (2 Columns: Left Questions, Right Answers) -->
+  <div class="faq-desktop">
+    <div class="faq-left-tabs">
+      {faqData[locale].map((item, index) => (
+        <button 
+          type="button" 
+          class:list={["faq-tab-btn", index === 0 && "is-active"]} 
+          data-faq-tab={index}
+        >
+          <span class="faq-tab-num">0{index + 1}</span>
+          <span class="faq-tab-text">{item.q}</span>
+        </button>
+      ))}
+    </div>
+
+    <div class="faq-right-card">
+      {faqData[locale].map((item, index) => (
+        <div 
+          class:list={["faq-panel", index === 0 && "is-active"]} 
+          data-faq-panel={index}
+        >
+          <div class="notion-callout">
+            <div class="notion-icon-wrap">
+              <svg class="notion-bulb" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5 5 0 0 0 8 8c0 1 .3 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"></path>
+                <line x1="9" y1="18" x2="15" y2="18"></line>
+                <line x1="10" y1="22" x2="14" y2="22"></line>
+              </svg>
+            </div>
+            <div class="notion-content">
+              <p class="faq-panel-solution">{item.a}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Mobile Version (Accordion Layout) -->
+  <div class="faq-mobile">
+    {faqData[locale].map((item, index) => (
+      <div class="faq-acc-item" data-faq-acc-item>
+        <button type="button" class="faq-acc-trigger" data-faq-acc-trigger aria-expanded="false">
+          <span class="faq-acc-num">0{index + 1}</span>
+          <span class="faq-acc-doubt">{item.q}</span>
+          <span class="faq-icon-toggle">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19" class="faq-line-v"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </span>
+        </button>
+        
+        <div class="faq-acc-content" data-faq-acc-content>
+          <div class="faq-acc-inner">
+            <p class="faq-acc-solution">{item.a}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  // Desktop Tab Switcher
+  const tabButtons = document.querySelectorAll<HTMLButtonElement>('[data-faq-tab]');
+  const panels = document.querySelectorAll<HTMLElement>('[data-faq-panel]');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const activeIdx = btn.getAttribute('data-faq-tab');
+      
+      tabButtons.forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+
+      panels.forEach(p => {
+        const panelIdx = p.getAttribute('data-faq-panel');
+        if (panelIdx === activeIdx) {
+          p.classList.add('is-active');
+        } else {
+          p.classList.remove('is-active');
+        }
+      });
+    });
+  });
+
+  // Mobile Accordion Toggle
+  const faqItems = document.querySelectorAll('[data-faq-acc-item]');
+
+  faqItems.forEach(item => {
+    const trigger = item.querySelector('[data-faq-acc-trigger]');
+    const content = item.querySelector('[data-faq-acc-content]') as HTMLElement;
+
+    trigger?.addEventListener('click', () => {
+      const isOpen = item.classList.contains('is-open');
+
+      // Close other items
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('is-open');
+          otherItem.querySelector('[data-faq-acc-trigger]')?.setAttribute('aria-expanded', 'false');
+          const otherContent = otherItem.querySelector('[data-faq-acc-content]') as HTMLElement;
+          if (otherContent) otherContent.style.maxHeight = '0px';
+        }
+      });
+
+      // Toggle current item
+      if (isOpen) {
+        item.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
+        if (content) content.style.maxHeight = '0px';
+      } else {
+        item.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
+        if (content) content.style.maxHeight = `${content.scrollHeight}px`;
+      }
+    });
+  });
+</script>
+
+<style>
+  .faq-section {
+    padding-block-start: clamp(3rem, 6vw, 5rem);
+    padding-block-end: clamp(4rem, 8vw, 6rem);
+    background: var(--color-surface);
+  }
+
+  .faq-desktop {
+    display: none;
+  }
+
+  .faq-mobile {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Desktop layout styling */
+  @media (min-width: 1024px) {
+    .faq-desktop {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* Equal columns: Left Questions, Right Answers */
+      gap: 3.5rem;
+      align-items: stretch;
+    }
+
+    .faq-mobile {
+      display: none;
+    }
+  }
+
+  /* Left Tab list styling */
+  .faq-left-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: 100%;
+    justify-content: flex-start;
+  }
+
+  .faq-tab-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-button);
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 100%;
+  }
+
+  .faq-tab-num {
+    font-size: 0.85rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin-top: 0.15rem;
+  }
+
+  .faq-tab-text {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--color-text-secondary);
+    transition: color 0.2s;
+  }
+
+  .faq-tab-btn:hover {
+    border-color: var(--color-blue);
+  }
+
+  .faq-tab-btn.is-active {
+    background: var(--color-blue-tint);
+    border-color: var(--color-blue);
+  }
+
+  .faq-tab-btn.is-active .faq-tab-num {
+    color: var(--color-blue);
+  }
+
+  .faq-tab-btn.is-active .faq-tab-text {
+    color: var(--color-text-primary);
+  }
+
+  /* Right Card styling */
+  .faq-right-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .faq-panel {
+    display: none;
+    height: 100%;
+  }
+
+  .faq-panel.is-active {
+    display: block;
+    height: 100%;
+  }
+
+  /* Notion-style Callout block */
+  .notion-callout {
+    display: flex;
+    gap: 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 2.5rem;
+    height: 100%;
+    align-items: flex-start;
+    box-shadow: 0 4px 20px -8px color-mix(in srgb, var(--color-text-primary) 4%, transparent);
+    animation: panelFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes panelFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .notion-icon-wrap {
+    display: grid;
+    place-items: center;
+    background: var(--color-blue-tint);
+    color: var(--color-blue);
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    flex-shrink: 0;
+  }
+
+  .notion-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .faq-panel-solution {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  /* Mobile Accordion styling */
+  .faq-acc-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-acc-trigger {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1.5rem 0.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    gap: 1.5rem;
+    color: var(--color-text-secondary);
+    transition: color 0.2s ease;
+  }
+
+  .faq-acc-trigger:hover {
+    color: var(--color-text-primary);
+  }
+
+  .faq-acc-num {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  .faq-acc-doubt {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.35;
+    flex-grow: 1;
+  }
+
+  .faq-icon-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    transition: color 0.2s ease;
+  }
+
+  .faq-acc-trigger:hover .faq-icon-toggle {
+    color: var(--color-text-primary);
+  }
+
+  .faq-line-v {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s;
+    transform-origin: center;
+  }
+
+  .faq-acc-item.is-open .faq-line-v {
+    transform: rotate(90deg) scaleY(0);
+    opacity: 0;
+  }
+
+  .faq-acc-item.is-open .faq-icon-toggle {
+    color: var(--color-blue);
+  }
+
+  .faq-acc-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .faq-acc-inner {
+    padding: 0 0.5rem 1.75rem 2.25rem;
+  }
+
+  .faq-acc-solution {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+</style>

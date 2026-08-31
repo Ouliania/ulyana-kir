@@ -1,0 +1,544 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import PageShell from '../../../components/PageShell.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import BlogCTA from '../../../components/BlogCTA.astro';
+import { t } from '../../../i18n/ui';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('blog');
+  return blogEntries.map(entry => ({
+    params: { slug: entry.id }, props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+
+function getReadTime(body: string = ''): number {
+  const words = body.trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+// filter headings to H2 depth for a clean table of contents
+const tocHeadings = headings.filter(h => h.depth === 2);
+
+const canonicalPostUrl = Astro.site ? new URL(`/ru/blog/${entry.id}/`, Astro.site).toString() : `https://ulyanaweb.ru/ru/blog/${entry.id}/`;
+const imageUrl = entry.data.image
+  ? (Astro.site ? new URL(entry.data.image, Astro.site).toString() : `https://ulyanaweb.ru${entry.data.image}`)
+  : (Astro.site ? new URL('/og-image.png', Astro.site).toString() : 'https://ulyanaweb.ru/og-image.png');
+
+// Related posts: find posts sharing tags, or take recent ones
+const allPosts = (await getCollection('blog'))
+  .filter(p => !p.data.draft && p.id !== entry.id);
+
+const relatedPosts = allPosts
+  .map(p => {
+    const sharedTags = p.data.tags.filter(t => entry.data.tags.includes(t)).length;
+    return { post: p, score: sharedTags };
+  })
+  .sort((a, b) => b.score - a.score || b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf())
+  .slice(0, 2)
+  .map(item => item.post);
+
+// Specific JSON-LD Schema for BlogPosting (highly optimized for search/AI crawlers)
+const blogSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": entry.data.title,
+  "description": entry.data.description,
+  "image": imageUrl,
+  "datePublished": entry.data.pubDate.toISOString(),
+  "dateModified": entry.data.pubDate.toISOString(),
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": canonicalPostUrl
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Ульяна Кирпичникова",
+    "url": Astro.site ? Astro.site.toString() : "https://ulyanaweb.ru"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Ульяна Кирпичникова",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ulyanaweb.ru/favicon.ico"
+    }
+  }
+};
+---
+
+<Layout 
+  title={`${entry.data.title} | Блог Ульяны Кирпичниковой`} 
+  description={entry.data.description}
+  image={imageUrl}
+  schema={blogSchema}
+  isBlog={true}
+  lang="ru"
+>
+  <Header />
+
+  <PageShell>
+  <main class="post-main section-padding">
+    <Breadcrumbs
+      locale="ru"
+      items={[
+        { label: t('ru', 'blog'), href: '/ru/blog/' },
+        { label: entry.data.title },
+      ]}
+    />
+    <article class="container post-container">
+      <header class="post-header">
+        <div class="post-meta">
+          <div class="post-date-time">
+            <time datetime={entry.data.pubDate.toISOString()}>
+              {entry.data.pubDate.toLocaleDateString('ru-RU', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
+            </time>
+            <span class="meta-separator">/</span>
+            <span class="read-time" title="Время чтения">
+              <svg class="meta-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              {getReadTime(entry.body)} мин
+            </span>
+          </div>
+          <div class="post-tags">
+            {entry.data.tags.map(tag => (
+              <span class="post-tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+        
+        <h1 class="post-title">{entry.data.title}</h1>
+      </header>
+
+      <div class="post-content-layout">
+        {tocHeadings.length > 0 && (
+          <nav class="post-toc">
+            <h4 class="toc-title">Содержание</h4>
+            <ul class="toc-list">
+              {tocHeadings.map(h => (
+                <li><a href={`#${h.slug}`}>{h.text}</a></li>
+              ))}
+            </ul>
+          </nav>
+        )}
+
+        <div class="prose">
+          <Content />
+        </div>
+      </div>
+
+      {relatedPosts.length > 0 && (
+        <section class="related-posts">
+          <h3 class="related-title">Читайте также</h3>
+          <div class="related-grid">
+            {relatedPosts.map(rel => (
+              <a href={`/ru/blog/${rel.id}/`} class="related-card">
+                <span class="related-card-title">{rel.data.title}</span>
+                <p class="related-card-desc">{rel.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <BlogCTA
+        ctaType={entry.data.ctaType}
+        ctaTitle={entry.data.ctaTitle}
+        ctaDesc={entry.data.ctaDesc}
+        ctaButton={entry.data.ctaButton}
+      />
+    </article>
+  </main>
+
+  <Footer />
+  </PageShell>
+</Layout>
+
+<style>
+  .post-main {
+    padding-block-start: clamp(2rem, 4vw, 3rem);
+    min-block-size: 80vh;
+  }
+
+  .post-container {
+    max-inline-size: 800px;
+    width: 100%;
+    transition: max-width 0.2s;
+  }
+
+  @media (min-width: 1024px) {
+    .post-container {
+      max-inline-size: 1040px;
+    }
+  }
+
+  .back-link {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    display: inline-block;
+    margin-block-end: 2rem;
+    transition: color 0.15s ease, transform 0.15s ease;
+  }
+
+  .back-link:hover {
+    color: var(--color-accent-text);
+    transform: translateX(-4px);
+  }
+
+  .post-header {
+    margin-block-start: 1.5rem;
+    margin-block-end: 3rem;
+  }
+
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-block-end: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .post-date-time {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .meta-separator {
+    color: var(--color-border);
+  }
+
+  .read-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--color-text-muted);
+  }
+
+  .meta-icon {
+    display: inline-block;
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+  }
+
+  .post-tags {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .post-tag {
+    background: var(--color-blue-tint);
+    border: 1px solid transparent;
+    color: var(--color-blue);
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-default);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .post-title {
+    font-size: var(--fs-h2-display);
+    line-height: 1.15;
+    color: var(--color-text-primary);
+  }
+
+  /* Responsive post layout split: sticky sidebar on desktop, inline block on mobile */
+  .post-content-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-block-end: 4.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .post-content-layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 3.5rem;
+      align-items: start;
+    }
+  }
+
+  .post-toc {
+    background: var(--color-blue-tint);
+    border-left: 3px solid var(--color-blue);
+    padding: 1.5rem;
+    border-radius: var(--radius-card);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 1024px) {
+    .post-toc {
+      position: sticky;
+      top: calc(var(--header-height) + 2rem);
+      max-height: calc(100vh - var(--header-height) - 4rem);
+      overflow-y: auto;
+      background: transparent;
+      border-left: none;
+      border-right: 1px solid var(--color-border);
+      border-radius: 0;
+      padding: 0 1.5rem 0 0;
+      margin: 0;
+    }
+  }
+
+  .toc-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-block-end: 1rem;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.5rem;
+  }
+
+  .toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    list-style-type: none;
+    padding-inline-start: 0;
+  }
+
+  .toc-list li {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    position: relative;
+    padding-left: 0;
+  }
+
+  .toc-list a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color 0.15s ease, padding-left 0.15s ease;
+    display: inline-block;
+  }
+
+  .toc-list a:hover {
+    color: var(--color-blue);
+    padding-left: 4px;
+  }
+
+  /* Prose Styles for rendering markdown content */
+  .prose {
+    max-inline-size: 680px;
+    width: 100%;
+  }
+
+  .prose :global(p) {
+    font-size: 1.1rem;
+    line-height: 1.75;
+    margin-block-end: 1.75rem;
+    color: var(--color-text-secondary);
+  }
+
+  .prose :global(a) {
+    color: var(--color-blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease;
+  }
+
+  .prose :global(a:hover) {
+    color: var(--color-accent-hover);
+  }
+
+  .prose :global(h2) {
+    font-size: 1.8rem;
+    margin-block-start: 3.5rem;
+    margin-block-end: 1.25rem;
+    color: var(--color-text-primary);
+    line-height: 1.3;
+  }
+
+  .prose :global(h3) {
+    font-size: 1.4rem;
+    margin-block-start: 2.5rem;
+    margin-block-end: 1rem;
+    color: var(--color-text-primary);
+    line-height: 1.35;
+  }
+
+  .prose :global(ul), .prose :global(ol) {
+    margin-block-end: 1.75rem;
+    padding-inline-start: 1.5rem;
+  }
+
+  .prose :global(li) {
+    margin-block-end: 0.65rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+  }
+
+  .prose :global(ul) {
+    list-style-type: disc;
+  }
+
+  .prose :global(ol) {
+    list-style-type: decimal;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--color-blue);
+    background: var(--color-blue-tint);
+    padding: 1.5rem 2rem;
+    margin-inline: 0;
+    margin-block: 2.5rem;
+    border-radius: 0 var(--radius-card) var(--radius-card) 0;
+  }
+
+  .prose :global(blockquote p) {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: var(--color-text-primary);
+    margin-block-end: 0;
+  }
+
+  .prose :global(code) {
+    font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    background: var(--color-blue-tint);
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--radius-default);
+    font-size: 0.9em;
+    color: var(--color-blue);
+    word-break: break-word;
+  }
+
+  .prose :global(pre) {
+    background: #1e1e24;
+    border: 1px solid var(--color-border);
+    padding: 1.5rem;
+    border-radius: var(--radius-card);
+    overflow-x: auto;
+    margin-block-end: 2rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .prose :global(pre code) {
+    background: transparent;
+    padding: 0;
+    font-size: 0.9rem;
+    color: #f4f4f7;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  /* Table Styles for Markdown Content */
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-block-start: 1.5rem;
+    margin-block-end: 2.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .prose :global(table) {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  .prose :global(th) {
+    font-family: var(--font-body);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 2px solid var(--color-text-primary);
+    background-color: var(--color-blue-tint);
+    color: var(--color-text-primary);
+  }
+
+  .prose :global(td) {
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    vertical-align: middle;
+  }
+
+  .prose :global(tr:nth-child(even) td) {
+    background-color: color-mix(in srgb, var(--color-blue-tint) 30%, transparent);
+  }
+
+  /* Related Posts Block */
+  .related-posts {
+    margin-block-start: 5rem;
+    margin-block-end: 3rem;
+    padding-block-start: 3rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .related-title {
+    font-size: var(--fs-h3);
+    color: var(--color-text-primary);
+    margin-block-end: 1.5rem;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .related-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.75rem;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .related-card:hover {
+    border-color: var(--color-blue);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px -10px color-mix(in srgb, var(--color-blue) 8%, transparent);
+  }
+
+  .related-card-title {
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    line-height: 1.35;
+  }
+
+  .related-card-desc {
+    font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin: 0;
+  }
+</style>
