@@ -3,6 +3,8 @@
  * Replaces direct t.me links with a modal form:
  * contact field + method chips (auto-detect) + optional message + Telegram Bot API send.
  */
+import { markLeadSubmitted } from './exit-intent';
+
 export function initContactPopup(): void {
   const triggers = document.querySelectorAll<HTMLElement>('[data-contact-popup]');
   if (triggers.length === 0) return;
@@ -175,6 +177,7 @@ export function initContactPopup(): void {
 
       status.textContent = t.thanks;
       status.className = 'cu-status success';
+      markLeadSubmitted();
       form.querySelectorAll('button').forEach((b) => (b.disabled = true));
       setTimeout(() => {
         close();

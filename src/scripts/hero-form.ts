@@ -1,3 +1,5 @@
+import { markLeadSubmitted } from './exit-intent';
+
 export function initHeroForm(): void {
   const form = document.getElementById('hero-contact-form') as HTMLFormElement | null;
   if (!form) return;
@@ -119,6 +121,7 @@ export function initHeroForm(): void {
           : 'Thanks! I\'ll reach out shortly';
         status.className = 'hero-form-note success';
       }
+      markLeadSubmitted();
       form.reset();
       radios().forEach(m => m.checked = false);
     } catch (_err) {

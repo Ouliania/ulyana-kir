@@ -2,6 +2,8 @@
  * Express-audit popup — triggered by [data-express-audit].
  * Two fields: current site URL + contact → sent to @ulyana_leads_bot.
  */
+import { markLeadSubmitted } from './exit-intent';
+
 export function initExpressAudit(): void {
   const btn = document.querySelector<HTMLButtonElement>('[data-express-audit]');
   if (!btn) return;
@@ -157,6 +159,7 @@ export function initExpressAudit(): void {
 
       status.textContent = t.thanks;
       status.className = 'ea-status success';
+      markLeadSubmitted();
       form.reset();
     } catch (_err) {
       status.textContent = t.error;
