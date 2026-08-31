@@ -107,6 +107,9 @@ export function initExitIntent(): void {
   const closeBtn = dialog.querySelector<HTMLButtonElement>('[data-ei-close]')!;
 
   const open = () => {
+    // Показать строго один раз за сессию (даже если плашку закрыли,
+    // повторный mouseout/visibilitychange не откроет её снова)
+    if (sessionStorage.getItem('exit-intent-shown')) return;
     sessionStorage.setItem('exit-intent-shown', '1');
     overlay.setAttribute('aria-hidden', 'false');
     overlay.classList.add('is-open');
