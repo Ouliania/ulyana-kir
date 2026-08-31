@@ -250,6 +250,7 @@ const blogSchema = {
     font-size: var(--fs-h2-display);
     line-height: 1.15;
     color: var(--color-text-primary);
+    text-wrap: pretty;
   }
 
   /* Responsive post layout split: sticky sidebar on desktop, inline block on mobile */
@@ -363,6 +364,7 @@ const blogSchema = {
     margin-block-end: 1.25rem;
     color: var(--color-text-primary);
     line-height: 1.3;
+    text-wrap: pretty;
   }
 
   .prose :global(h3) {
@@ -371,6 +373,11 @@ const blogSchema = {
     margin-block-end: 1rem;
     color: var(--color-text-primary);
     line-height: 1.35;
+    text-wrap: pretty;
+  }
+
+  .prose :global(h4) {
+    text-wrap: pretty;
   }
 
   .prose :global(ul), .prose :global(ol) {
