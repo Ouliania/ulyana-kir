@@ -10,6 +10,10 @@ const blog = defineCollection({
     tags: z.array(z.string()).default([]),
     image: z.string().optional(),
     draft: z.boolean().optional().default(false),
+    ctaType: z.enum(['audit', 'copywriting', 'redesign', 'general']).optional().default('general'),
+    ctaTitle: z.string().optional(),
+    ctaDesc: z.string().optional(),
+    ctaButton: z.string().optional(),
   }),
 });
 

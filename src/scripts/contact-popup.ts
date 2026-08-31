@@ -110,7 +110,24 @@ export function initContactPopup(): void {
 
   const radios = () => overlay.querySelectorAll<HTMLInputElement>('input[name="method"]');
 
-  const open = () => {
+  const open = (e: Event) => {
+    const trigger = e.currentTarget as HTMLElement;
+    const customTitle = trigger.getAttribute('data-contact-title');
+    const customSubtitle = trigger.getAttribute('data-contact-subtitle');
+    const customCtaType = trigger.getAttribute('data-contact-cta-type');
+
+    const titleEl = overlay.querySelector<HTMLElement>('.cu-title')!;
+    const subtitleEl = overlay.querySelector<HTMLElement>('.cu-subtitle')!;
+
+    titleEl.textContent = customTitle || t.title;
+    subtitleEl.textContent = customSubtitle || t.subtitle;
+
+    if (customCtaType) {
+      form.setAttribute('data-cta-type', customCtaType);
+    } else {
+      form.removeAttribute('data-cta-type');
+    }
+
     overlay.setAttribute('aria-hidden', 'false');
     overlay.classList.add('is-open');
     document.body.style.overflow = 'hidden';
@@ -161,12 +178,16 @@ export function initContactPopup(): void {
 
       if (BOT_TOKEN && CHAT_ID) {
         const msgText = textarea.value.trim();
+        const ctaType = form.getAttribute('data-cta-type');
+        const ctaSource = ctaType ? `Source: Blog CTA (${ctaType})` : '';
+
         const msg = [
           `New lead from ulyanaweb.ru`,
           `Contact: ${contact}`,
           `Method: ${method}`,
           msgText ? `Message: ${msgText}` : '',
-          `Page: ${document.title}`,
+          ctaSource,
+          `Page: ${document.title} (${window.location.href})`,
         ].filter(Boolean).join('\n');
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
           method: 'POST',

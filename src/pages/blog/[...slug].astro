@@ -152,7 +152,12 @@ const blogSchema = {
         </section>
       )}
 
-      <BlogCTA />
+      <BlogCTA
+        ctaType={entry.data.ctaType}
+        ctaTitle={entry.data.ctaTitle}
+        ctaDesc={entry.data.ctaDesc}
+        ctaButton={entry.data.ctaButton}
+      />
     </article>
   </main>
 
@@ -194,6 +199,7 @@ const blogSchema = {
   }
 
   .post-header {
+    margin-block-start: 1.5rem;
     margin-block-end: 3rem;
   }
 

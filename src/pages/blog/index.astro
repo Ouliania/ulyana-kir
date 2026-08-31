@@ -171,6 +171,8 @@ const description = "Личный блог про веб-разработку, �
     .blog-sidebar {
       position: sticky;
       top: calc(var(--header-height) + 2rem);
+      max-height: calc(100vh - var(--header-height) - 4rem);
+      overflow-y: auto;
     }
   }
 
@@ -200,6 +202,8 @@ const description = "Личный блог про веб-разработку, �
     -webkit-overflow-scrolling: touch;
     list-style: none;
     padding-left: 0;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
   }
 
   .tag-filters-list::-webkit-scrollbar {

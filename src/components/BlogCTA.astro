@@ -1,20 +1,73 @@
 ---
+import { t, type Locale } from '../i18n/ui';
+
+interface Props {
+  ctaType?: 'audit' | 'copywriting' | 'redesign' | 'general';
+  ctaTitle?: string;
+  ctaDesc?: string;
+  ctaButton?: string;
+  locale?: Locale;
+}
+
+const {
+  ctaType = 'general',
+  ctaTitle: overrideTitle,
+  ctaDesc: overrideDesc,
+  ctaButton: overrideButton,
+  locale = 'ru',
+} = Astro.props;
+
+const ctaKeys = {
+  audit: {
+    title: 'blogCtaAuditTitle',
+    desc: 'blogCtaAuditDesc',
+    button: 'blogCtaAuditButton',
+  },
+  copywriting: {
+    title: 'blogCtaCopyTitle',
+    desc: 'blogCtaCopyDesc',
+    button: 'blogCtaCopyButton',
+  },
+  redesign: {
+    title: 'blogCtaRedesignTitle',
+    desc: 'blogCtaRedesignDesc',
+    button: 'blogCtaRedesignButton',
+  },
+  general: {
+    title: 'blogCtaGeneralTitle',
+    desc: 'blogCtaGeneralDesc',
+    button: 'blogCtaGeneralButton',
+  },
+}[ctaType];
+
+const title = overrideTitle || t(locale, ctaKeys.title as any);
+const desc = overrideDesc || t(locale, ctaKeys.desc as any);
+const buttonText = overrideButton || t(locale, ctaKeys.button as any);
+
+const badgeText = locale === 'ru' ? 'Бесплатно • 20 минут в переписке' : 'Free • 20 min in chat';
+const secondBtnText = locale === 'ru' ? 'Написать в Telegram' : 'Message on Telegram';
 ---
+
 <section class="blog-cta-section">
   <div class="blog-cta-card">
     <div class="cta-header">
-      <span class="cta-badge">Бесплатно • 20 минут по видео или в переписке</span>
+      <span class="cta-badge">{badgeText}</span>
     </div>
-    <h3 class="cta-title">Хотите посмотреть на сайт глазами клиента?</h3>
-    <p class="cta-text">
-      Разберем ваш текущий сайт или прототип. Выявим смысловые ошибки, мешающие продажам, проверим удобство на мобильных устройствах и наметим пошаговый план по повышению конверсии.
-    </p>
+    <h3 class="cta-title">{title}</h3>
+    <p class="cta-text">{desc}</p>
     <div class="cta-actions">
-      <a href="https://t.me/ulyana_audit_bot?start=blog_cta" target="_blank" rel="noopener noreferrer" class="btn btn-primary cta-btn">
-        Получить рекомендации
-      </a>
-      <a href="/contacts" class="btn btn-secondary cta-btn">
-        Контакты
+      <button
+        type="button"
+        class="btn btn-primary cta-btn"
+        data-contact-popup
+        data-contact-title={title}
+        data-contact-subtitle={desc}
+        data-contact-cta-type={ctaType}
+      >
+        {buttonText}
+      </button>
+      <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" class="btn btn-secondary cta-btn">
+        {secondBtnText}
       </a>
     </div>
   </div>
@@ -87,5 +140,6 @@
     padding: var(--control-pad-block) var(--control-pad-inline);
     line-height: var(--control-line-height);
     text-decoration: none;
+    cursor: pointer;
   }
 </style>
