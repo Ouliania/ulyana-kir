@@ -26,10 +26,10 @@ function getReadTime(body: string = ''): number {
 // filter headings to H2 depth for a clean table of contents
 const tocHeadings = headings.filter(h => h.depth === 2);
 
-const canonicalPostUrl = Astro.site ? new URL(`/ru/blog/${entry.id}/`, Astro.site).toString() : `https://ulyanaweb.ru/ru/blog/${entry.id}/`;
+const canonicalPostUrl = Astro.site ? new URL(`/ru/blog/${entry.id}/`, Astro.site).toString() : `https://www.ulyanaweb.ru/ru/blog/${entry.id}/`;
 const imageUrl = entry.data.image
-  ? (Astro.site ? new URL(entry.data.image, Astro.site).toString() : `https://ulyanaweb.ru${entry.data.image}`)
-  : (Astro.site ? new URL('/og-image.png', Astro.site).toString() : 'https://ulyanaweb.ru/og-image.png');
+  ? (Astro.site ? new URL(entry.data.image, Astro.site).toString() : `https://www.ulyanaweb.ru${entry.data.image}`)
+  : (Astro.site ? new URL('/og-image.png', Astro.site).toString() : 'https://www.ulyanaweb.ru/og-image.png');
 
 // Related posts: find posts sharing tags, or take recent ones
 const allPosts = (await getCollection('blog'))

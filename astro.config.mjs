@@ -30,7 +30,7 @@ function singleSitemap() {
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://ulyanaweb.ru',
+  site: 'https://www.ulyanaweb.ru',
   integrations: [
     sitemap({
       filter: (page) => {
