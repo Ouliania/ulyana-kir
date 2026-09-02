@@ -27,4 +27,4 @@ User-agent: YandexAdditional
 Allow: /
 
 # Reference the XML sitemap
-Sitemap: https://ulyanaweb.ru/sitemap-index.xml
+Sitemap: https://ulyanaweb.ru/sitemap.xml
