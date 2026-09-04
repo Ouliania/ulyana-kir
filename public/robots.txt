@@ -26,5 +26,8 @@ Allow: /
 User-agent: YandexAdditional
 Allow: /
 
+User-agent: PerplexityBot
+Allow: /
+
 # Reference the XML sitemap
 Sitemap: https://www.ulyanaweb.ru/sitemap.xml

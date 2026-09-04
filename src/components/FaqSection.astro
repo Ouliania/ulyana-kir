@@ -76,7 +76,22 @@ const faqData: Record<Locale, FaqItem[]> = {
 };
 
 const titleText = locale === 'ru' ? 'Ответы на вопросы' : 'FAQ';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqData[locale].map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.a,
+    },
+  })),
+};
 ---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
 
 <section id="faq" class="section-block faq-section">
   <header class="section-head section-head--label">

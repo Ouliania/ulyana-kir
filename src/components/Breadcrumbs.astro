@@ -16,7 +16,34 @@ interface Props {
 const { locale, items } = Astro.props;
 const homeHref = locale === 'ru' ? '/ru/' : '/';
 const crumbs: Crumb[] = [{ label: t(locale, 'home'), href: homeHref }, ...items];
+
+const siteBase = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://www.ulyanaweb.ru';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: crumbs.map((c, i) => {
+    const isLast = i === crumbs.length - 1;
+    const itemUrl = c.href
+      ? (c.href.startsWith('http') ? c.href : `${siteBase}${c.href.startsWith('/') ? '' : '/'}${c.href}`)
+      : (isLast ? Astro.url.href : undefined);
+
+    const listItem: Record<string, unknown> = {
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.label,
+    };
+
+    if (itemUrl) {
+      listItem.item = itemUrl;
+    }
+
+    return listItem;
+  }),
+};
 ---
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(breadcrumbSchema)} />
 
 <nav class="crumbs" aria-label={t(locale, 'breadcrumbAria')}>
   <ol class="crumbs-list">
