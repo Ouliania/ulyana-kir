@@ -293,6 +293,11 @@ Create a landing page for a digital marketing agency specializing in B2B SaaS co
 
 Он не поговорит с вашими клиентами, не вытащит из них реальные причины покупки, не поймет, почему они уходят к конкурентам. Нейросеть пишет «голосом ниши» — усредненным, гладким и лишенным характера языком. 
 
+<figure style="margin-block: 2rem; text-align: center;">
+  <img src="/images/ai_vs_human_prompts.png" alt="Инфографика: Создание лендинга: ИИ vs Человек" style="max-width: 100%; height: auto; border-radius: 12px; border: 1px solid #E2E0DC;" loading="lazy" />
+  <figcaption style="font-size: 0.85rem; color: #6B6B6B; margin-top: 0.75rem;">Инфографика: С чем нейросеть справляется сама, а где бизнесу нужен стратег</figcaption>
+</figure>
+
 **Как с этим работать:**
 Используйте ИИ как быстрого и дешевого проектировщика. Пусть он собирает скелет лендинга. Но наполнять этот скелет смыслами, расставлять акценты и вшивать психологию продаж все равно придется человеку. 
 
