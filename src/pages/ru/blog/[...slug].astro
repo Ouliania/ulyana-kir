@@ -143,42 +143,47 @@ const blogSchema = {
           </nav>
         )}
 
-        <div class="prose">
-          <Content />
-        </div>
-      </div>
-
-      <section class="author-box" aria-labelledby="author-box-title">
-        <div class="author-box-inner">
-          <div class="author-avatar-wrap">
-            <img 
-              src="/images/author-ulyana.jpg" 
-              alt="Ульяна Кирпичникова" 
-              class="author-avatar"
-              width="84" 
-              height="84"
-              loading="lazy"
-              onerror="this.onerror=null; this.src='/favicon.ico';"
-            />
+        <div class="post-body">
+          <div class="prose">
+            <Content />
           </div>
-          <div class="author-info">
-            <span class="author-label">Об авторе</span>
-            <h3 id="author-box-title" class="author-name">Ульяна Кирпичникова</h3>
-            <p class="author-role">Эксперт по конверсии сайтов, маркетолог, дизайнер-разработчик сайтов</p>
-            <p class="author-bio">Проектирую и создаю сайты как инструменты продаж: от стратегии продажи и текстов до дизайна и кода. Специализируюсь на B2B, сложных услугах и продуктах с высоким чеком.</p>
-            <div class="author-links">
-              <a href="https://www.linkedin.com/in/uliana-kirpichnikova/" target="_blank" rel="noopener noreferrer" class="author-link-badge">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.25a1.62 1.62 0 0 0-1.63 1.62c0 .89.73 1.63 1.63 1.63a1.63 1.63 0 0 0 1.63-1.63c0-.9-.73-1.62-1.63-1.62Z"/></svg>
-                <span>LinkedIn</span>
+
+          <section class="author-box" aria-labelledby="author-box-title">
+            <span class="author-label">Автор:</span>
+            <div class="author-main">
+              <div class="author-avatar-wrap">
+                <video
+                  class="author-avatar-video"
+                  src="/avatar.mp4"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                  preload="metadata"
+                  width="60"
+                  height="60"
+                  aria-label="Ульяна Кирпичникова"
+                ></video>
+              </div>
+              <div class="author-info">
+                <h3 id="author-box-title" class="author-name">Ульяна Кирпичникова</h3>
+                <p class="author-role">Эксперт по конверсии сайтов, маркетолог, веб-разработчик</p>
+              </div>
+            </div>
+            <div class="author-socials">
+              <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" class="author-social-btn" aria-label="Telegram" title="Telegram">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l-.313 4.67c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.411Z"/></svg>
               </a>
-              <a href="https://t.me/UlyanaKir" target="_blank" rel="noopener noreferrer" class="author-link-badge">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l-.313 4.67c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.411Z"/></svg>
-                <span>Telegram</span>
+              <a href="https://www.linkedin.com/in/uliana-kirpichnikova/" target="_blank" rel="noopener noreferrer" class="author-social-btn" aria-label="LinkedIn" title="LinkedIn">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.25a1.62 1.62 0 0 0-1.63 1.62c0 .89.73 1.63 1.63 1.63a1.63 1.63 0 0 0 1.63-1.63c0-.9-.73-1.62-1.63-1.62Z"/></svg>
+              </a>
+              <a href="https://wa.me/UlyanaKirp" target="_blank" rel="noopener noreferrer" class="author-social-btn" aria-label="WhatsApp" title="WhatsApp">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
               </a>
             </div>
-          </div>
+          </section>
         </div>
-      </section>
+      </div>
 
       {relatedPosts.length > 0 && (
         <section class="related-posts">
@@ -583,39 +588,44 @@ const blogSchema = {
     margin: 0;
   }
 
-  /* Author Card (E-E-A-T) */
+  /* Post Body column containing prose and compact author-box */
+  .post-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* Compact Author Card (E-E-A-T) */
   .author-box {
-    margin-block-start: clamp(2.5rem, 5vw, 4rem);
-    margin-block-end: clamp(2rem, 4vw, 3rem);
-    padding: clamp(1.5rem, 3vw, 2.25rem);
+    margin-block-start: clamp(2rem, 3.5vw, 3rem);
+    padding: 1.25rem 1.5rem;
     border-radius: var(--radius-card);
     border: 1px solid var(--color-border);
     background: var(--color-surface);
-    box-shadow: 0 4px 20px -8px color-mix(in srgb, var(--color-text-primary) 4%, transparent);
-  }
-
-  .author-box-inner {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    align-items: flex-start;
+    gap: 0.85rem;
   }
 
-  @media (min-width: 640px) {
-    .author-box-inner {
-      flex-direction: row;
-      gap: 2rem;
-      align-items: flex-start;
-    }
+  .author-label {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  .author-main {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 
   .author-avatar-wrap {
     flex-shrink: 0;
   }
 
-  .author-avatar {
-    width: 84px;
-    height: 84px;
+  .author-avatar-video {
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--color-blue);
@@ -626,21 +636,12 @@ const blogSchema = {
   .author-info {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-    flex-grow: 1;
-  }
-
-  .author-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: 600;
-    color: var(--color-blue);
+    gap: 0.25rem;
   }
 
   .author-name {
     font-family: var(--font-heading);
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 600;
     color: var(--color-text-primary);
     margin: 0;
@@ -648,45 +649,36 @@ const blogSchema = {
   }
 
   .author-role {
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 0.875rem;
     color: var(--color-text-secondary);
     margin: 0;
     line-height: 1.4;
   }
 
-  .author-bio {
-    font-size: 0.925rem;
-    color: var(--color-text-secondary);
-    line-height: 1.6;
-    margin: 0.4rem 0 0.85rem 0;
-  }
-
-  .author-links {
+  .author-socials {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    align-items: center;
+    gap: 0.6rem;
+    padding-top: 0.25rem;
   }
 
-  .author-link-badge {
+  .author-social-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.45rem 0.95rem;
-    font-size: 0.85rem;
-    font-weight: 500;
-    border-radius: 9999px;
+    justify-content: center;
+    background: color-mix(in srgb, var(--color-text-primary) 4%, transparent);
     border: 1px solid var(--color-border);
-    background: transparent;
-    color: var(--color-text-primary);
-    text-decoration: none;
-    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    color: var(--color-text-secondary);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .author-link-badge:hover {
-    border-color: var(--color-blue);
+  .author-social-btn:hover {
     background: var(--color-blue-tint);
+    border-color: var(--color-blue);
     color: var(--color-blue);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
   }
 </style>
