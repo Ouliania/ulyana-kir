@@ -477,6 +477,34 @@ const blogSchema = {
     margin-block-end: 0;
   }
 
+  .prose :global(figure) {
+    margin-block: 2.5rem;
+    margin-inline: 0;
+    text-align: center;
+  }
+
+  .prose :global(figure img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-card, 12px);
+    border: 1px solid var(--color-border, #E2E0DC);
+    display: block;
+    margin-inline: auto;
+  }
+
+  .prose :global(figcaption) {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--color-text-secondary, #6B6B6B);
+    text-align: center;
+  }
+
+  .prose :global(figcaption strong),
+  .prose :global(figcaption b) {
+    color: var(--color-text-primary);
+  }
+
   .prose :global(code) {
     font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
     background: var(--color-blue-tint);
