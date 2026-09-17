@@ -208,6 +208,20 @@ const blogSchema = {
     </article>
   </main>
 
+  <script is:inline>
+    // Open all links within article prose in a new tab to preserve reading context
+    document.addEventListener('DOMContentLoaded', () => {
+      const proseLinks = document.querySelectorAll('.prose a');
+      proseLinks.forEach((link) => {
+        const href = link.getAttribute('href');
+        if (href && !href.startsWith('#')) {
+          link.setAttribute('target', '_blank');
+          link.setAttribute('rel', 'noopener noreferrer');
+        }
+      });
+    });
+  </script>
+
   <Footer />
   </PageShell>
 </Layout>
