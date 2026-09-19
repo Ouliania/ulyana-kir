@@ -17,7 +17,7 @@ const { locale, items } = Astro.props;
 const homeHref = locale === 'ru' ? '/ru/' : '/';
 const crumbs: Crumb[] = [{ label: t(locale, 'home'), href: homeHref }, ...items];
 
-const siteBase = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://www.ulyanaweb.ru';
+const siteBase = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://ulyanaweb.ru';
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',

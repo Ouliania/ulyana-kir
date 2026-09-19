@@ -30,7 +30,7 @@ function singleSitemap() {
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.ulyanaweb.ru',
+  site: 'https://ulyanaweb.ru',
   redirects: {
     '/ru/blog/ai-prompts-for-non-technical-founders/': '/ru/blog/prompt-engineering-best-practices/',
     '/ru/blog/prompts-ai-pricing-pages/': '/ru/blog/prompts-ai-landing-page/',
