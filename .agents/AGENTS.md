@@ -16,3 +16,4 @@
 3. **No Blind Animation/JS Edits:** If the browser verification tool fails or cannot capture screenshots, do not write complex JS or GSAP positioning logic blindly. Ask the user for description or feedback first.
 4. **CSS Over JS for Layout:** Any responsive adjustments (paddings, element hiding, sizes on different screen heights) must be done strictly via CSS media queries. Do not use JS/GSAP to calculate static layouts.
 5. **Concise Communication:** Keep answers short, dry, and direct. Avoid conversational filler or long explanations.
+6. **Punctuation & Tone Standards:** No letter "ё", en-dash ` – `, Russian quotes «...». Strictly minimize colons (`:`): use colons ONLY for direct bullet/numbered lists. In titles, subheadings, and sentence transitions, replace colons with periods (two sentences) or conjunctions/introductory words. Never use "красивый сайт" or "красивый дизайн". Focus on product meaning, positioning, and conversion architecture (no e-commerce).
